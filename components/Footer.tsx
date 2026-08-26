@@ -1,257 +1,180 @@
-import React, { useState } from 'react';
-import { 
-  Github, 
-  Linkedin, 
-  Twitter, 
-  Mail, 
-  Globe, 
-  MapPin, 
-  ShieldCheck, 
-  Activity, 
-  CheckCircle2, 
-  ArrowUpRight 
-} from 'lucide-react';
-import { COMPANY_NAME, CONTACT_EMAIL, ADDRESS } from '../constants';
-import { SectionId } from '../types';
-import { BrandLogo } from './BrandLogo';
+import React from 'react';
+import Link from 'next/link';
+import { COMPANY_NAME, LEGAL_ENTITY_NAME, REGISTERED_ADDRESS, CONTACT_EMAIL, PRIMARY_CTA } from '../data/governedData';
+import { ArrowRight, ShieldCheck, Mail, MapPin, Globe } from 'lucide-react';
 
-interface FooterProps {
-  theme: 'light' | 'dark';
-  toggleTheme: () => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ theme, toggleTheme }) => {
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email.trim()) {
-      setSubscribed(true);
-      setEmail('');
-      setTimeout(() => setSubscribed(false), 5000);
-    }
-  };
-
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
-
+export const Footer: React.FC = () => {
   return (
-    <footer 
-      id="footer-root"
-      className="bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-t border-slate-200 dark:border-slate-900 px-6 py-12 md:py-16 transition-colors duration-500 relative"
-      role="contentinfo"
-    >
-      <div className="container mx-auto max-w-7xl space-y-12">
+    <footer className="bg-white dark:bg-[#05070D] border-t border-slate-200 dark:border-slate-800/80 text-slate-600 dark:text-slate-400 py-16 transition-colors">
+      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
         
-        {/* Top Row (Brand & Primary Meta) */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 pb-10 border-b border-slate-200 dark:border-slate-900">
+        {/* Top Section: CTA Box */}
+        <div className="p-8 sm:p-10 rounded-3xl bg-slate-900 text-white mb-16 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border border-slate-800 shadow-2xl">
+          <div className="max-w-xl space-y-2 relative z-10">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-sky-400">
+              Low-Risk Starting Point
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+              Ready to modernise or unblock your delivery?
+            </h3>
+            <p className="text-sm text-slate-300">
+              Book a 90-minute architecture and roadmap review with a named senior engineer. No sales pitch, no obligation.
+            </p>
+          </div>
+
+          <Link
+            href={PRIMARY_CTA.href}
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white text-slate-950 font-bold text-xs uppercase tracking-wider hover:bg-slate-100 transition-all shadow-lg active:scale-95 shrink-0"
+          >
+            <span>{PRIMARY_CTA.label}</span>
+            <ArrowRight className="w-4 h-4 text-sky-600" />
+          </Link>
+        </div>
+
+        {/* Middle Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-10 pb-12 border-b border-slate-200 dark:border-slate-800/80 text-left">
           
-          {/* Left Brand block */}
+          {/* Col 1 & 2: Entity Information */}
+          <div className="md:col-span-2 space-y-4">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-slate-950 dark:bg-white text-white dark:text-slate-950 font-mono font-black flex items-center justify-center text-sm">
+                O
+              </div>
+              <span className="text-lg font-bold text-slate-950 dark:text-white tracking-tight">
+                {COMPANY_NAME}
+              </span>
+            </div>
+
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm">
+              Accountable engineering partner for organizations modernising, building, and operating business-critical software.
+            </p>
+
+            <div className="space-y-2 text-xs font-mono text-slate-500 dark:text-slate-400">
+              <div className="flex items-start gap-2">
+                <MapPin className="w-3.5 h-3.5 mt-0.5 shrink-0 text-slate-400" />
+                <span>{REGISTERED_ADDRESS}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="w-3.5 h-3.5 shrink-0 text-slate-400" />
+                <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-sky-500 transition-colors">
+                  {CONTACT_EMAIL}
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Globe className="w-3.5 h-3.5 shrink-0 text-slate-400" />
+                <span>Legal Entity: {LEGAL_ENTITY_NAME}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Col 3: Services */}
           <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <BrandLogo theme={theme} height={36} />
-            </div>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-slate-500 block">
-              SWISS-MODERN ENTERPRISE ENGINEERING FOUNDRY
-            </p>
-          </div>
-
-          {/* Right Quick contact / telemetry chip array */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4 font-mono text-[10px]">
-            <a 
-              href="https://oitsdhaka.com" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-500 dark:hover:border-sky-500 transition-colors"
-            >
-              <Globe size={14} className="text-[#38BDF8]" />
-              <span>oitsdhaka.com</span>
-            </a>
-            <a 
-              href={`mailto:${CONTACT_EMAIL}`}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-500 dark:hover:border-sky-500 transition-colors"
-            >
-              <Mail size={14} className="text-[#38BDF8]" />
-              <span>{CONTACT_EMAIL}</span>
-            </a>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300">
-              <MapPin size={14} className="text-[#38BDF8]" />
-              <span>Dhaka, BD</span>
-            </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-              <ShieldCheck size={14} />
-              <span>ISO 27001 ALIGNED</span>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Navigation Grid */}
-        <div id="footer-menu-grid" className="grid grid-cols-2 md:grid-cols-4 gap-8 my-10">
-          
-          {/* Solutions Column */}
-          <div className="space-y-4">
-            <h4 className="font-mono text-[10px] uppercase tracking-widest text-slate-900 dark:text-white font-bold">
-              Solutions
+            <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-950 dark:text-white">
+              Services
             </h4>
-            <ul className="space-y-2 text-xs font-mono">
+            <ul className="space-y-2 text-xs">
               <li>
-                <a href={`#${SectionId.SERVICES}`} onClick={(e) => scrollToSection(e, SectionId.SERVICES)} className="hover:text-sky-500 transition-colors block py-0.5">
-                  Web & SaaS Apps
-                </a>
+                <Link href="/services/modernise" className="hover:text-sky-500 transition-colors">
+                  Modernise & Decouple
+                </Link>
               </li>
               <li>
-                <a href={`#${SectionId.SERVICES}`} onClick={(e) => scrollToSection(e, SectionId.SERVICES)} className="hover:text-sky-500 transition-colors block py-0.5">
-                  Cloud & Kubernetes
-                </a>
+                <Link href="/services/build" className="hover:text-sky-500 transition-colors">
+                  Build Critical Apps
+                </Link>
               </li>
               <li>
-                <a href={`#${SectionId.SERVICES}`} onClick={(e) => scrollToSection(e, SectionId.SERVICES)} className="hover:text-sky-500 transition-colors block py-0.5">
-                  AI / ML Pipelines
-                </a>
+                <Link href="/services/operate" className="hover:text-sky-500 transition-colors">
+                  Operate & SRE Pods
+                </Link>
               </li>
               <li>
-                <a href={`#${SectionId.SERVICES}`} onClick={(e) => scrollToSection(e, SectionId.SERVICES)} className="hover:text-sky-500 transition-colors block py-0.5">
-                  Native Mobile Apps
-                </a>
+                <Link href="/how-we-work" className="hover:text-sky-500 transition-colors">
+                  Engagement Progression
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Architecture Column */}
-          <div className="space-y-4">
-            <h4 className="font-mono text-[10px] uppercase tracking-widest text-slate-900 dark:text-white font-bold">
-              Architecture
+          {/* Col 4: Trust & Proof */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-950 dark:text-white">
+              Trust & Proof
             </h4>
-            <ul className="space-y-2 text-xs font-mono">
+            <ul className="space-y-2 text-xs">
               <li>
-                <a href={`#${SectionId.ABOUT}`} onClick={(e) => scrollToSection(e, SectionId.ABOUT)} className="hover:text-sky-500 transition-colors block py-0.5">
-                  Zero-Trust Security
-                </a>
+                <Link href="/work" className="hover:text-sky-500 transition-colors">
+                  Case Studies & Work
+                </Link>
               </li>
               <li>
-                <a href={`#${SectionId.ABOUT}`} onClick={(e) => scrollToSection(e, SectionId.ABOUT)} className="hover:text-sky-500 transition-colors block py-0.5">
-                  Elastic Scaling
-                </a>
+                <Link href="/ai" className="hover:text-sky-500 transition-colors">
+                  AI & Human Controls
+                </Link>
               </li>
               <li>
-                <a href={`#${SectionId.PROCESS}`} onClick={(e) => scrollToSection(e, SectionId.PROCESS)} className="hover:text-sky-500 transition-colors block py-0.5">
-                  4-Phase Lifecycle
-                </a>
+                <Link href="/security" className="hover:text-sky-500 transition-colors">
+                  Security Practices & Pack
+                </Link>
               </li>
               <li>
-                <a href={`#${SectionId.PROCESS}`} onClick={(e) => scrollToSection(e, SectionId.PROCESS)} className="hover:text-sky-500 transition-colors block py-0.5">
-                  Quality Gates
-                </a>
+                <Link href="/about" className="hover:text-sky-500 transition-colors">
+                  About & Principles
+                </Link>
+              </li>
+              <li>
+                <Link href="/team" className="hover:text-sky-500 transition-colors">
+                  Engineering Leadership
+                </Link>
+              </li>
+              <li>
+                <Link href="/sv" className="hover:text-sky-500 transition-colors font-semibold text-sky-600 dark:text-sky-400">
+                  Svenska (Nordic Hub)
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Resources Column */}
-          <div className="space-y-4">
-            <h4 className="font-mono text-[10px] uppercase tracking-widest text-slate-900 dark:text-white font-bold">
-              Resources
+          {/* Col 5: Governance & Legal */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-950 dark:text-white">
+              Governance
             </h4>
-            <ul className="space-y-2 text-xs font-mono">
+            <ul className="space-y-2 text-xs">
               <li>
-                <a href={`#${SectionId.PORTFOLIO}`} onClick={(e) => scrollToSection(e, SectionId.PORTFOLIO)} className="hover:text-sky-500 transition-colors block py-0.5">
-                  Case Studies
-                </a>
+                <Link href="/privacy" className="hover:text-sky-500 transition-colors">
+                  Privacy Policy
+                </Link>
               </li>
               <li>
-                <a href={`#${SectionId.INSIGHTS}`} onClick={(e) => scrollToSection(e, SectionId.INSIGHTS)} className="hover:text-sky-500 transition-colors block py-0.5">
-                  Engineering Journal
-                </a>
+                <Link href="/cookies" className="hover:text-sky-500 transition-colors">
+                  Cookie Practices
+                </Link>
               </li>
               <li>
-                <a href={`#${SectionId.CONTACT}`} onClick={(e) => scrollToSection(e, SectionId.CONTACT)} className="hover:text-sky-500 transition-colors block py-0.5">
-                  Book Consultation
-                </a>
+                <Link href="/terms" className="hover:text-sky-500 transition-colors">
+                  Terms of Service
+                </Link>
               </li>
               <li>
-                <a href={`#${SectionId.CONTACT}`} onClick={(e) => scrollToSection(e, SectionId.CONTACT)} className="hover:text-sky-500 transition-colors block py-0.5">
-                  Project Estimator
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Compliance Column */}
-          <div className="space-y-4">
-            <h4 className="font-mono text-[10px] uppercase tracking-widest text-slate-900 dark:text-white font-bold">
-              Compliance
-            </h4>
-            <ul className="space-y-2 text-xs font-mono">
-              <li>
-                <span className="hover:text-sky-500 cursor-pointer block py-0.5">SOC2 Compliance</span>
-              </li>
-              <li>
-                <span className="hover:text-sky-500 cursor-pointer block py-0.5">GDPR & Privacy Policy</span>
-              </li>
-              <li>
-                <span className="hover:text-sky-500 cursor-pointer block py-0.5">Terms of Service</span>
-              </li>
-              <li>
-                <span className="hover:text-sky-500 cursor-pointer block py-0.5">Cookie Settings</span>
+                <Link href="/sub-processors" className="hover:text-sky-500 transition-colors">
+                  Sub-processor Register
+                </Link>
               </li>
             </ul>
           </div>
 
         </div>
 
-        {/* Bottom Bar (Legal & Copyright) */}
-        <div className="pt-10 border-t border-slate-200 dark:border-slate-900 flex flex-col md:flex-row items-center justify-between gap-6 font-mono text-[10px] text-slate-400">
-          
-          <div className="space-y-2 text-center md:text-left">
-            <p className="text-slate-500">
-              © {new Date().getFullYear()} {COMPANY_NAME}. All Rights Reserved. Crafted with mathematical precision in Dhaka.
-            </p>
-            <p className="text-slate-400 dark:text-slate-600 text-[9px]">
-              The OITS logo and mark are trademarks of OITS Dhaka.
-            </p>
+        {/* Bottom Bar */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-500">
+          <p>© {new Date().getFullYear()} {LEGAL_ENTITY_NAME}. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-mono">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>Evidence-governed publishing</span>
+            </span>
           </div>
-
-          {/* Socials & Node Identifier */}
-          <div className="flex flex-wrap items-center gap-6 justify-center md:justify-end">
-            <div className="flex items-center gap-3">
-              <a 
-                href="https://github.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
-                aria-label="GitHub link"
-              >
-                <Github size={16} />
-              </a>
-              <a 
-                href="https://linkedin.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
-                aria-label="LinkedIn link"
-              >
-                <Linkedin size={16} />
-              </a>
-              <a 
-                href="https://twitter.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
-                aria-label="Twitter/X link"
-              >
-                <Twitter size={16} />
-              </a>
-            </div>
-
-            <div className="flex items-center gap-2 px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[9px] text-slate-500 dark:text-slate-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span>NODE: DAC-CORE-01</span>
-            </div>
-          </div>
-
         </div>
 
       </div>
