@@ -63,12 +63,30 @@
 
 @keyframes pulseGlow {
   0%, 100% {
-    opacity: 0.4;
+    opacity: 0.35;
     transform: scale(1);
   }
   50% {
     opacity: 0.8;
     transform: scale(1.03);
+  }
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
   }
 }
 
@@ -88,4 +106,54 @@
 
 .animate-pulse-glow {
   animation: pulseGlow 4s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spinSlow 8s linear infinite;
+}
+
+/* ==========================================================================
+   GLOW & HOVER UTILITIES
+   ========================================================================== */
+
+.hover-glow {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-glow:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.25), 0 0 1px 1px rgba(56, 189, 248, 0.4);
+}
+
+.dark .hover-glow:hover {
+  box-shadow: 0 10px 35px -10px rgba(56, 189, 248, 0.35), 0 0 2px 1px rgba(56, 189, 248, 0.5);
+}
+
+/* Rotating glowing border card */
+.glowing-border-container {
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  padding: 1px;
+}
+
+.glowing-border-container::before {
+  content: '';
+  position: absolute;
+  inset: -100%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 280deg,
+    #38bdf8 320deg,
+    #10b981 360deg
+  );
+  animation: spinSlow 6s linear infinite;
+}
+
+.glowing-border-content {
+  position: relative;
+  border-radius: calc(1.5rem - 1px);
+  background: var(--background);
+  z-index: 10;
 }
