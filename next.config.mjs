@@ -2,6 +2,14 @@
 const nextConfig = {
   reactStrictMode: true,
   crossOrigin: 'anonymous',
+  allowedDevOrigins: [
+    '172.19.64.1',
+    '172.19.64.1:3000',
+    'localhost',
+    'localhost:3000',
+    '127.0.0.1',
+    '127.0.0.1:3000',
+  ],
   async headers() {
     return [
       {
