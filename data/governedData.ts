@@ -1,5 +1,7 @@
 import { GovernedClaim, GovernedCaseStudy, ServiceOutcome, TeamLead, SecurityPractice, NavItem } from '../types';
 
+export type { GovernedClaim, GovernedCaseStudy, ServiceOutcome, TeamLead, SecurityPractice, NavItem };
+
 export const COMPANY_NAME = "OITS";
 export const LEGAL_ENTITY_NAME = "OITS Dhaka Limited";
 export const TAGLINE = "We build and modernise the software your business runs on.";

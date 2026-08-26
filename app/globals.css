@@ -6,6 +6,16 @@
   :root {
     --background: #f8fafc;
     --foreground: #0b0f19;
+    --oits-deep-navy: #070a13;
+    --oits-midnight-navy: #0f172a;
+    --oits-blue-600: #2563eb;
+    --oits-sky: #38bdf8;
+    --oits-emerald: #10b981;
+    --oits-amber: #f59e0b;
+    --slate-dark: #1e293b;
+    --charcoal-text: #0f172a;
+    --slate-light: #f8fafc;
+    --indigo-depth: #312e81;
     --brand-navy: #1d2a68;
     --brand-navy-dark: #131b45;
     --brand-accent: #38bdf8;
@@ -83,10 +93,10 @@
 
 @keyframes shimmer {
   0% {
-    transform: translateX(-100%);
+    background-position: -200% 0;
   }
   100% {
-    transform: translateX(200%);
+    background-position: 200% 0;
   }
 }
 
@@ -113,7 +123,7 @@
 }
 
 /* ==========================================================================
-   GLOW & HOVER UTILITIES
+   GLOW, GLASS & HOVER UTILITIES
    ========================================================================== */
 
 .hover-glow {
@@ -129,31 +139,24 @@
   box-shadow: 0 10px 35px -10px rgba(56, 189, 248, 0.35), 0 0 2px 1px rgba(56, 189, 248, 0.5);
 }
 
-/* Rotating glowing border card */
-.glowing-border-container {
-  position: relative;
-  border-radius: 1.5rem;
-  overflow: hidden;
-  padding: 1px;
+.glass-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-.glowing-border-container::before {
-  content: '';
-  position: absolute;
-  inset: -100%;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    transparent 280deg,
-    #38bdf8 320deg,
-    #10b981 360deg
-  );
-  animation: spinSlow 6s linear infinite;
+.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.glowing-border-content {
-  position: relative;
-  border-radius: calc(1.5rem - 1px);
-  background: var(--background);
-  z-index: 10;
+.text-glow {
+  text-shadow: 0 0 20px rgba(56, 189, 248, 0.4), 0 0 40px rgba(56, 189, 248, 0.2);
+}
+
+.shimmer-bg {
+  background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.08) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
 }

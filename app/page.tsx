@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
   ArrowRight, 
@@ -36,22 +38,32 @@ import { SectionWrapper } from '../components/SectionWrapper';
 import { AnimatedCard } from '../components/AnimatedCard';
 import { GlobalReach } from '../components/GlobalReach';
 import { GlowingBorderCard } from '../components/GlowingBorderCard';
+import { ParticleBackground } from '../components/ParticleBackground';
+import { MagneticButton } from '../components/MagneticButton';
+import { ServiceModal } from '../components/ServiceModal';
+import { ServiceOutcome } from '../data/governedData';
 
 export default function HomePage() {
+  const [selectedService, setSelectedService] = useState<ServiceOutcome | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openServiceModal = (service: ServiceOutcome) => {
+    setSelectedService(service);
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="space-y-24 sm:space-y-32 pb-24 overflow-hidden">
       
       {/* 1. HERO SECTION */}
       <section className="relative pt-12 sm:pt-20 pb-16 overflow-hidden">
-        {/* Subtle Background Mesh */}
-        <div className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-20">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-sky-500/10 dark:bg-sky-500/15 rounded-full blur-[140px]" />
-        </div>
+        {/* Dynamic Atmospheric Particle Background */}
+        <ParticleBackground />
 
         <div className="container mx-auto px-4 sm:px-6 max-w-5xl text-center relative z-10 space-y-8">
           
           {/* Top Position Tag */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300/80 dark:border-slate-700/80 text-[11px] font-mono font-semibold tracking-wide text-slate-800 dark:text-slate-200">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300/80 dark:border-slate-700/80 text-[11px] font-mono font-semibold tracking-wide text-slate-800 dark:text-slate-200 shadow-sm animate-fade-in">
             <span className="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
             <span>Accountable Engineering Partner</span>
           </div>
@@ -66,22 +78,26 @@ export default function HomePage() {
             OITS helps engineering and product leaders <strong className="text-slate-950 dark:text-white font-semibold">Modernise</strong> legacy bottlenecks, <strong className="text-slate-950 dark:text-white font-semibold">Build</strong> mission-critical applications, and <strong className="text-slate-950 dark:text-white font-semibold">Operate</strong> with named senior engineer accountability.
           </p>
 
-          {/* Primary & Secondary Conversion Actions */}
+          {/* Primary & Secondary Conversion Actions with Magnetic Spring Physics */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link
-              href={PRIMARY_CTA.href}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold text-sm hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-xl hover:shadow-2xl active:scale-98"
-            >
-              <span>{PRIMARY_CTA.label}</span>
-              <ArrowRight className="w-4 h-4 text-sky-400 dark:text-sky-600" />
-            </Link>
+            <MagneticButton strength={0.35}>
+              <Link
+                href={PRIMARY_CTA.href}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold text-sm hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-xl hover:shadow-2xl active:scale-95 group"
+              >
+                <span>{PRIMARY_CTA.label}</span>
+                <ArrowRight className="w-4 h-4 text-sky-400 dark:text-sky-600 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </MagneticButton>
 
-            <Link
-              href="/work"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-slate-100 dark:bg-slate-800/80 text-slate-900 dark:text-white font-semibold text-sm border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
-            >
-              <span>Explore Governed Work</span>
-            </Link>
+            <MagneticButton strength={0.2}>
+              <Link
+                href="/work"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-slate-100 dark:bg-slate-800/80 text-slate-900 dark:text-white font-semibold text-sm border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+              >
+                <span>Explore Governed Work</span>
+              </Link>
+            </MagneticButton>
           </div>
 
           {/* Subtext Trust Anchor */}
@@ -149,7 +165,7 @@ export default function HomePage() {
             <AnimatedCard 
               key={prob.id}
               delay={idx * 0.1}
-              className="p-8 rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 text-left space-y-4 hover:border-slate-300 dark:hover:border-slate-700 transition-colors shadow-sm"
+              className="p-8 rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 text-left space-y-4 hover:border-slate-300 dark:hover:border-slate-700 transition-colors shadow-sm hover-glow"
             >
               <div className="w-10 h-10 rounded-xl bg-red-500/10 text-red-600 dark:text-red-400 flex items-center justify-center font-bold text-sm">
                 !
@@ -191,9 +207,12 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
-          {Object.values(SERVICES_OUTCOMES).map((service, idx) => (
-            <GlowingBorderCard key={service.id} glowOnHoverOnly={true} className="hover-glow">
-              <div className="p-8 flex flex-col justify-between h-full space-y-6 border border-slate-200/80 dark:border-slate-800/80 rounded-[calc(1.5rem-1.5px)] group">
+          {Object.values(SERVICES_OUTCOMES).map((service) => (
+            <GlowingBorderCard key={service.id} glowOnHoverOnly={true} className="hover-glow cursor-pointer">
+              <div 
+                onClick={() => openServiceModal(service)}
+                className="p-8 flex flex-col justify-between h-full space-y-6 border border-slate-200/80 dark:border-slate-800/80 rounded-[calc(1.5rem-1.5px)] group"
+              >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <h3 className="text-2xl font-bold text-slate-950 dark:text-white group-hover:text-sky-500 transition-colors">
@@ -221,14 +240,14 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-slate-100 dark:border-slate-800/80">
-                  <Link
-                    href={`/services/${service.slug}`}
-                    className="inline-flex items-center gap-2 text-xs font-bold text-slate-950 dark:text-white group-hover:text-sky-500 transition-colors"
-                  >
-                    <span>Detailed Approach & Exclusions</span>
+                <div className="pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-950 dark:text-white group-hover:text-sky-500 transition-colors inline-flex items-center gap-1.5">
+                    <span>Deep Dive Specs</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
+                  </span>
+                  <span className="text-[10px] font-mono text-sky-600 dark:text-sky-400 font-semibold">
+                    Interactive Spec →
+                  </span>
                 </div>
               </div>
             </GlowingBorderCard>
@@ -254,7 +273,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
             {ACCOUNTABILITY_MATRIX.map((item, i) => (
-              <AnimatedCard key={i} delay={i * 0.08} className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3">
+              <AnimatedCard key={i} delay={i * 0.08} className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3 hover-glow">
                 <h3 className="text-xs font-mono font-bold uppercase text-sky-400">
                   {item.area}
                 </h3>
@@ -310,7 +329,7 @@ export default function HomePage() {
             <AnimatedCard 
               key={cs.slug}
               delay={idx * 0.12}
-              className="p-8 rounded-3xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-6 hover:border-slate-300 dark:hover:border-slate-700 transition-colors shadow-sm"
+              className="p-8 rounded-3xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-6 hover:border-slate-300 dark:hover:border-slate-700 transition-colors shadow-sm hover-glow"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between gap-2">
@@ -375,7 +394,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {SECURITY_PRACTICES.map((sec, idx) => (
-              <AnimatedCard key={sec.id} delay={idx * 0.08} className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-3 shadow-sm">
+              <AnimatedCard key={sec.id} delay={idx * 0.08} className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-3 shadow-sm hover-glow">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-mono text-slate-400 uppercase font-bold">{sec.category}</span>
                   <span className="text-[10px] font-mono text-emerald-500 font-bold uppercase">● {sec.verificationStatus}</span>
@@ -414,7 +433,7 @@ export default function HomePage() {
             <AnimatedCard 
               key={lead.id}
               delay={idx * 0.1}
-              className="p-8 rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm"
+              className="p-8 rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm hover-glow"
             >
               <div className="w-12 h-12 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white flex items-center justify-center font-bold text-base">
                 {lead.name.charAt(0)}
@@ -518,13 +537,15 @@ export default function HomePage() {
             </div>
 
             <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
-              <Link
-                href={PRIMARY_CTA.href}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white text-slate-950 font-bold text-sm hover:bg-slate-100 transition-all shadow-xl active:scale-95 hover:scale-105"
-              >
-                <span>{PRIMARY_CTA.label}</span>
-                <ArrowRight className="w-4 h-4 text-sky-600" />
-              </Link>
+              <MagneticButton strength={0.35}>
+                <Link
+                  href={PRIMARY_CTA.href}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white text-slate-950 font-bold text-sm hover:bg-slate-100 transition-all shadow-xl active:scale-95 group"
+                >
+                  <span>{PRIMARY_CTA.label}</span>
+                  <ArrowRight className="w-4 h-4 text-sky-600 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </MagneticButton>
 
               <span className="text-xs font-mono text-slate-400">
                 Named Lead Responder: Tanvir Hossain (Tech Director)
@@ -538,6 +559,16 @@ export default function HomePage() {
           </div>
         </GlowingBorderCard>
       </SectionWrapper>
+
+      {/* Deep-Dive Technical Modal */}
+      <ServiceModal
+        service={selectedService}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedService(null);
+        }}
+      />
 
     </div>
   );
