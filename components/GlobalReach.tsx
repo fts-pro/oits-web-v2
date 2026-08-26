@@ -382,17 +382,17 @@ export const GlobalReach: React.FC = () => {
   };
 
   return (
-    <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 backdrop-blur-md overflow-hidden p-6 sm:p-10 space-y-8 shadow-xl">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6 text-left">
+    <div className="rounded-3xl border border-slate-200/90 dark:border-sky-500/20 bg-white/95 dark:bg-[#060D1E]/95 backdrop-blur-2xl overflow-hidden p-6 sm:p-10 space-y-8 shadow-2xl transition-colors duration-300">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-6 text-left">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 text-xs font-mono font-semibold mb-2">
-            <Globe className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 dark:bg-sky-400/10 border border-sky-500/20 dark:border-sky-400/20 text-sky-700 dark:text-sky-300 text-xs font-mono font-semibold mb-2">
+            <Globe className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
             <span>Interactive 3D Global Delivery Map</span>
           </div>
-          <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 dark:text-white">
+          <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white">
             Distributed Engineering Hubs & Direct CET Overlap
           </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
             Hover over any location or card to inspect regional services. Click for full collaboration specifications.
           </p>
         </div>
@@ -400,9 +400,9 @@ export const GlobalReach: React.FC = () => {
         <button
           onClick={toggleSpin}
           type="button"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-mono font-bold text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors self-start md:self-auto"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-[#0C1A38] border border-slate-200 dark:border-sky-500/30 text-xs font-mono font-bold text-slate-800 dark:text-sky-200 hover:bg-slate-200 dark:hover:bg-[#12244E] transition-colors self-start md:self-auto shadow-sm"
         >
-          {isSpinning ? <Pause className="w-3.5 h-3.5 text-amber-500" /> : <Play className="w-3.5 h-3.5 text-emerald-500" />}
+          {isSpinning ? <Pause className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" /> : <Play className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />}
           <span>{isSpinning ? 'Pause Rotation' : 'Auto Rotate'}</span>
         </button>
       </div>
@@ -417,19 +417,19 @@ export const GlobalReach: React.FC = () => {
             style={{ width: '100%', height: '440px', minHeight: '440px' }}
             className="w-full h-[440px] max-w-[500px]"
           />
-          {/* Subtle Ambient Radial Glow Behind Globe */}
+          {/* Ambient Radial Glow Behind Globe */}
           <div className="absolute inset-0 pointer-events-none -z-10 flex items-center justify-center">
-            <div className="w-[320px] h-[320px] rounded-full bg-sky-500/10 dark:bg-sky-500/15 blur-[80px]" />
+            <div className="w-[340px] h-[340px] rounded-full bg-sky-500/15 dark:bg-sky-400/20 blur-[90px]" />
           </div>
         </div>
 
-        {/* Interactive Hub Cards with Services & Collaboration Info (5 cols) */}
+        {/* Interactive Hub Cards with Deep Blue Blurred Card Contrast Sync (5 cols) */}
         <div className="lg:col-span-5 space-y-4 text-left">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
+            <p className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-sky-300">
               Regional Delivery Hubs
             </p>
-            <span className="text-[11px] font-mono text-sky-500 font-semibold">
+            <span className="text-[11px] font-mono text-sky-700 dark:text-sky-400 font-bold">
               Click Card for Specs →
             </span>
           </div>
@@ -445,39 +445,39 @@ export const GlobalReach: React.FC = () => {
                     focusHub(hub);
                     setModalHub(hub);
                   }}
-                  className={`p-4 rounded-2xl border text-left transition-all cursor-pointer space-y-2 ${
+                  className={`p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer space-y-2 backdrop-blur-xl ${
                     isSelected
-                      ? 'bg-sky-500/10 border-sky-500/50 shadow-md ring-1 ring-sky-500/30'
-                      : 'bg-slate-50 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-100/80 dark:hover:bg-slate-800/40'
+                      ? 'bg-[#DCEBFA] dark:bg-[#10244D] border-sky-600 dark:border-sky-400 shadow-lg ring-1 ring-sky-600/30 dark:ring-sky-400/50'
+                      : 'bg-[#F1F6FD] dark:bg-[#0B1730]/90 border-slate-200/90 dark:border-sky-500/20 hover:border-sky-500/40 dark:hover:border-sky-400/50 hover:bg-[#E8F1FC] dark:hover:bg-[#0F1E3D] shadow-sm'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <MapPin className={`w-4 h-4 ${hub.isHq ? 'text-emerald-500' : 'text-sky-500'}`} />
-                      <span className="text-sm font-bold text-slate-950 dark:text-white">
+                      <MapPin className={`w-4 h-4 ${hub.isHq ? 'text-emerald-600 dark:text-emerald-400' : 'text-sky-600 dark:text-sky-400'}`} />
+                      <span className="text-sm font-extrabold text-slate-950 dark:text-white">
                         {hub.city}, {hub.country}
                       </span>
                       {hub.isHq && (
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-emerald-500/15 dark:bg-emerald-400/20 text-emerald-700 dark:text-emerald-300 font-extrabold">
                           HQ COMMAND
                         </span>
                       )}
                     </div>
-                    <span className="text-[10px] font-mono text-slate-400 uppercase font-semibold">
+                    <span className="text-[10px] font-mono text-slate-500 dark:text-sky-200/80 uppercase font-bold">
                       {hub.collaborationWindow.split(' ')[0]}
                     </span>
                   </div>
 
-                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-snug">
+                  <p className="text-xs text-slate-800 dark:text-slate-200 leading-snug font-normal">
                     {hub.focus}
                   </p>
 
-                  <div className="pt-1 flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400">
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-sky-500" />
+                  <div className="pt-1 flex items-center justify-between text-[11px] font-mono text-slate-600 dark:text-slate-300">
+                    <span className="flex items-center gap-1 font-semibold text-slate-700 dark:text-sky-300">
+                      <Clock className="w-3 h-3 text-sky-600 dark:text-sky-400" />
                       <span>{hub.collaborationWindow}</span>
                     </span>
-                    <span className="text-sky-600 dark:text-sky-400 font-bold hover:underline">
+                    <span className="text-sky-700 dark:text-sky-300 font-bold hover:underline">
                       View Specs →
                     </span>
                   </div>
@@ -489,16 +489,16 @@ export const GlobalReach: React.FC = () => {
 
       </div>
 
-      {/* Location Hub Detailed Modal */}
+      {/* Location Hub Detailed Modal with Contrast Sync */}
       {modalHub && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-md animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-lg animate-in fade-in duration-200"
           onClick={() => setModalHub(null)}
           role="dialog"
           aria-modal="true"
         >
           <div 
-            className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 sm:p-10 text-left shadow-2xl space-y-6"
+            className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white dark:bg-[#081226] border border-slate-200 dark:border-sky-500/30 p-6 sm:p-10 text-left shadow-2xl space-y-6"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
@@ -506,44 +506,44 @@ export const GlobalReach: React.FC = () => {
               type="button"
               onClick={() => setModalHub(null)}
               aria-label="Close modal"
-              className="absolute top-6 right-6 p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-950 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+              className="absolute top-6 right-6 p-2.5 rounded-full bg-slate-100 dark:bg-[#0E1F40] text-slate-500 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#152E5E] transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
 
             {/* Header */}
             <div className="space-y-2 pr-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 text-xs font-mono font-semibold">
-                <MapPin className="w-3.5 h-3.5" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 dark:bg-sky-400/15 border border-sky-500/20 dark:border-sky-400/30 text-sky-700 dark:text-sky-300 text-xs font-mono font-semibold">
+                <MapPin className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
                 <span>Regional Engineering Hub Specification</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
                 {modalHub.city}, {modalHub.country}
               </h2>
-              <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300">
+              <p className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">
                 {modalHub.role}
               </p>
             </div>
 
             {/* Timezone & Collaboration Window */}
-            <div className="p-4 rounded-2xl bg-sky-500/10 border border-sky-500/20 space-y-1 text-xs">
-              <span className="font-mono font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+            <div className="p-4 rounded-2xl bg-sky-500/10 dark:bg-[#0E2248] border border-sky-500/20 dark:border-sky-400/30 space-y-1 text-xs">
+              <span className="font-mono font-bold uppercase tracking-wider text-sky-700 dark:text-sky-300">
                 Synchronized Working Window:
               </span>
-              <p className="text-slate-800 dark:text-slate-200 font-semibold">
+              <p className="text-slate-900 dark:text-slate-100 font-bold">
                 {modalHub.collaborationWindow}
               </p>
             </div>
 
             {/* Services Provided by This Hub */}
             <div className="space-y-3 pt-2">
-              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
+              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 Core Hub Capabilities & Deliverables
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {modalHub.services.map((srv, i) => (
-                  <div key={i} className="flex items-start gap-2 text-xs text-slate-700 dark:text-slate-200 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-800/60">
-                    <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-emerald-500" />
+                  <div key={i} className="flex items-start gap-2 text-xs text-slate-800 dark:text-slate-100 p-3 rounded-xl bg-slate-50 dark:bg-[#0C1A38] border border-slate-200 dark:border-sky-500/20">
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
                     <span>{srv}</span>
                   </div>
                 ))}
@@ -551,23 +551,23 @@ export const GlobalReach: React.FC = () => {
             </div>
 
             {/* SLA Commitments & Compliance */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-100 dark:border-slate-800/80 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
               <div className="space-y-1.5">
-                <span className="font-mono font-bold uppercase text-slate-400">
+                <span className="font-mono font-bold uppercase text-slate-500 dark:text-slate-400">
                   SLA Baseline
                 </span>
-                <p className="text-slate-700 dark:text-slate-300">
+                <p className="text-slate-800 dark:text-slate-200 font-medium">
                   {modalHub.slaGuarantees}
                 </p>
               </div>
 
               <div className="space-y-1.5">
-                <span className="font-mono font-bold uppercase text-slate-400">
+                <span className="font-mono font-bold uppercase text-slate-500 dark:text-slate-400">
                   Compliance & Regulatory
                 </span>
                 <div className="flex flex-wrap gap-1.5 pt-0.5">
                   {modalHub.compliance.map((comp, idx) => (
-                    <span key={idx} className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-semibold">
+                    <span key={idx} className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 dark:bg-emerald-400/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 dark:border-emerald-400/30 font-bold">
                       ✓ {comp}
                     </span>
                   ))}
@@ -577,8 +577,8 @@ export const GlobalReach: React.FC = () => {
 
             {/* Action Buttons */}
             <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-xs font-mono text-slate-500 dark:text-slate-400">
-                Lead: <strong className="text-slate-900 dark:text-white">{modalHub.leadEngineer}</strong>
+              <div className="text-xs font-mono text-slate-600 dark:text-slate-300">
+                Lead: <strong className="text-slate-950 dark:text-white">{modalHub.leadEngineer}</strong>
               </div>
 
               <div className="flex items-center gap-3 w-full sm:w-auto">
