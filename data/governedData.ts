@@ -20,28 +20,75 @@ export const NAV_ITEMS: NavItem[] = [
     href: '/services/modernise',
     children: [
       {
-        label: 'Modernise',
+        label: 'Modernise & Decouple',
         href: '/services/modernise',
-        description: 'Legacy refactoring, cloud migration, performance and decoupling.'
+        description: 'Legacy refactoring, database partitioning & monolith decoupling.'
       },
       {
-        label: 'Build',
+        label: 'Build Critical Applications',
         href: '/services/build',
-        description: 'Greenfield business-critical web and mobile engineering.'
+        description: 'Industrial-grade web portals, SaaS platforms & mobile apps.'
       },
       {
-        label: 'Operate',
+        label: 'Operate & SRE Pods',
         href: '/services/operate',
-        description: 'Embedded delivery teams, reliability engineering and SRE.'
+        description: 'Embedded reliability engineering, automated rollbacks & SLAs.'
+      },
+      {
+        label: 'On-Demand Dev Support',
+        href: '/services/build',
+        description: 'Senior engineer staff augmentation & agile acceleration.'
+      },
+      {
+        label: '24/7 Monitoring & Maintenance',
+        href: '/services/operate',
+        description: 'Continuous uptime monitoring, incident response & secops.'
+      },
+      {
+        label: 'Digital Transformation Services',
+        href: '/services/modernise',
+        description: 'Cloud migration strategy, tech debt elimination & advisory.'
       }
     ]
   },
-  { label: 'Work', href: '/work' },
-  { label: 'How We Work', href: '/how-we-work' },
-  { label: 'AI & Accountability', href: '/ai' },
-  { label: 'Security & Trust', href: '/security' },
+  {
+    label: 'Our Works',
+    href: '/work',
+    children: [
+      {
+        label: 'Case Studies & Delivered Systems',
+        href: '/work',
+        description: 'Audited benchmark results and real-world system transformations.'
+      },
+      {
+        label: 'Enterprise Solutions & Architecture',
+        href: '/work',
+        description: 'Distributed ledger, telehealth & logistics dispatch engines.'
+      }
+    ]
+  },
+  {
+    label: 'How We Work',
+    href: '/how-we-work',
+    children: [
+      {
+        label: 'Engagement Model & Progression',
+        href: '/how-we-work',
+        description: 'Low-risk 4-step progression from 90-min review to full scale.'
+      },
+      {
+        label: 'AI & Accountability',
+        href: '/ai',
+        description: 'AI code acceleration governed by named senior human sign-off.'
+      },
+      {
+        label: 'Security & Trust',
+        href: '/security',
+        description: 'Zero-trust perimeters, ISO/SOC2 alignment & vendor security pack.'
+      }
+    ]
+  },
   { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
 ];
 
 export const BUYER_PROBLEMS = [

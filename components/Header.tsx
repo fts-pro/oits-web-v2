@@ -19,11 +19,13 @@ import {
   UserCircle,
   Sun, 
   Moon,
-  Globe,
   Smartphone,
   Cloud,
   Lock,
-  ChevronRight
+  ChevronRight,
+  Activity,
+  Wrench,
+  LineChart
 } from 'lucide-react';
 import { NAV_ITEMS, PRIMARY_CTA } from '../data/governedData';
 import { BrandLogo } from './BrandLogo';
@@ -34,8 +36,8 @@ export const Header: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isServicesOpen, setIsServicesOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const navRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,8 +49,8 @@ export const Header: React.FC = () => {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setIsServicesOpen(false);
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -58,19 +60,19 @@ export const Header: React.FC = () => {
   // Close menus on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
-    setIsServicesOpen(false);
+    setOpenDropdown(null);
   }, [pathname]);
+
+  const toggleMenuDropdown = (label: string) => {
+    setOpenDropdown(prev => prev === label ? null : label);
+  };
 
   const getNavIcon = (label: string) => {
     switch (label) {
-      case 'Home': return <Home className="w-3.5 h-3.5" />;
-      case 'Services': return <Layers className="w-3.5 h-3.5" />;
-      case 'Work': return <FolderKanban className="w-3.5 h-3.5" />;
-      case 'How We Work': return <Cpu className="w-3.5 h-3.5" />;
-      case 'AI & Accountability': return <Sparkles className="w-3.5 h-3.5" />;
-      case 'Security & Trust': return <ShieldCheck className="w-3.5 h-3.5" />;
-      case 'About': return <Info className="w-3.5 h-3.5" />;
-      case 'Contact': return <Mail className="w-3.5 h-3.5" />;
+      case 'Services': return <Layers className="w-3.5 h-3.5 text-sky-500" />;
+      case 'Our Works': return <FolderKanban className="w-3.5 h-3.5 text-emerald-500" />;
+      case 'How We Work': return <Cpu className="w-3.5 h-3.5 text-indigo-500" />;
+      case 'About': return <Info className="w-3.5 h-3.5 text-amber-500" />;
       default: return null;
     }
   };
@@ -92,95 +94,73 @@ export const Header: React.FC = () => {
           <BrandLogo height={36} />
         </Link>
 
-        {/* Desktop Navigation with Icons & Mega Menu */}
-        <nav className="hidden lg:flex items-center gap-1" aria-label="Main Navigation">
+        {/* Desktop Navigation */}
+        <nav ref={navRef} className="hidden lg:flex items-center gap-1.5" aria-label="Main Navigation">
           
-          {/* Home Item */}
+          {/* Home Icon Only */}
           <Link
             href="/"
-            className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
+            aria-label="Home"
+            className={`group relative p-2.5 rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
               pathname === '/'
-                ? 'text-sky-600 dark:text-sky-400 bg-sky-500/10'
+                ? 'text-sky-600 dark:text-sky-400 bg-sky-500/10 ring-1 ring-sky-500/30'
                 : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
             }`}
           >
-            <Home className="w-3.5 h-3.5 text-sky-500" />
-            <span>Home</span>
+            <Home className="w-4 h-4" />
+            <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50">
+              Home
+            </span>
           </Link>
 
           {/* Dynamic Nav Items */}
           {NAV_ITEMS.map((item) => {
-            if (item.label === 'Services') {
+            const isServices = item.label === 'Services';
+            const isOurWorks = item.label === 'Our Works';
+            const isHowWeWork = item.label === 'How We Work';
+            const hasChildren = !!item.children;
+            const isDropdownActive = openDropdown === item.label;
+
+            if (hasChildren) {
               return (
-                <div key={item.label} className="relative" ref={dropdownRef}>
+                <div key={item.label} className="relative">
                   <button
                     type="button"
-                    onClick={() => setIsServicesOpen(!isServicesOpen)}
-                    aria-expanded={isServicesOpen}
+                    onClick={() => toggleMenuDropdown(item.label)}
+                    aria-expanded={isDropdownActive}
                     className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
-                      pathname.startsWith('/services')
+                      isDropdownActive || pathname.startsWith(item.href)
                         ? 'text-sky-600 dark:text-sky-400 bg-sky-500/10'
                         : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
                     }`}
                   >
-                    <Layers className="w-3.5 h-3.5 text-sky-500" />
+                    {getNavIcon(item.label)}
                     <span>{item.label}</span>
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isServicesOpen ? 'rotate-180 text-sky-500' : 'text-slate-400'}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isDropdownActive ? 'rotate-180 text-sky-500' : 'text-slate-400'}`} />
                   </button>
 
                   {/* Mega Menu Dropdown */}
-                  {isServicesOpen && (
-                    <div className="absolute top-full left-0 mt-2 w-[520px] p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150 grid grid-cols-2 gap-3">
-                      
-                      {/* Left: Core Capabilities */}
-                      <div className="space-y-1.5">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 px-3">
-                          Core Capabilities
-                        </span>
-                        {item.children?.map((sub) => (
-                          <Link
-                            key={sub.label}
-                            href={sub.href}
-                            className="flex flex-col p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors group border border-transparent hover:border-slate-200 dark:hover:border-slate-700/60"
-                          >
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs font-bold text-slate-950 dark:text-white group-hover:text-sky-500 transition-colors">
-                                {sub.label}
-                              </span>
-                              <ChevronRight className="w-3 h-3 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
-                            </div>
-                            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
-                              {sub.description}
+                  {isDropdownActive && (
+                    <div className={`absolute top-full left-0 mt-2 p-3 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150 z-50 ${
+                      isServices ? 'w-[540px] grid grid-cols-2 gap-2' : 'w-80 space-y-1'
+                    }`}>
+                      {item.children?.map((sub) => (
+                        <Link
+                          key={sub.label}
+                          href={sub.href}
+                          className="flex flex-col p-2.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors group border border-transparent hover:border-slate-200 dark:hover:border-slate-700/60 text-left"
+                        >
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="text-xs font-bold text-slate-950 dark:text-white group-hover:text-sky-500 transition-colors">
+                              {sub.label}
                             </span>
-                          </Link>
-                        ))}
-                      </div>
-
-                      {/* Right: Technical Domains */}
-                      <div className="space-y-1.5 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-800/60">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
-                          Engineering Domains
-                        </span>
-                        <div className="space-y-1 pt-1">
-                          <Link href="/services/build" className="flex items-center gap-2 p-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-sky-500 hover:bg-white dark:hover:bg-slate-800 transition-colors">
-                            <Smartphone className="w-3.5 h-3.5 text-sky-500 shrink-0" />
-                            <span>Frontend & Mobile Apps</span>
-                          </Link>
-                          <Link href="/services/modernise" className="flex items-center gap-2 p-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-sky-500 hover:bg-white dark:hover:bg-slate-800 transition-colors">
-                            <Cloud className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                            <span>Cloud Architecture & SRE</span>
-                          </Link>
-                          <Link href="/ai" className="flex items-center gap-2 p-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-sky-500 hover:bg-white dark:hover:bg-slate-800 transition-colors">
-                            <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                            <span>AI & Agentic Systems</span>
-                          </Link>
-                          <Link href="/security" className="flex items-center gap-2 p-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-sky-500 hover:bg-white dark:hover:bg-slate-800 transition-colors">
-                            <Lock className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
-                            <span>Zero-Trust Cybersecurity</span>
-                          </Link>
-                        </div>
-                      </div>
-
+                            <ChevronRight className="w-3 h-3 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0" />
+                          </div>
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
+                            {sub.description}
+                          </span>
+                        </Link>
+                      ))}
                     </div>
                   )}
                 </div>
@@ -203,25 +183,42 @@ export const Header: React.FC = () => {
               </Link>
             );
           })}
+
+          {/* Contact Icon Only */}
+          <Link
+            href="/contact"
+            aria-label="Contact & Delivery Review"
+            className={`group relative p-2.5 rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
+              pathname === '/contact'
+                ? 'text-sky-600 dark:text-sky-400 bg-sky-500/10 ring-1 ring-sky-500/30'
+                : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
+            }`}
+          >
+            <Mail className="w-4 h-4 text-sky-500" />
+            <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50">
+              Contact & Inquiries
+            </span>
+          </Link>
         </nav>
 
-        {/* Right Actions: Theme Toggle + User Account Portal + Conversion CTA */}
-        <div className="hidden sm:flex items-center gap-2.5">
-          {/* Theme Toggler */}
+        {/* Right Action Icons & Primary Conversion CTA */}
+        <div className="hidden sm:flex items-center gap-2">
+          
+          {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
             type="button"
             aria-label="Toggle Theme"
-            className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+            className="p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
           >
             {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
           </button>
 
-          {/* User Account / Workspace Access Icon */}
+          {/* User Account / Workspace Portal */}
           <Link
             href="/start"
             aria-label="Client Workspace Portal"
-            className="group relative p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+            className="group relative p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
           >
             <UserCircle className="w-4 h-4" />
             <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50">
@@ -229,7 +226,7 @@ export const Header: React.FC = () => {
             </span>
           </Link>
 
-          {/* Primary CTA with single-line button text & arrow */}
+          {/* Primary CTA (Single-line Button Text + Arrow) */}
           <Link
             href={PRIMARY_CTA.href}
             className="inline-flex items-center justify-center gap-2 whitespace-nowrap px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-sm active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
@@ -251,6 +248,14 @@ export const Header: React.FC = () => {
           </button>
 
           <Link
+            href="/contact"
+            aria-label="Contact Us"
+            className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+          >
+            <Mail className="w-4 h-4 text-sky-500" />
+          </Link>
+
+          <Link
             href="/start"
             aria-label="Client Workspace Portal"
             className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60"
@@ -270,7 +275,7 @@ export const Header: React.FC = () => {
 
       </div>
 
-      {/* Mobile Navigation Drawer with Icons */}
+      {/* Mobile Navigation Drawer */}
       {isMobileMenuOpen && (
         <div className="lg:hidden fixed inset-x-0 top-[60px] bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 p-6 shadow-2xl max-h-[85vh] overflow-y-auto space-y-4 animate-in slide-in-from-top-4 duration-200 text-left">
           <div className="space-y-1">
@@ -280,7 +285,7 @@ export const Header: React.FC = () => {
             </Link>
             
             <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold px-3 pt-3">
-              Services & Architecture
+              Services & Capabilities
             </p>
             <Link href="/services/modernise" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
               <Layers className="w-4 h-4 text-sky-500" />
@@ -298,31 +303,43 @@ export const Header: React.FC = () => {
 
           <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 space-y-1">
             <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold px-3">
-              Company & Direct Access
+              Our Works & Delivery
             </p>
             <Link href="/work" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
-              <FolderKanban className="w-4 h-4 text-slate-400" />
-              <span>Work & Case Studies</span>
+              <FolderKanban className="w-4 h-4 text-emerald-500" />
+              <span>Case Studies & Systems</span>
             </Link>
+          </div>
+
+          <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 space-y-1">
+            <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold px-3">
+              How We Work
+            </p>
             <Link href="/how-we-work" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
-              <Cpu className="w-4 h-4 text-slate-400" />
-              <span>How We Work</span>
+              <Cpu className="w-4 h-4 text-indigo-500" />
+              <span>Engagement Progression</span>
             </Link>
             <Link href="/ai" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
               <Sparkles className="w-4 h-4 text-amber-500" />
-              <span>AI & Governance</span>
+              <span>AI & Accountability</span>
             </Link>
             <Link href="/security" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
               <ShieldCheck className="w-4 h-4 text-emerald-500" />
-              <span>Security & Compliance</span>
+              <span>Security & Trust</span>
             </Link>
+          </div>
+
+          <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 space-y-1">
+            <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold px-3">
+              Company
+            </p>
             <Link href="/about" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
               <Info className="w-4 h-4 text-slate-400" />
-              <span>About & Leadership</span>
+              <span>About OITS</span>
             </Link>
             <Link href="/contact" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
               <Mail className="w-4 h-4 text-sky-500" />
-              <span>Contact & Delivery Review</span>
+              <span>Contact & Direct Inquiries</span>
             </Link>
           </div>
 
