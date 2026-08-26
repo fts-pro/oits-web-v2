@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
+import { CursorSpotlight } from '../components/CursorSpotlight';
+import { BackToTop } from '../components/BackToTop';
 import { COMPANY_NAME, LEGAL_ENTITY_NAME, TAGLINE, CONTACT_EMAIL, REGISTERED_ADDRESS } from '../data/governedData';
 
 export const metadata: Metadata = {
@@ -99,12 +101,14 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-slate-50 dark:bg-[#070A13] text-slate-900 dark:text-slate-100 antialiased flex flex-col selection:bg-sky-500/20 selection:text-sky-500">
+      <body className="min-h-screen bg-slate-50 dark:bg-[#070A13] text-slate-900 dark:text-slate-100 antialiased flex flex-col selection:bg-sky-500/20 selection:text-sky-500 relative">
+        <CursorSpotlight />
         <Header />
         <main className="flex-1 pt-20">
           {children}
         </main>
         <Footer />
+        <BackToTop />
       </body>
     </html>
   );

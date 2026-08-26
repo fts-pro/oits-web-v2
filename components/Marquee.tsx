@@ -1,23 +1,27 @@
 import React from 'react';
-import { TECH_STACK } from '../constants';
 
 export const Marquee: React.FC = () => {
+  const items = [
+    'Zero-Downtime Migration',
+    'Event-Driven Systems',
+    'Strict Domain-Driven Design',
+    'WebRTC Low-Latency Streaming',
+    'PostgreSQL Partitioning',
+    'Named Senior Engineer Sign-Off',
+    'Automated SAST / DAST Scanning',
+    '4–5h Daily Stockholm CET Overlap',
+    'Full Codebase IP Ownership'
+  ];
+
   return (
-    <div className="py-12 bg-slate-50 border-y border-slate-200 overflow-hidden">
-      <div className="relative flex overflow-x-hidden group">
-        <div className="animate-marquee whitespace-nowrap flex items-center gap-12 px-6">
-          {TECH_STACK.map((tech) => (
-            <span key={tech} className="text-2xl md:text-3xl font-bold text-slate-300 uppercase tracking-tight hover:text-blue-500 transition-colors cursor-default">
-              {tech}
-            </span>
-          ))}
-          {/* Duplicate for seamless loop */}
-          {TECH_STACK.map((tech) => (
-            <span key={`${tech}-dup`} className="text-2xl md:text-3xl font-bold text-slate-300 uppercase tracking-tight hover:text-blue-500 transition-colors cursor-default">
-              {tech}
-            </span>
-          ))}
-        </div>
+    <div className="w-full overflow-hidden py-4 border-y border-slate-200 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/30">
+      <div className="flex w-max animate-marquee space-x-8 text-xs font-mono font-semibold tracking-wider uppercase text-slate-600 dark:text-slate-400">
+        {[...items, ...items].map((item, idx) => (
+          <div key={idx} className="flex items-center space-x-8">
+            <span className="hover:text-sky-500 transition-colors whitespace-nowrap">{item}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-sky-500/60 shrink-0" />
+          </div>
+        ))}
       </div>
     </div>
   );

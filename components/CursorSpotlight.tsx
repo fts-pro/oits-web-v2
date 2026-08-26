@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 
 export const CursorSpotlight: React.FC = () => {
@@ -6,7 +8,6 @@ export const CursorSpotlight: React.FC = () => {
   const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
-    // Detect touch device
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     setIsTouch(isTouchDevice);
     if (isTouchDevice) return;
@@ -33,21 +34,12 @@ export const CursorSpotlight: React.FC = () => {
 
   return (
     <div
-      className={`fixed inset-0 pointer-events-none z-[1] transition-opacity duration-500 ease-out ${
+      className={`fixed inset-0 pointer-events-none z-[1] transition-opacity duration-700 ease-out ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
       style={{
-        background: `radial-gradient(600px circle at ${coords.x}px ${coords.y}px, var(--spotlight-color, rgba(37, 99, 235, 0.07)) 0%, transparent 80%)`,
+        background: `radial-gradient(650px circle at ${coords.x}px ${coords.y}px, rgba(56, 189, 248, 0.04) 0%, transparent 80%)`,
       }}
-    >
-      <style>{`
-        :root {
-          --spotlight-color: rgba(37, 99, 235, 0.04);
-        }
-        .dark {
-          --spotlight-color: rgba(59, 130, 246, 0.08);
-        }
-      `}</style>
-    </div>
+    />
   );
 };

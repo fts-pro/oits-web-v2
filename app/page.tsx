@@ -30,6 +30,8 @@ import {
 } from '../data/governedData';
 import { EvidenceBadge } from '../components/governance/EvidenceBadge';
 import { ClaimGuard } from '../components/governance/ClaimGuard';
+import { Marquee } from '../components/Marquee';
+import { FAQAccordion } from '../components/FAQAccordion';
 
 export default function HomePage() {
   return (
@@ -85,6 +87,9 @@ export default function HomePage() {
 
         </div>
       </section>
+
+      {/* Marquee Capabilities Ticker */}
+      <Marquee />
 
       {/* 2. PROOF BAND */}
       <section className="container mx-auto px-4 sm:px-6 max-w-7xl">
@@ -462,6 +467,20 @@ export default function HomePage() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* 9.5 FAQ SECTION */}
+      <section className="container mx-auto px-4 sm:px-6 max-w-4xl space-y-8">
+        <div className="max-w-2xl text-left space-y-3">
+          <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-500">
+            Frequently Asked Questions
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-950 dark:text-white">
+            Clarity on our engagement and delivery model.
+          </h2>
+        </div>
+
+        <FAQAccordion />
       </section>
 
       {/* 10. FINAL CONVERSION: BOOK A DELIVERY REVIEW */}
