@@ -67,7 +67,7 @@ export const Header: React.FC = () => {
       case 'Services': return <Layers className="w-3.5 h-3.5 text-sky-500" />;
       case 'Our Works': return <FolderKanban className="w-3.5 h-3.5 text-emerald-500" />;
       case 'How We Work': return <Cpu className="w-3.5 h-3.5 text-indigo-500" />;
-      case 'About': return <Info className="w-3.5 h-3.5 text-amber-500" />;
+      case 'About Us': return <Info className="w-3.5 h-3.5 text-amber-500" />;
       default: return null;
     }
   };
@@ -139,7 +139,7 @@ export const Header: React.FC = () => {
                   {/* Mega Menu Dropdown on Hover */}
                   {isHovered && (
                     <div className={`absolute top-full left-0 mt-1 p-3 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150 z-50 ${
-                      isServices ? 'w-[540px] grid grid-cols-2 gap-2' : 'w-80 space-y-1'
+                      isServices || item.label === 'About Us' ? 'w-[540px] grid grid-cols-2 gap-2' : 'w-80 space-y-1'
                     }`}>
                       {item.children?.map((sub) => (
                         <Link

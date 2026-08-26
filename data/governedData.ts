@@ -79,6 +79,11 @@ export const NAV_ITEMS: NavItem[] = [
         description: 'Low-risk 4-step progression from 90-min review to full scale.'
       },
       {
+        label: 'Agile Workflow & Sprints',
+        href: '/how-we-work#agile-workflow',
+        description: '2-week sprint cadences, automated CI/CD, and live demo verification.'
+      },
+      {
         label: 'AI & Accountability',
         href: '/ai',
         description: 'AI code acceleration governed by named senior human sign-off.'
@@ -90,7 +95,42 @@ export const NAV_ITEMS: NavItem[] = [
       }
     ]
   },
-  { label: 'About', href: '/about' },
+  {
+    label: 'About Us',
+    href: '/about',
+    children: [
+      {
+        label: 'Know OITS',
+        href: '/about#know-oits',
+        description: 'Our engineering command base in Dhaka & European delivery hub.'
+      },
+      {
+        label: 'Why Us',
+        href: '/about#why-us',
+        description: 'Zero-debt architecture, 4 core pillars & senior lead ownership.'
+      },
+      {
+        label: 'Mission & Vision',
+        href: '/about#mission-vision',
+        description: 'Swiss-modern craftsmanship and precision software engineering.'
+      },
+      {
+        label: 'Our Policies & Compliance',
+        href: '/about#policies',
+        description: 'ISO 27001, SOC2 Type II, OWASP ASVS, and GDPR DPA defaults.'
+      },
+      {
+        label: 'Our Team & Leadership',
+        href: '/team',
+        description: 'Meet the senior technical directors and architects building your software.'
+      },
+      {
+        label: 'Client Testimonials',
+        href: '/about#testimonials',
+        description: 'Verifiable feedback from product and engineering leadership.'
+      }
+    ]
+  },
 ];
 
 export const BUYER_PROBLEMS = [
