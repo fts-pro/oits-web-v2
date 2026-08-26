@@ -353,10 +353,11 @@ export const GlobalReach: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         
         {/* Globe Visualization (7 cols) */}
-        <div className="lg:col-span-7 flex justify-center relative min-h-[380px] sm:min-h-[440px] w-full">
+        <div className="lg:col-span-7 flex justify-center relative min-h-[440px] w-full">
           <div
             ref={chartDivRef}
-            className="w-full h-[380px] sm:h-[440px] max-w-[500px]"
+            style={{ width: '100%', height: '440px', minHeight: '440px' }}
+            className="w-full h-[440px] max-w-[500px]"
           />
           {/* Subtle Ambient Radial Glow Behind Globe */}
           <div className="absolute inset-0 pointer-events-none -z-10 flex items-center justify-center">

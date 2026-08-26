@@ -1,17 +1,28 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { COMPANY_NAME, LEGAL_ENTITY_NAME, REGISTERED_ADDRESS, CONTACT_EMAIL, PRIMARY_CTA } from '../data/governedData';
-import { ArrowRight, ShieldCheck, Mail, MapPin, Globe } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Mail, MapPin, Globe, Send, CheckCircle2 } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 
 export const Footer: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    setSubscribed(true);
+  };
+
   return (
     <footer className="bg-white dark:bg-[#05070D] border-t border-slate-200 dark:border-slate-800/80 text-slate-600 dark:text-slate-400 py-16 transition-colors">
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
         
         {/* Top Section: CTA Box */}
         <div className="p-8 sm:p-10 rounded-3xl bg-slate-900 text-white mb-16 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border border-slate-800 shadow-2xl">
-          <div className="max-w-xl space-y-2 relative z-10">
+          <div className="max-w-xl space-y-2 relative z-10 text-left">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-sky-400">
               Low-Risk Starting Point
             </span>
@@ -30,6 +41,46 @@ export const Footer: React.FC = () => {
             <span>{PRIMARY_CTA.label}</span>
             <ArrowRight className="w-4 h-4 text-sky-600" />
           </Link>
+        </div>
+
+        {/* Newsletter Subscription Row */}
+        <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 mb-12 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 text-left">
+          <div className="space-y-1 max-w-lg">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-sky-500">
+              Architecture Dispatches
+            </span>
+            <h4 className="text-lg font-bold text-slate-950 dark:text-white">
+              Subscribe to technical insights & system teardowns.
+            </h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Bi-weekly engineering memos covering legacy decoupling, cloud SRE, and verifiable AI controls. Zero fluff.
+            </p>
+          </div>
+
+          {subscribed ? (
+            <div className="flex items-center gap-2 p-3 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Subscribed! You will receive our next architecture brief.</span>
+            </div>
+          ) : (
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row items-center gap-2.5 w-full lg:w-auto">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="developer@company.com"
+                className="w-full sm:w-72 px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+              />
+              <button
+                type="submit"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 text-xs font-bold hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shrink-0"
+              >
+                <span>Subscribe</span>
+                <Send className="w-3.5 h-3.5 text-sky-400 dark:text-sky-600" />
+              </button>
+            </form>
+          )}
         </div>
 
         {/* Middle Columns */}
@@ -119,8 +170,8 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/team" className="hover:text-sky-500 transition-colors">
-                  Engineering Leadership
+                <Link href="/contact" className="hover:text-sky-500 transition-colors font-semibold text-sky-600 dark:text-sky-400">
+                  Contact & Delivery Review
                 </Link>
               </li>
               <li>

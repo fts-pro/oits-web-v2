@@ -41,6 +41,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'AI & Accountability', href: '/ai' },
   { label: 'Security & Trust', href: '/security' },
   { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export const BUYER_PROBLEMS = [
