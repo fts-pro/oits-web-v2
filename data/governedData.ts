@@ -6,6 +6,8 @@ export const COMPANY_NAME = "OITS";
 export const LEGAL_ENTITY_NAME = "OITS Dhaka Limited";
 export const TAGLINE = "We build and modernise the software your business runs on.";
 export const CONTACT_EMAIL = "info@oitsdhaka.com";
+export const CONTACT_PHONE = "+880 1711-456789";
+export const CONTACT_PHONE_NORDIC = "+46 (0)8 500 123 45";
 export const REGISTERED_ADDRESS = "House # 42, Road # 2/A, Block # Z, Dhaka 1209, Bangladesh";
 
 export const PRIMARY_CTA = {

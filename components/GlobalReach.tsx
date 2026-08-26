@@ -1,21 +1,27 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5map from '@amcharts/amcharts5/map';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import am5geodata_worldLow from '@amcharts/amcharts5-geodata/worldLow';
 import { 
   Globe, 
-  RotateCcw, 
   Play, 
   Pause, 
   MapPin,
   Clock,
-  Shield,
-  Layers
+  ShieldCheck,
+  Layers,
+  ArrowRight,
+  X,
+  CheckCircle2,
+  Cpu,
+  Mail
 } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
+import { PRIMARY_CTA } from '../data/governedData';
 
 export interface HubLocation {
   id: string;
@@ -26,6 +32,10 @@ export interface HubLocation {
   role: string;
   collaborationWindow: string;
   focus: string;
+  services: string[];
+  leadEngineer: string;
+  slaGuarantees: string;
+  compliance: string[];
   isHq?: boolean;
 }
 
@@ -38,7 +48,16 @@ const GLOBAL_HUBS: HubLocation[] = [
     latitude: 23.8103,
     role: 'Engineering Command & Delivery Hub',
     collaborationWindow: 'UTC+6 (Primary Engineering Base)',
-    focus: 'Core systems modernisation, high-throughput pipelines & SRE pods',
+    focus: 'Core systems modernisation, high-throughput pipelines & 24/7 SRE pods',
+    services: [
+      'Monolith Decoupling & Strangler Fig Migrations',
+      'High-Concurrency Database Partitioning & Caching',
+      'Event-Driven Distributed Microservices (Kafka/RabbitMQ)',
+      '24/7 Dedicated Reliability Engineering Pods'
+    ],
+    leadEngineer: 'Tanvir Hossain (Technical Director)',
+    slaGuarantees: '99.99% Uptime with <15min P1 Incident Response',
+    compliance: ['ISO 27001 Aligned', 'SOC2 Type II Ready', 'OWASP ASVS Level 2'],
     isHq: true
   },
   {
@@ -48,8 +67,17 @@ const GLOBAL_HUBS: HubLocation[] = [
     longitude: 18.0686,
     latitude: 59.3293,
     role: 'Nordic Client & GDPR Hub',
-    collaborationWindow: '4–5h Daily Synchronized CET Overlap',
-    focus: 'Direct European sprint standups, GDPR DPA compliance & agile reviews'
+    collaborationWindow: '4–5h Daily Synchronized CET Overlap (08:00–13:00 CET)',
+    focus: 'Direct European sprint standups, GDPR DPA compliance & agile reviews',
+    services: [
+      'Direct CET Standups & Architectural Sync',
+      'EU/EEA Data Processing Agreement (DPA) Governance',
+      'FinTech Regulatory Compliance & Audit Support',
+      'Nordic Enterprise Product Engineering'
+    ],
+    leadEngineer: 'Nordic Delivery Lead Desk',
+    slaGuarantees: 'Daily Standup Sync + Direct Senior Architect Channel',
+    compliance: ['GDPR Compliant', 'EU Standard Contractual Clauses (SCC)'],
   },
   {
     id: 'london',
@@ -58,8 +86,17 @@ const GLOBAL_HUBS: HubLocation[] = [
     longitude: -0.1278,
     latitude: 51.5074,
     role: 'European Enterprise Hub',
-    collaborationWindow: 'GMT / BST Overlap Window',
-    focus: 'FinTech ledger architectures & high-concurrency compliance'
+    collaborationWindow: 'GMT / BST Synchronized Window',
+    focus: 'FinTech ledger architectures, sub-second payments & banking integrations',
+    services: [
+      'Financial Ledger Double-Entry Modernisation',
+      'Sub-Second Payment Gateway Integrations',
+      'FCA Compliant Audit Logging & Traceability',
+      'High-Throughput WebSocket Trading Portals'
+    ],
+    leadEngineer: 'FinTech Architecture Practice',
+    slaGuarantees: '<50ms Transaction Latency SLA Baseline',
+    compliance: ['PCI-DSS Level 1 Ready', 'UK Data Protection Act 2018'],
   },
   {
     id: 'nyc',
@@ -68,8 +105,17 @@ const GLOBAL_HUBS: HubLocation[] = [
     longitude: -74.0060,
     latitude: 40.7128,
     role: 'North American Delivery Bridge',
-    collaborationWindow: 'EST Async Handovers + Morning Sync',
-    focus: 'Cloud migration, event streaming & distributed web systems'
+    collaborationWindow: 'EST Morning Alignment + Continuous Async Handover',
+    focus: 'Multi-region AWS/GCP cloud migrations, event streaming & distributed web apps',
+    services: [
+      'AWS / GCP Multi-Region Infrastructure as Code (Terraform)',
+      'Real-Time Event Stream Ingestion & Analytics',
+      'High-Availability SaaS Scaling & Multi-Tenancy',
+      'Automated Zero-Downtime Blue/Green CI/CD'
+    ],
+    leadEngineer: 'Cloud & Distributed Systems Practice',
+    slaGuarantees: 'Zero-Downtime Migration Pledge with Automated Rollbacks',
+    compliance: ['HIPAA Compliant Controls', 'CCPA Data Isolation'],
   },
   {
     id: 'singapore',
@@ -78,8 +124,17 @@ const GLOBAL_HUBS: HubLocation[] = [
     longitude: 103.8198,
     latitude: 1.3521,
     role: 'APAC Regional Hub',
-    collaborationWindow: 'SGT Synchronized Alignment',
-    focus: 'Low-latency data distribution & microservices orchestration'
+    collaborationWindow: 'SGT Synchronized Alignment (Full Day Overlap)',
+    focus: 'Low-latency data distribution, edge compute & cross-border APIs',
+    services: [
+      'Low-Latency Edge Compute & API Gateways',
+      'Cross-Border Logistics Dispatch Engines',
+      'Real-Time Telehealth Video Pipelines',
+      'Microservices Orchestration on Kubernetes'
+    ],
+    leadEngineer: 'APAC Regional Systems Lead',
+    slaGuarantees: 'Sub-100ms APAC Edge Routing Latency',
+    compliance: ['MAS TRM Aligned', 'Singapore PDPA Compliant'],
   }
 ];
 
@@ -91,12 +146,12 @@ export const GlobalReach: React.FC = () => {
   const { theme } = useTheme();
 
   const [selectedHub, setSelectedHub] = useState<HubLocation>(GLOBAL_HUBS[0]);
+  const [modalHub, setModalHub] = useState<HubLocation | null>(null);
   const [isSpinning, setIsSpinning] = useState<boolean>(true);
 
   useEffect(() => {
     if (!chartDivRef.current) return;
 
-    // Dispose old root before recreating
     if (rootRef.current) {
       rootRef.current.dispose();
       rootRef.current = null;
@@ -119,13 +174,7 @@ export const GlobalReach: React.FC = () => {
     );
     chartRef.current = chart;
 
-    // Background sea / globe atmosphere
-    chart.chartContainer.set('background', am5.Rectangle.new(root, {
-      fill: am5.color(isDark ? 0x070A13 : 0xF1F5F9),
-      fillOpacity: 0
-    }));
-
-    // Background polygon for globe sphere
+    // Globe Background
     const backgroundSeries = chart.series.push(
       am5map.MapPolygonSeries.new(root, {})
     );
@@ -175,15 +224,15 @@ export const GlobalReach: React.FC = () => {
       // Pulse ring for HQ and hubs
       const circlePulse = container.children.push(
         am5.Circle.new(rootInstance, {
-          radius: isHq ? 12 : 8,
+          radius: isHq ? 14 : 9,
           fill: am5.color(isHq ? 0x10B981 : 0x38BDF8),
-          fillOpacity: 0.35,
+          fillOpacity: 0.4,
         })
       );
 
       circlePulse.animate({
         key: 'radius',
-        to: isHq ? 20 : 14,
+        to: isHq ? 22 : 16,
         duration: 1500,
         loops: Infinity,
         easing: am5.ease.out(am5.ease.cubic)
@@ -197,18 +246,25 @@ export const GlobalReach: React.FC = () => {
         easing: am5.ease.out(am5.ease.cubic)
       });
 
-      // Main pin center dot
+      // Center Pin
       container.children.push(
         am5.Circle.new(rootInstance, {
-          radius: isHq ? 6 : 4,
+          radius: isHq ? 6 : 4.5,
           fill: am5.color(isHq ? 0x10B981 : 0x38BDF8),
           stroke: am5.color(0xFFFFFF),
           strokeWidth: 1.5,
         })
       );
 
+      // On Hover: Select Hub
+      container.events.on('pointerover', () => {
+        setSelectedHub(data);
+      });
+
+      // On Click: Select & Open Modal
       container.events.on('click', () => {
         setSelectedHub(data);
+        setModalHub(data);
         if (spinRef.current) {
           spinRef.current.stop();
           spinRef.current = null;
@@ -231,7 +287,6 @@ export const GlobalReach: React.FC = () => {
       return am5.Bullet.new(rootInstance, { sprite: container });
     });
 
-    // Populate Hub Data
     GLOBAL_HUBS.forEach((hub) => {
       pointSeries.data.push({
         geometry: { type: 'Point', coordinates: [hub.longitude, hub.latitude] },
@@ -239,7 +294,7 @@ export const GlobalReach: React.FC = () => {
       });
     });
 
-    // Line Series for Connection Arcs from Dhaka HQ
+    // Connection Lines from Dhaka HQ
     const lineSeries = chart.series.push(am5map.MapLineSeries.new(root, {}));
     lineSeries.mapLines.template.setAll({
       stroke: am5.color(isDark ? 0x38BDF8 : 0x1D2A68),
@@ -261,7 +316,7 @@ export const GlobalReach: React.FC = () => {
       });
     });
 
-    // Continuous Rotation Animation
+    // Auto-rotation
     const startSpin = () => {
       spinRef.current = chart.animate({
         key: 'rotationX',
@@ -332,11 +387,14 @@ export const GlobalReach: React.FC = () => {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 text-xs font-mono font-semibold mb-2">
             <Globe className="w-3.5 h-3.5" />
-            <span>Global Delivery Architecture</span>
+            <span>Interactive 3D Global Delivery Map</span>
           </div>
           <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 dark:text-white">
             Distributed Engineering Hubs & Direct CET Overlap
           </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Hover over any location or card to inspect regional services. Click for full collaboration specifications.
+          </p>
         </div>
 
         <button
@@ -365,53 +423,179 @@ export const GlobalReach: React.FC = () => {
           </div>
         </div>
 
-        {/* Interactive Hub Selector & Details (5 cols) */}
+        {/* Interactive Hub Cards with Services & Collaboration Info (5 cols) */}
         <div className="lg:col-span-5 space-y-4 text-left">
-          <p className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
-            Select Active Hub
-          </p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
+              Regional Delivery Hubs
+            </p>
+            <span className="text-[11px] font-mono text-sky-500 font-semibold">
+              Click Card for Specs →
+            </span>
+          </div>
 
           <div className="space-y-2.5">
             {GLOBAL_HUBS.map((hub) => {
               const isSelected = selectedHub.id === hub.id;
               return (
-                <button
+                <div
                   key={hub.id}
-                  type="button"
-                  onClick={() => focusHub(hub)}
-                  className={`w-full p-4 rounded-2xl border text-left transition-all flex items-start justify-between gap-3 ${
+                  onMouseEnter={() => focusHub(hub)}
+                  onClick={() => {
+                    focusHub(hub);
+                    setModalHub(hub);
+                  }}
+                  className={`p-4 rounded-2xl border text-left transition-all cursor-pointer space-y-2 ${
                     isSelected
                       ? 'bg-sky-500/10 border-sky-500/50 shadow-md ring-1 ring-sky-500/30'
                       : 'bg-slate-50 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-100/80 dark:hover:bg-slate-800/40'
                   }`}
                 >
-                  <div className="space-y-1">
+                  <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <MapPin className={`w-3.5 h-3.5 ${hub.isHq ? 'text-emerald-500' : 'text-sky-500'}`} />
+                      <MapPin className={`w-4 h-4 ${hub.isHq ? 'text-emerald-500' : 'text-sky-500'}`} />
                       <span className="text-sm font-bold text-slate-950 dark:text-white">
                         {hub.city}, {hub.country}
                       </span>
                       {hub.isHq && (
                         <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold">
-                          HQ
+                          HQ COMMAND
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-300">
-                      {hub.role}
-                    </p>
-                    <div className="pt-1 flex items-center gap-1.5 text-[11px] font-mono text-slate-500 dark:text-slate-400">
-                      <Clock className="w-3 h-3 text-slate-400" />
-                      <span>{hub.collaborationWindow}</span>
-                    </div>
+                    <span className="text-[10px] font-mono text-slate-400 uppercase font-semibold">
+                      {hub.collaborationWindow.split(' ')[0]}
+                    </span>
                   </div>
-                </button>
+
+                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-snug">
+                    {hub.focus}
+                  </p>
+
+                  <div className="pt-1 flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-sky-500" />
+                      <span>{hub.collaborationWindow}</span>
+                    </span>
+                    <span className="text-sky-600 dark:text-sky-400 font-bold hover:underline">
+                      View Specs →
+                    </span>
+                  </div>
+                </div>
               );
             })}
           </div>
         </div>
 
       </div>
+
+      {/* Location Hub Detailed Modal */}
+      {modalHub && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setModalHub(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div 
+            className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 sm:p-10 text-left shadow-2xl space-y-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setModalHub(null)}
+              aria-label="Close modal"
+              className="absolute top-6 right-6 p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-950 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* Header */}
+            <div className="space-y-2 pr-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 text-xs font-mono font-semibold">
+                <MapPin className="w-3.5 h-3.5" />
+                <span>Regional Engineering Hub Specification</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
+                {modalHub.city}, {modalHub.country}
+              </h2>
+              <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300">
+                {modalHub.role}
+              </p>
+            </div>
+
+            {/* Timezone & Collaboration Window */}
+            <div className="p-4 rounded-2xl bg-sky-500/10 border border-sky-500/20 space-y-1 text-xs">
+              <span className="font-mono font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+                Synchronized Working Window:
+              </span>
+              <p className="text-slate-800 dark:text-slate-200 font-semibold">
+                {modalHub.collaborationWindow}
+              </p>
+            </div>
+
+            {/* Services Provided by This Hub */}
+            <div className="space-y-3 pt-2">
+              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
+                Core Hub Capabilities & Deliverables
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {modalHub.services.map((srv, i) => (
+                  <div key={i} className="flex items-start gap-2 text-xs text-slate-700 dark:text-slate-200 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-800/60">
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-emerald-500" />
+                    <span>{srv}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* SLA Commitments & Compliance */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-100 dark:border-slate-800/80 text-xs">
+              <div className="space-y-1.5">
+                <span className="font-mono font-bold uppercase text-slate-400">
+                  SLA Baseline
+                </span>
+                <p className="text-slate-700 dark:text-slate-300">
+                  {modalHub.slaGuarantees}
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                <span className="font-mono font-bold uppercase text-slate-400">
+                  Compliance & Regulatory
+                </span>
+                <div className="flex flex-wrap gap-1.5 pt-0.5">
+                  {modalHub.compliance.map((comp, idx) => (
+                    <span key={idx} className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-semibold">
+                      ✓ {comp}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-xs font-mono text-slate-500 dark:text-slate-400">
+                Lead: <strong className="text-slate-900 dark:text-white">{modalHub.leadEngineer}</strong>
+              </div>
+
+              <div className="flex items-center gap-3 w-full sm:w-auto">
+                <Link
+                  href={PRIMARY_CTA.href}
+                  onClick={() => setModalHub(null)}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 font-bold text-xs hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-md active:scale-95 group"
+                >
+                  <span>Book Delivery Review with {modalHub.city}</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-sky-400 dark:text-sky-600 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 };

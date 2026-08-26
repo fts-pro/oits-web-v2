@@ -21,11 +21,7 @@ import {
   Moon,
   Smartphone,
   Cloud,
-  Lock,
-  ChevronRight,
-  Activity,
-  Wrench,
-  LineChart
+  ChevronRight
 } from 'lucide-react';
 import { NAV_ITEMS, PRIMARY_CTA } from '../data/governedData';
 import { BrandLogo } from './BrandLogo';
@@ -36,8 +32,8 @@ export const Header: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const navRef = useRef<HTMLDivElement>(null);
+  const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,24 +43,23 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (navRef.current && !navRef.current.contains(e.target as Node)) {
-        setOpenDropdown(null);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   // Close menus on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
-    setOpenDropdown(null);
+    setHoveredMenu(null);
   }, [pathname]);
 
-  const toggleMenuDropdown = (label: string) => {
-    setOpenDropdown(prev => prev === label ? null : label);
+  const handleMouseEnter = (label: string) => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    setHoveredMenu(label);
+  };
+
+  const handleMouseLeave = () => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      setHoveredMenu(null);
+    }, 180);
   };
 
   const getNavIcon = (label: string) => {
@@ -94,8 +89,8 @@ export const Header: React.FC = () => {
           <BrandLogo height={36} />
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav ref={navRef} className="hidden lg:flex items-center gap-1.5" aria-label="Main Navigation">
+        {/* Desktop Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-1.5" aria-label="Main Navigation">
           
           {/* Home Icon Only */}
           <Link
@@ -108,40 +103,42 @@ export const Header: React.FC = () => {
             }`}
           >
             <Home className="w-4 h-4" />
-            <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50">
+            <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg">
               Home
             </span>
           </Link>
 
-          {/* Dynamic Nav Items */}
+          {/* Dynamic Nav Items with Click-to-Parent & Hover-to-MegaMenu */}
           {NAV_ITEMS.map((item) => {
             const isServices = item.label === 'Services';
-            const isOurWorks = item.label === 'Our Works';
-            const isHowWeWork = item.label === 'How We Work';
             const hasChildren = !!item.children;
-            const isDropdownActive = openDropdown === item.label;
+            const isHovered = hoveredMenu === item.label;
+            const isCurrentActive = pathname === item.href || (item.children && item.children.some(c => pathname === c.href));
 
             if (hasChildren) {
               return (
-                <div key={item.label} className="relative">
-                  <button
-                    type="button"
-                    onClick={() => toggleMenuDropdown(item.label)}
-                    aria-expanded={isDropdownActive}
+                <div 
+                  key={item.label} 
+                  className="relative"
+                  onMouseEnter={() => handleMouseEnter(item.label)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <Link
+                    href={item.href}
                     className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
-                      isDropdownActive || pathname.startsWith(item.href)
+                      isHovered || isCurrentActive
                         ? 'text-sky-600 dark:text-sky-400 bg-sky-500/10'
                         : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
                     }`}
                   >
                     {getNavIcon(item.label)}
                     <span>{item.label}</span>
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isDropdownActive ? 'rotate-180 text-sky-500' : 'text-slate-400'}`} />
-                  </button>
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isHovered ? 'rotate-180 text-sky-500' : 'text-slate-400'}`} />
+                  </Link>
 
-                  {/* Mega Menu Dropdown */}
-                  {isDropdownActive && (
-                    <div className={`absolute top-full left-0 mt-2 p-3 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150 z-50 ${
+                  {/* Mega Menu Dropdown on Hover */}
+                  {isHovered && (
+                    <div className={`absolute top-full left-0 mt-1 p-3 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150 z-50 ${
                       isServices ? 'w-[540px] grid grid-cols-2 gap-2' : 'w-80 space-y-1'
                     }`}>
                       {item.children?.map((sub) => (
@@ -183,28 +180,31 @@ export const Header: React.FC = () => {
               </Link>
             );
           })}
+        </nav>
 
-          {/* Contact Icon Only */}
+        {/* Right Section: Vertical Divider + Contact + Theme Toggle + User Account + CTA */}
+        <div className="hidden sm:flex items-center gap-2">
+          
+          {/* Vertical Divider */}
+          <div className="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1.5" />
+
+          {/* 1. Contact Icon Only */}
           <Link
             href="/contact"
             aria-label="Contact & Delivery Review"
             className={`group relative p-2.5 rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
               pathname === '/contact'
                 ? 'text-sky-600 dark:text-sky-400 bg-sky-500/10 ring-1 ring-sky-500/30'
-                : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
+                : 'text-slate-600 dark:text-slate-400 hover:text-sky-500 hover:bg-slate-100 dark:hover:bg-slate-800/60'
             }`}
           >
             <Mail className="w-4 h-4 text-sky-500" />
-            <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50">
+            <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg">
               Contact & Inquiries
             </span>
           </Link>
-        </nav>
 
-        {/* Right Action Icons & Primary Conversion CTA */}
-        <div className="hidden sm:flex items-center gap-2">
-          
-          {/* Theme Toggle */}
+          {/* 2. Theme Toggler */}
           <button
             onClick={toggleTheme}
             type="button"
@@ -214,14 +214,14 @@ export const Header: React.FC = () => {
             {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
           </button>
 
-          {/* User Account / Workspace Portal */}
+          {/* 3. User Account / Workspace Portal */}
           <Link
             href="/start"
             aria-label="Client Workspace Portal"
             className="group relative p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
           >
             <UserCircle className="w-4 h-4" />
-            <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50">
+            <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg">
               Workspace Portal
             </span>
           </Link>
@@ -229,7 +229,7 @@ export const Header: React.FC = () => {
           {/* Primary CTA (Single-line Button Text + Arrow) */}
           <Link
             href={PRIMARY_CTA.href}
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-sm active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-sm active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ml-1"
           >
             <span className="leading-none">{PRIMARY_CTA.label}</span>
             <ArrowRight className="w-3.5 h-3.5 shrink-0 text-sky-400 dark:text-sky-600" />
@@ -237,7 +237,15 @@ export const Header: React.FC = () => {
         </div>
 
         {/* Mobile Header Bar */}
-        <div className="flex items-center gap-2 lg:hidden">
+        <div className="flex items-center gap-1.5 lg:hidden">
+          <Link
+            href="/contact"
+            aria-label="Contact Us"
+            className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+          >
+            <Mail className="w-4 h-4 text-sky-500" />
+          </Link>
+
           <button
             onClick={toggleTheme}
             type="button"
@@ -246,14 +254,6 @@ export const Header: React.FC = () => {
           >
             {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
           </button>
-
-          <Link
-            href="/contact"
-            aria-label="Contact Us"
-            className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60"
-          >
-            <Mail className="w-4 h-4 text-sky-500" />
-          </Link>
 
           <Link
             href="/start"
