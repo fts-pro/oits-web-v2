@@ -109,6 +109,29 @@ export default function ContactPage() {
               </div>
             </div>
 
+            {/* Google Maps Location Embed */}
+            <div className="rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-md bg-slate-100 dark:bg-slate-900 space-y-2 p-3">
+              <div className="flex items-center justify-between px-2 pt-1">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900 dark:text-white">
+                  <MapPin className="w-3.5 h-3.5 text-sky-500" />
+                  <span>HQ Coordinates (Dhaka, Bangladesh)</span>
+                </div>
+                <span className="text-[10px] font-mono text-slate-400">23.8103° N, 90.4125° E</span>
+              </div>
+              <div className="rounded-2xl overflow-hidden aspect-[16/10] border border-slate-200/80 dark:border-slate-800">
+                <iframe
+                  title="OITS Dhaka HQ Location Map"
+                  src="https://maps.google.com/maps?q=Dhanmondi%20Dhaka%20Bangladesh&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="grayscale hover:grayscale-0 dark:invert-[0.9] dark:hue-rotate-180 transition-all duration-500"
+                />
+              </div>
+            </div>
+
             {/* Named Lead Responders */}
             <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
               <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
