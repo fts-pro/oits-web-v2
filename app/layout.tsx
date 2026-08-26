@@ -29,6 +29,15 @@ export const metadata: Metadata = {
   authors: [{ name: LEGAL_ENTITY_NAME, url: 'https://oitsdhaka.com' }],
   creator: LEGAL_ENTITY_NAME,
   publisher: LEGAL_ENTITY_NAME,
+  icons: {
+    icon: [
+      { url: '/favicon.png', type: 'image/png' },
+      { url: '/favicon.ico' },
+      { url: '/icon.png', type: 'image/png', sizes: '32x32' }
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/favicon.png',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',

@@ -14,7 +14,7 @@ import {
   Cpu,
   Sparkles,
   ShieldCheck,
-  Info,
+  Compass,
   Mail,
   UserCircle,
   Sun, 
@@ -23,7 +23,14 @@ import {
   Cloud,
   ChevronRight,
   Search,
-  Clock
+  Clock,
+  Code2,
+  Building2,
+  CheckCircle2,
+  Users,
+  Quote,
+  Activity,
+  Calendar
 } from 'lucide-react';
 import { NAV_ITEMS, PRIMARY_CTA } from '../data/governedData';
 import { BrandLogo } from './BrandLogo';
@@ -35,6 +42,7 @@ export const Header: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mobileExpandedSection, setMobileExpandedSection] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -79,13 +87,71 @@ export const Header: React.FC = () => {
     }, 180);
   };
 
+  const toggleMobileSection = (label: string) => {
+    setMobileExpandedSection(prev => prev === label ? null : label);
+  };
+
+  // Glowing Luminous Icons for Parent Nav Items
   const getNavIcon = (label: string) => {
     switch (label) {
-      case 'Services': return <Layers className="w-3.5 h-3.5 text-sky-500" />;
-      case 'Our Works': return <FolderKanban className="w-3.5 h-3.5 text-emerald-500" />;
-      case 'How We Work': return <Cpu className="w-3.5 h-3.5 text-indigo-500" />;
-      case 'About Us': return <Info className="w-3.5 h-3.5 text-amber-500" />;
-      default: return null;
+      case 'Services': 
+        return <Layers className="w-3.5 h-3.5 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />;
+      case 'Our Works': 
+        return <FolderKanban className="w-3.5 h-3.5 text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.7)]" />;
+      case 'How We Work': 
+        return <Cpu className="w-3.5 h-3.5 text-indigo-400 drop-shadow-[0_0_8px_rgba(129,140,248,0.7)]" />;
+      case 'About Us': 
+        return <Compass className="w-3.5 h-3.5 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.7)]" />;
+      default: 
+        return null;
+    }
+  };
+
+  // Specific Glowing Icons for Mega-Menu Sub Items
+  const getSubItemIcon = (label: string) => {
+    switch (label) {
+      case 'Modernise & Decouple':
+        return <Layers className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
+      case 'Build Critical Applications':
+        return <Smartphone className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />;
+      case 'Operate & SRE Pods':
+        return <Cloud className="w-4 h-4 text-indigo-400 drop-shadow-[0_0_6px_rgba(129,140,248,0.6)]" />;
+      case 'On-Demand Dev Support':
+        return <Code2 className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />;
+      case '24/7 Monitoring & Maintenance':
+        return <Clock className="w-4 h-4 text-purple-400 drop-shadow-[0_0_6px_rgba(192,132,252,0.6)]" />;
+      case 'Digital Transformation Services':
+        return <Sparkles className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
+      
+      case 'Case Studies & Delivered Systems':
+        return <FolderKanban className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />;
+      case 'Enterprise Solutions & Architecture':
+        return <Cpu className="w-4 h-4 text-indigo-400 drop-shadow-[0_0_6px_rgba(129,140,248,0.6)]" />;
+
+      case 'Engagement Model & Progression':
+        return <ArrowRight className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
+      case 'Agile Workflow & Sprints':
+        return <Clock className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />;
+      case 'AI & Accountability':
+        return <Sparkles className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />;
+      case 'Security & Trust':
+        return <ShieldCheck className="w-4 h-4 text-purple-400 drop-shadow-[0_0_6px_rgba(192,132,252,0.6)]" />;
+
+      case 'Know OITS':
+        return <Building2 className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
+      case 'Why Us':
+        return <CheckCircle2 className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />;
+      case 'Mission & Vision':
+        return <Compass className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />;
+      case 'Our Policies & Compliance':
+        return <ShieldCheck className="w-4 h-4 text-purple-400 drop-shadow-[0_0_6px_rgba(192,132,252,0.6)]" />;
+      case 'Our Team & Leadership':
+        return <Users className="w-4 h-4 text-indigo-400 drop-shadow-[0_0_6px_rgba(129,140,248,0.6)]" />;
+      case 'Client Testimonials':
+        return <Quote className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
+
+      default:
+        return <Sparkles className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
     }
   };
 
@@ -96,7 +162,7 @@ export const Header: React.FC = () => {
           ? 'bg-white/95 dark:bg-[#070A13]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 py-3 shadow-md' 
           : 'bg-transparent py-4 sm:py-5'
       }`}>
-        <div className="container mx-auto px-4 sm:px-6 max-w-7xl flex items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between">
           
           {/* Brand Logo */}
           <Link 
@@ -110,7 +176,7 @@ export const Header: React.FC = () => {
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1.5" aria-label="Main Navigation">
             
-            {/* Home Icon Only */}
+            {/* Glowing Home Icon Only */}
             <Link
               href="/"
               aria-label="Home"
@@ -120,15 +186,15 @@ export const Header: React.FC = () => {
                   : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
               }`}
             >
-              <Home className="w-4 h-4" />
-              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg">
+              <Home className="w-4 h-4 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg font-mono">
                 Home
               </span>
             </Link>
 
             {/* Dynamic Nav Items with Click-to-Parent & Hover-to-MegaMenu */}
             {NAV_ITEMS.map((item) => {
-              const isServices = item.label === 'Services';
+              const isTwoColumn = item.label === 'Services' || item.label === 'About Us';
               const hasChildren = !!item.children;
               const isHovered = hoveredMenu === item.label;
               const isCurrentActive = pathname === item.href || (item.children && item.children.some(c => pathname === c.href));
@@ -154,26 +220,31 @@ export const Header: React.FC = () => {
                       <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isHovered ? 'rotate-180 text-sky-500' : 'text-slate-400'}`} />
                     </Link>
 
-                    {/* Mega Menu Dropdown on Hover */}
+                    {/* Mega Menu Dropdown on Hover with Glowing Icons */}
                     {isHovered && (
-                      <div className={`absolute top-full left-0 mt-1 p-3 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150 z-50 ${
-                        isServices || item.label === 'About Us' ? 'w-[540px] grid grid-cols-2 gap-2' : 'w-80 space-y-1'
+                      <div className={`absolute top-full left-0 mt-1 p-3.5 rounded-3xl bg-white dark:bg-[#071126] border border-slate-200 dark:border-sky-500/30 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150 z-50 ${
+                        isTwoColumn ? 'w-[560px] grid grid-cols-2 gap-2.5' : 'w-84 space-y-1.5'
                       }`}>
                         {item.children?.map((sub) => (
                           <Link
                             key={sub.label}
                             href={sub.href}
-                            className="flex flex-col p-2.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors group border border-transparent hover:border-slate-200 dark:hover:border-slate-700/60 text-left"
+                            className="flex items-start gap-3 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-[#0E2042] transition-all group border border-transparent hover:border-slate-200 dark:hover:border-sky-500/30 text-left"
                           >
-                            <div className="flex items-center justify-between gap-1">
-                              <span className="text-xs font-bold text-slate-950 dark:text-white group-hover:text-sky-500 transition-colors">
-                                {sub.label}
-                              </span>
-                              <ChevronRight className="w-3 h-3 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0" />
+                            <div className="p-2 rounded-xl bg-slate-100 dark:bg-[#0A1633] group-hover:scale-105 transition-transform shrink-0 mt-0.5">
+                              {getSubItemIcon(sub.label)}
                             </div>
-                            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
-                              {sub.description}
-                            </span>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between gap-1">
+                                <span className="text-xs font-bold text-slate-950 dark:text-white group-hover:text-sky-500 transition-colors">
+                                  {sub.label}
+                                </span>
+                                <ChevronRight className="w-3 h-3 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0" />
+                              </div>
+                              <p className="text-[11px] text-slate-500 dark:text-slate-300 mt-0.5 leading-snug line-clamp-2">
+                                {sub.description}
+                              </p>
+                            </div>
                           </Link>
                         ))}
                       </div>
@@ -201,25 +272,25 @@ export const Header: React.FC = () => {
           </nav>
 
           {/* Right Section: Divider + Search + Contact + Theme Toggle + User Account + CTA */}
-          <div className="hidden sm:flex items-center gap-1.5">
+          <div className="hidden lg:flex items-center gap-1.5">
             
             {/* Vertical Divider */}
             <div className="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1.5" />
 
-            {/* 0. Search Icon (Left of the 3 action icons) */}
+            {/* 0. Glowing Search Icon */}
             <button
               onClick={() => setIsSearchOpen(true)}
               type="button"
               aria-label="Global Search (Ctrl+K)"
               className="group relative p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-4 h-4 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
               <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg font-mono">
                 Search (Ctrl+K)
               </span>
             </button>
 
-            {/* 1. Contact Icon Only */}
+            {/* 1. Glowing Contact Icon Only */}
             <Link
               href="/contact"
               aria-label="Contact & Delivery Review"
@@ -229,30 +300,34 @@ export const Header: React.FC = () => {
                   : 'text-slate-600 dark:text-slate-400 hover:text-sky-500 hover:bg-slate-100 dark:hover:bg-slate-800/60'
               }`}
             >
-              <Mail className="w-4 h-4 text-sky-500" />
-              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg">
+              <Mail className="w-4 h-4 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg font-mono">
                 Contact & Inquiries
               </span>
             </Link>
 
-            {/* 2. Theme Toggler */}
+            {/* 2. Glowing Theme Toggler */}
             <button
               onClick={toggleTheme}
               type="button"
               aria-label="Toggle Theme"
               className="p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
             >
-              {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
+              {theme === 'dark' ? (
+                <Sun className="w-4 h-4 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+              ) : (
+                <Moon className="w-4 h-4 text-sky-600 drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
+              )}
             </button>
 
-            {/* 3. User Account / Workspace Portal */}
+            {/* 3. Glowing User Account / Workspace Portal */}
             <Link
               href="/start"
               aria-label="Client Workspace Portal"
-              className="group relative p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+              className="group relative p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-emerald-500 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
             >
-              <UserCircle className="w-4 h-4" />
-              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg">
+              <UserCircle className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.7)]" />
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg font-mono">
                 Workspace Portal
               </span>
             </Link>
@@ -267,134 +342,137 @@ export const Header: React.FC = () => {
             </Link>
           </div>
 
-          {/* Mobile Header Bar */}
+          {/* Mobile Header Bar Icons (Following v2 Responsive Layout) */}
           <div className="flex items-center gap-1.5 lg:hidden">
             <button
               onClick={() => setIsSearchOpen(true)}
               type="button"
               aria-label="Search"
-              className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+              className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60"
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.7)]" />
             </button>
 
             <Link
               href="/contact"
               aria-label="Contact Us"
-              className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+              className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60"
             >
-              <Mail className="w-4 h-4 text-sky-500" />
+              <Mail className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.7)]" />
             </Link>
 
             <button
               onClick={toggleTheme}
               type="button"
               aria-label="Toggle Theme"
-              className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+              className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60"
             >
-              {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
+              {theme === 'dark' ? (
+                <Sun className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.8)]" />
+              ) : (
+                <Moon className="w-4 h-4 text-sky-600 drop-shadow-[0_0_6px_rgba(56,189,248,0.7)]" />
+              )}
             </button>
-
-            <Link
-              href="/start"
-              aria-label="Client Workspace Portal"
-              className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60"
-            >
-              <UserCircle className="w-5 h-5" />
-            </Link>
 
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label={isMobileMenuOpen ? "Close Menu" : "Open Menu"}
-              className="p-2 rounded-xl text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white transition-colors"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
 
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile Navigation Drawer (Full-Height v2 Architectural Drawer) */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden fixed inset-x-0 top-[60px] bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 p-6 shadow-2xl max-h-[85vh] overflow-y-auto space-y-4 animate-in slide-in-from-top-4 duration-200 text-left">
-            <div className="space-y-1">
-              <Link href="/" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
-                <Home className="w-4 h-4 text-sky-500" />
+          <div 
+            className="lg:hidden fixed inset-x-0 top-[65px] bottom-0 z-50 bg-[#070A13]/95 backdrop-blur-2xl border-t border-slate-800 p-6 flex flex-col justify-between overflow-y-auto text-left animate-in slide-in-from-top-3 duration-200"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile site navigation"
+          >
+            <div className="space-y-3">
+              <Link 
+                href="/" 
+                className="flex items-center gap-3 px-4 py-3 rounded-2xl text-base font-bold text-white hover:bg-slate-800/60 min-h-[44px]"
+              >
+                <Home className="w-5 h-5 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.7)]" />
                 <span>Home</span>
               </Link>
               
-              <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold px-3 pt-3">
-                Services & Capabilities
-              </p>
-              <Link href="/services/modernise" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
-                <Layers className="w-4 h-4 text-sky-500" />
-                <span>Modernise & Decouple</span>
-              </Link>
-              <Link href="/services/build" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
-                <Smartphone className="w-4 h-4 text-emerald-500" />
-                <span>Build Critical Software</span>
-              </Link>
-              <Link href="/services/operate" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
-                <Cloud className="w-4 h-4 text-indigo-500" />
-                <span>Operate & SRE Pods</span>
-              </Link>
+              {NAV_ITEMS.map((item) => {
+                const hasChildren = !!item.children;
+                const isExpanded = mobileExpandedSection === item.label;
+
+                if (hasChildren) {
+                  return (
+                    <div key={item.label} className="border-b border-slate-800/80 pb-2">
+                      <button
+                        type="button"
+                        onClick={() => toggleMobileSection(item.label)}
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-base font-bold text-white hover:bg-slate-800/60 transition-colors min-h-[44px]"
+                      >
+                        <div className="flex items-center gap-3">
+                          {getNavIcon(item.label)}
+                          <span>{item.label}</span>
+                        </div>
+                        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isExpanded ? 'rotate-180 text-sky-400' : ''}`} />
+                      </button>
+
+                      {isExpanded && (
+                        <div className="pl-4 pr-2 py-2 space-y-2 animate-in slide-in-from-top-2 duration-150">
+                          {item.children?.map((sub) => (
+                            <Link
+                              key={sub.label}
+                              href={sub.href}
+                              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 min-h-[44px]"
+                            >
+                              <div className="flex items-center gap-2.5">
+                                {getSubItemIcon(sub.label)}
+                                <span>{sub.label}</span>
+                              </div>
+                              <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="flex items-center gap-3 px-4 py-3 rounded-2xl text-base font-bold text-white hover:bg-slate-800/60 min-h-[44px]"
+                  >
+                    {getNavIcon(item.label)}
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
             </div>
 
-            <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 space-y-1">
-              <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold px-3">
-                Our Works & Delivery
-              </p>
-              <Link href="/work" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
-                <FolderKanban className="w-4 h-4 text-emerald-500" />
-                <span>Case Studies & Systems</span>
-              </Link>
-            </div>
-
-            <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 space-y-1">
-              <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold px-3">
-                How We Work
-              </p>
-              <Link href="/how-we-work" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
-                <Cpu className="w-4 h-4 text-indigo-500" />
-                <span>Engagement Progression</span>
-              </Link>
-              <Link href="/how-we-work#agile-workflow" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
-                <Clock className="w-4 h-4 text-sky-500" />
-                <span>Agile Workflow & Sprints</span>
-              </Link>
-              <Link href="/ai" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
-                <Sparkles className="w-4 h-4 text-amber-500" />
-                <span>AI & Accountability</span>
-              </Link>
-              <Link href="/security" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
-                <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                <span>Security & Trust</span>
-              </Link>
-            </div>
-
-            <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 space-y-1">
-              <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold px-3">
-                Company
-              </p>
-              <Link href="/about" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
-                <Info className="w-4 h-4 text-slate-400" />
-                <span>About Us</span>
-              </Link>
-              <Link href="/contact" className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white hover:text-sky-500">
-                <Mail className="w-4 h-4 text-sky-500" />
-                <span>Contact & Direct Inquiries</span>
-              </Link>
-            </div>
-
-            <div className="pt-4">
+            {/* Mobile Drawer Footer Actions (v2 Production Footer) */}
+            <div className="pt-6 border-t border-slate-800 space-y-4">
               <Link
                 href={PRIMARY_CTA.href}
-                className="flex items-center justify-center gap-2 w-full py-3.5 text-xs font-bold rounded-2xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 shadow-md"
+                className="w-full min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-white text-slate-950 font-bold text-xs uppercase tracking-wider shadow-lg active:scale-98"
               >
                 <span>{PRIMARY_CTA.label}</span>
-                <ArrowRight className="w-4 h-4 text-sky-400 dark:text-sky-600" />
+                <ArrowRight className="w-4 h-4 text-sky-600" />
               </Link>
+
+              <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 pt-1">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>status: 99.99% Uptime</span>
+                </span>
+                <span>v2.4 Production</span>
+              </div>
             </div>
           </div>
         )}
