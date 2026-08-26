@@ -32,6 +32,8 @@ import { EvidenceBadge } from '../components/governance/EvidenceBadge';
 import { ClaimGuard } from '../components/governance/ClaimGuard';
 import { Marquee } from '../components/Marquee';
 import { FAQAccordion } from '../components/FAQAccordion';
+import { SectionWrapper } from '../components/SectionWrapper';
+import { AnimatedCard } from '../components/AnimatedCard';
 
 export default function HomePage() {
   return (
@@ -92,7 +94,7 @@ export default function HomePage() {
       <Marquee />
 
       {/* 2. PROOF BAND */}
-      <section className="container mx-auto px-4 sm:px-6 max-w-7xl">
+      <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl">
         <div className="p-6 sm:p-8 rounded-3xl bg-slate-100/90 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 space-y-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
             <div>
@@ -110,27 +112,27 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-            <div className="space-y-1 text-left">
+            <AnimatedCard delay={0.1} className="space-y-1 text-left">
               <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white">72%</span>
               <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">Batch Processing Latency Reduction</p>
               <p className="text-[11px] text-slate-500 font-mono">Validated during financial ledger partitioning pilot</p>
-            </div>
-            <div className="space-y-1 text-left">
+            </AnimatedCard>
+            <AnimatedCard delay={0.2} className="space-y-1 text-left">
               <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white">99.4%</span>
               <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">Video Call Reliability in Low-Bandwidth</p>
               <p className="text-[11px] text-slate-500 font-mono">Simulated under 3% packet loss in mobile network lab</p>
-            </div>
-            <div className="space-y-1 text-left">
+            </AnimatedCard>
+            <AnimatedCard delay={0.3} className="space-y-1 text-left">
               <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white">100%</span>
               <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">Senior Human Code Sign-Off</p>
               <p className="text-[11px] text-slate-500 font-mono">Zero un-reviewed or raw AI boilerplate in production</p>
-            </div>
+            </AnimatedCard>
           </div>
         </div>
-      </section>
+      </SectionWrapper>
 
       {/* 3. BUYER PROBLEM SECTION */}
-      <section className="container mx-auto px-4 sm:px-6 max-w-7xl space-y-12">
+      <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl space-y-12">
         <div className="max-w-2xl text-left space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-500">
             Friction We Solve
@@ -141,9 +143,10 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {BUYER_PROBLEMS.map((prob) => (
-            <div 
+          {BUYER_PROBLEMS.map((prob, idx) => (
+            <AnimatedCard 
               key={prob.id}
+              delay={idx * 0.1}
               className="p-8 rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 text-left space-y-4 hover:border-slate-300 dark:hover:border-slate-700 transition-colors shadow-sm"
             >
               <div className="w-10 h-10 rounded-xl bg-red-500/10 text-red-600 dark:text-red-400 flex items-center justify-center font-bold text-sm">
@@ -160,13 +163,13 @@ export default function HomePage() {
                   <strong>OITS Approach:</strong> {prob.resolution}
                 </p>
               </div>
-            </div>
+            </AnimatedCard>
           ))}
         </div>
-      </section>
+      </SectionWrapper>
 
       {/* 4. SERVICE OUTCOMES (MODERNISE, BUILD, OPERATE) */}
-      <section className="container mx-auto px-4 sm:px-6 max-w-7xl space-y-12">
+      <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl space-y-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl text-left space-y-3">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-500">
@@ -186,9 +189,10 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
-          {Object.values(SERVICES_OUTCOMES).map((service) => (
-            <div 
+          {Object.values(SERVICES_OUTCOMES).map((service, idx) => (
+            <AnimatedCard 
               key={service.id}
+              delay={idx * 0.12}
               className="p-8 rounded-3xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-6 hover:border-sky-500/40 transition-colors shadow-sm group"
             >
               <div className="space-y-4">
@@ -227,13 +231,13 @@ export default function HomePage() {
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
-            </div>
+            </AnimatedCard>
           ))}
         </div>
-      </section>
+      </SectionWrapper>
 
-      {/* 5. HUMAN ACCOUNTABILITY MATRIX */}
-      <section className="container mx-auto px-4 sm:px-6 max-w-7xl">
+      {/* 5. AI GOVERNANCE & ACCOUNTABILITY */}
+      <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl">
         <div className="p-8 sm:p-12 rounded-3xl bg-slate-900 text-white border border-slate-800 space-y-8 text-left shadow-2xl">
           <div className="max-w-2xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-mono font-semibold">
@@ -250,7 +254,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
             {ACCOUNTABILITY_MATRIX.map((item, i) => (
-              <div key={i} className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3">
+              <AnimatedCard key={i} delay={i * 0.08} className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3">
                 <h3 className="text-xs font-mono font-bold uppercase text-sky-400">
                   {item.area}
                 </h3>
@@ -267,7 +271,7 @@ export default function HomePage() {
                     ✓ {item.guarantee}
                   </span>
                 </div>
-              </div>
+              </AnimatedCard>
             ))}
           </div>
 
@@ -279,10 +283,10 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-      </section>
+      </SectionWrapper>
 
       {/* 6. SELECTED GOVERNED WORK */}
-      <section className="container mx-auto px-4 sm:px-6 max-w-7xl space-y-12">
+      <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl space-y-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl text-left space-y-3">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-500">
@@ -302,9 +306,10 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
-          {GOVERNED_CASE_STUDIES.map((cs) => (
-            <div 
+          {GOVERNED_CASE_STUDIES.map((cs, idx) => (
+            <AnimatedCard 
               key={cs.slug}
+              delay={idx * 0.12}
               className="p-8 rounded-3xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-6 hover:border-slate-300 dark:hover:border-slate-700 transition-colors shadow-sm"
             >
               <div className="space-y-4">
@@ -342,13 +347,13 @@ export default function HomePage() {
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
-            </div>
+            </AnimatedCard>
           ))}
         </div>
-      </section>
+      </SectionWrapper>
 
       {/* 7. SECURITY & PROCUREMENT TRUST */}
-      <section className="container mx-auto px-4 sm:px-6 max-w-7xl">
+      <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl">
         <div className="p-8 sm:p-12 rounded-3xl bg-slate-100 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 space-y-8 text-left">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 dark:border-slate-800 pb-6">
             <div className="max-w-2xl space-y-3">
@@ -369,8 +374,8 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {SECURITY_PRACTICES.map((sec) => (
-              <div key={sec.id} className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-3 shadow-sm">
+            {SECURITY_PRACTICES.map((sec, idx) => (
+              <AnimatedCard key={sec.id} delay={idx * 0.08} className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-3 shadow-sm">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-mono text-slate-400 uppercase font-bold">{sec.category}</span>
                   <span className="text-[10px] font-mono text-emerald-500 font-bold uppercase">● {sec.verificationStatus}</span>
@@ -384,14 +389,14 @@ export default function HomePage() {
                 <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 text-[10px] font-mono text-slate-400">
                   Audited: {sec.lastAudited} | Owner: {sec.owner}
                 </div>
-              </div>
+              </AnimatedCard>
             ))}
           </div>
         </div>
-      </section>
+      </SectionWrapper>
 
       {/* 8. PEOPLE & LEADERSHIP */}
-      <section className="container mx-auto px-4 sm:px-6 max-w-7xl space-y-12">
+      <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl space-y-12">
         <div className="max-w-2xl text-left space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-500">
             Named Engineering Leads
@@ -405,9 +410,10 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-          {TEAM_LEADS.map((lead) => (
-            <div 
+          {TEAM_LEADS.map((lead, idx) => (
+            <AnimatedCard 
               key={lead.id}
+              delay={idx * 0.1}
               className="p-8 rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm"
             >
               <div className="w-12 h-12 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white flex items-center justify-center font-bold text-base">
@@ -427,13 +433,13 @@ export default function HomePage() {
               <div className="pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-mono text-slate-500">
                 <strong>Focus:</strong> {lead.specialization}
               </div>
-            </div>
+            </AnimatedCard>
           ))}
         </div>
-      </section>
+      </SectionWrapper>
 
       {/* 9. ENGAGEMENT MODEL */}
-      <section className="container mx-auto px-4 sm:px-6 max-w-7xl space-y-12">
+      <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl space-y-12">
         <div className="max-w-2xl text-left space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-500">
             Engagement Progression
@@ -447,30 +453,37 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-left">
-          {ENGAGEMENT_PROGRESSION.map((step) => (
-            <div 
+          {ENGAGEMENT_PROGRESSION.map((step, idx) => (
+            <AnimatedCard 
               key={step.step}
-              className="p-6 rounded-3xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 space-y-3 relative"
+              delay={idx * 0.09}
+              className={`p-6 rounded-3xl border flex flex-col justify-between space-y-4 shadow-sm ${
+                step.step === '01' 
+                  ? 'bg-sky-500/10 border-sky-500/30' 
+                  : 'bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-800'
+              }`}
             >
-              <span className="text-3xl font-black text-slate-300 dark:text-slate-700 font-mono">
-                {step.step}
-              </span>
-              <div className="space-y-1">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-sky-500 font-bold">{step.duration}</span>
-                <h3 className="text-sm font-bold text-slate-950 dark:text-white">
+              <div className="space-y-3">
+                <span className="text-xs font-mono font-extrabold text-sky-500">
+                  STEP {step.step}
+                </span>
+                <span className="block text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">
+                  {step.duration}
+                </span>
+                <h3 className="text-lg font-bold text-slate-950 dark:text-white">
                   {step.name}
                 </h3>
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                  {step.description}
+                </p>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                {step.description}
-              </p>
-            </div>
+            </AnimatedCard>
           ))}
         </div>
-      </section>
+      </SectionWrapper>
 
       {/* 9.5 FAQ SECTION */}
-      <section className="container mx-auto px-4 sm:px-6 max-w-4xl space-y-8">
+      <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-4xl space-y-8">
         <div className="max-w-2xl text-left space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-500">
             Frequently Asked Questions
@@ -481,10 +494,10 @@ export default function HomePage() {
         </div>
 
         <FAQAccordion />
-      </section>
+      </SectionWrapper>
 
       {/* 10. FINAL CONVERSION: BOOK A DELIVERY REVIEW */}
-      <section id="start" className="container mx-auto px-4 sm:px-6 max-w-4xl">
+      <SectionWrapper id="start" className="container mx-auto px-4 sm:px-6 max-w-4xl">
         <div className="p-8 sm:p-12 rounded-3xl bg-slate-900 text-white border border-slate-800 space-y-8 text-left shadow-2xl relative overflow-hidden">
           <div className="max-w-xl space-y-3 relative z-10">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-400">
@@ -517,7 +530,7 @@ export default function HomePage() {
             <span>Strict NDA by default. No unsolicited sales calls. Zero data sharing.</span>
           </div>
         </div>
-      </section>
+      </SectionWrapper>
 
     </div>
   );
