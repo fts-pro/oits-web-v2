@@ -4,6 +4,7 @@ import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { CursorSpotlight } from '../components/CursorSpotlight';
 import { BackToTop } from '../components/BackToTop';
+import { ThemeProvider } from '../components/ThemeProvider';
 import { COMPANY_NAME, LEGAL_ENTITY_NAME, TAGLINE, CONTACT_EMAIL, REGISTERED_ADDRESS } from '../data/governedData';
 
 export const metadata: Metadata = {
@@ -94,21 +95,41 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="dark scroll-smooth" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var stored = localStorage.getItem('oits_theme');
+                if (stored === 'light') {
+                  document.documentElement.classList.remove('dark');
+                } else if (stored === 'dark') {
+                  document.documentElement.classList.add('dark');
+                } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+                  document.documentElement.classList.remove('dark');
+                } else {
+                  document.documentElement.classList.add('dark');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-slate-50 dark:bg-[#070A13] text-slate-900 dark:text-slate-100 antialiased flex flex-col selection:bg-sky-500/20 selection:text-sky-500 relative">
-        <CursorSpotlight />
-        <Header />
-        <main className="flex-1 pt-20">
-          {children}
-        </main>
-        <Footer />
-        <BackToTop />
+      <body className="min-h-screen bg-slate-50 dark:bg-[#070A13] text-slate-900 dark:text-slate-100 antialiased flex flex-col selection:bg-sky-500/20 selection:text-sky-500 relative transition-colors duration-300">
+        <ThemeProvider>
+          <CursorSpotlight />
+          <Header />
+          <main className="flex-1 pt-20">
+            {children}
+          </main>
+          <Footer />
+          <BackToTop />
+        </ThemeProvider>
       </body>
     </html>
   );

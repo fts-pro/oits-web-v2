@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { COMPANY_NAME, LEGAL_ENTITY_NAME, REGISTERED_ADDRESS, CONTACT_EMAIL, PRIMARY_CTA } from '../data/governedData';
 import { ArrowRight, ShieldCheck, Mail, MapPin, Globe } from 'lucide-react';
+import { BrandLogo } from './BrandLogo';
 
 export const Footer: React.FC = () => {
   return (
@@ -36,14 +37,9 @@ export const Footer: React.FC = () => {
           
           {/* Col 1 & 2: Entity Information */}
           <div className="md:col-span-2 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-slate-950 dark:bg-white text-white dark:text-slate-950 font-mono font-black flex items-center justify-center text-sm">
-                O
-              </div>
-              <span className="text-lg font-bold text-slate-950 dark:text-white tracking-tight">
-                {COMPANY_NAME}
-              </span>
-            </div>
+            <Link href="/" className="inline-block" aria-label="OITS Dhaka - Home">
+              <BrandLogo height={36} />
+            </Link>
 
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm">
               Accountable engineering partner for organizations modernising, building, and operating business-critical software.
