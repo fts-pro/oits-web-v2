@@ -1,7 +1,4 @@
-'use client';
-
 import React from 'react';
-import { motion } from 'motion/react';
 
 interface AnimatedCardProps {
   children: React.ReactNode;
@@ -14,32 +11,17 @@ interface AnimatedCardProps {
 export const AnimatedCard: React.FC<AnimatedCardProps> = ({
   children,
   className = '',
-  delay = 0,
   hoverLift = true,
   onClick,
 }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{
-        duration: 0.5,
-        delay,
-        ease: [0.21, 0.47, 0.32, 0.98],
-      }}
-      whileHover={
-        hoverLift
-          ? {
-              y: -4,
-              transition: { duration: 0.2, ease: 'easeOut' },
-            }
-          : undefined
-      }
+    <div
       onClick={onClick}
-      className={className}
+      className={`transition-all duration-200 ${
+        hoverLift ? 'hover:-translate-y-1 hover:shadow-md' : ''
+      } ${className}`}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };
