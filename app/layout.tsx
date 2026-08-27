@@ -133,7 +133,7 @@ export default function RootLayout({
         <ThemeProvider>
           <CursorSpotlight />
           <Header />
-          <main className="flex-1 pt-20">
+          <main className="flex-1 pt-14 sm:pt-16">
             {children}
           </main>
           <Footer />

@@ -53,10 +53,10 @@ export default function HomePage() {
   };
 
   return (
-    <div className="space-y-24 sm:space-y-32 pb-24 overflow-hidden">
+    <div className="space-y-16 sm:space-y-24 pb-20 overflow-hidden">
       
       {/* 1. HERO SECTION */}
-      <section className="relative pt-12 sm:pt-20 pb-16 overflow-hidden">
+      <section className="relative pt-4 sm:pt-8 pb-8 sm:pb-12 overflow-hidden">
         {/* Dynamic Atmospheric Particle Background */}
         <ParticleBackground />
 
