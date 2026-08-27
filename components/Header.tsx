@@ -29,13 +29,254 @@ import {
   CheckCircle2,
   Users,
   Quote,
-  Activity,
-  Calendar
+  Zap,
+  Lock,
+  Server,
+  Briefcase
 } from 'lucide-react';
 import { NAV_ITEMS, PRIMARY_CTA } from '../data/governedData';
 import { BrandLogo } from './BrandLogo';
 import { useTheme } from './ThemeProvider';
 import { CommandPalette } from './CommandPalette';
+
+interface MegaMenuCategory {
+  title: string;
+  icon: React.ReactNode;
+  items: {
+    label: string;
+    href: string;
+    description: string;
+    icon: React.ReactNode;
+  }[];
+}
+
+interface MegaMenuConfig {
+  width: string;
+  gridCols: string;
+  footerNote: string;
+  footerHref: string;
+  footerLabel: string;
+  categories: MegaMenuCategory[];
+}
+
+const MEGA_MENUS: Record<string, MegaMenuConfig> = {
+  'Services': {
+    width: 'w-[780px]',
+    gridCols: 'grid-cols-3',
+    footerNote: 'Continuous reliability engineering & zero-downtime migrations',
+    footerHref: '/services/modernise',
+    footerLabel: 'Explore all service outcomes',
+    categories: [
+      {
+        title: 'Modernise & Decouple',
+        icon: <Layers className="w-3.5 h-3.5 text-sky-400" />,
+        items: [
+          {
+            label: 'Modernise & Decouple',
+            href: '/services/modernise',
+            description: 'Legacy refactoring, database partitioning & monolith decoupling.',
+            icon: <Layers className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />
+          },
+          {
+            label: 'Digital Transformation',
+            href: '/services/modernise',
+            description: 'Cloud migration strategy & technical debt elimination.',
+            icon: <Sparkles className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />
+          }
+        ]
+      },
+      {
+        title: 'Greenfield & Build',
+        icon: <Smartphone className="w-3.5 h-3.5 text-emerald-400" />,
+        items: [
+          {
+            label: 'Build Critical Applications',
+            href: '/services/build',
+            description: 'Industrial-grade web applications & native mobile apps.',
+            icon: <Smartphone className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />
+          },
+          {
+            label: 'On-Demand Dev Support',
+            href: '/services/build',
+            description: 'Senior engineer staff augmentation & sprint acceleration.',
+            icon: <Code2 className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />
+          }
+        ]
+      },
+      {
+        title: 'Operate & SRE',
+        icon: <Cloud className="w-3.5 h-3.5 text-indigo-400" />,
+        items: [
+          {
+            label: 'Operate & SRE Pods',
+            href: '/services/operate',
+            description: 'Embedded reliability engineering & p99 latency SLAs.',
+            icon: <Cloud className="w-4 h-4 text-indigo-400 drop-shadow-[0_0_6px_rgba(129,140,248,0.6)]" />
+          },
+          {
+            label: '24/7 Monitoring & SecOps',
+            href: '/services/operate',
+            description: 'Continuous uptime observability & automated incident response.',
+            icon: <Clock className="w-4 h-4 text-purple-400 drop-shadow-[0_0_6px_rgba(192,132,252,0.6)]" />
+          }
+        ]
+      }
+    ]
+  },
+  'Our Works': {
+    width: 'w-[620px]',
+    gridCols: 'grid-cols-2',
+    footerNote: 'Audited benchmark metrics & production case studies',
+    footerHref: '/work',
+    footerLabel: 'View all case studies',
+    categories: [
+      {
+        title: 'Delivered Case Studies',
+        icon: <FolderKanban className="w-3.5 h-3.5 text-emerald-400" />,
+        items: [
+          {
+            label: 'Ledger Modernisation',
+            href: '/work/ledger-modernisation',
+            description: '4.2x throughput increase on financial core ledger.',
+            icon: <FolderKanban className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />
+          },
+          {
+            label: 'Telehealth Platform',
+            href: '/work/telehealth-platform',
+            description: 'HIPAA-compliant high-concurrency video consultations.',
+            icon: <FolderKanban className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />
+          }
+        ]
+      },
+      {
+        title: 'High-Density Architectures',
+        icon: <Cpu className="w-3.5 h-3.5 text-indigo-400" />,
+        items: [
+          {
+            label: 'Logistics Dispatch Engine',
+            href: '/work/logistics-dispatch-engine',
+            description: 'Sub-second routing handling 120k daily dispatches.',
+            icon: <Cpu className="w-4 h-4 text-indigo-400 drop-shadow-[0_0_6px_rgba(129,140,248,0.6)]" />
+          },
+          {
+            label: 'Enterprise Solutions',
+            href: '/work',
+            description: 'Distributed architectures & benchmark results.',
+            icon: <Briefcase className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />
+          }
+        ]
+      }
+    ]
+  },
+  'How We Work': {
+    width: 'w-[620px]',
+    gridCols: 'grid-cols-2',
+    footerNote: 'Senior human sign-off on every production pull request',
+    footerHref: '/how-we-work',
+    footerLabel: 'Review delivery governance',
+    categories: [
+      {
+        title: 'Delivery Progression',
+        icon: <Cpu className="w-3.5 h-3.5 text-indigo-400" />,
+        items: [
+          {
+            label: 'Engagement Progression',
+            href: '/how-we-work',
+            description: 'Low-risk 4-step progression from 90-min review to full scale.',
+            icon: <ArrowRight className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />
+          },
+          {
+            label: 'Agile Workflow & Sprints',
+            href: '/how-we-work#agile-workflow',
+            description: '2-week sprint cadences, automated CI/CD & live demos.',
+            icon: <Clock className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />
+          }
+        ]
+      },
+      {
+        title: 'Governance & Trust',
+        icon: <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />,
+        items: [
+          {
+            label: 'AI & Accountability',
+            href: '/ai',
+            description: 'AI code acceleration governed by named senior human sign-off.',
+            icon: <Sparkles className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />
+          },
+          {
+            label: 'Security & Trust Pack',
+            href: '/security',
+            description: 'Zero-trust perimeters, ISO/SOC2 alignment & vendor pack.',
+            icon: <ShieldCheck className="w-4 h-4 text-purple-400 drop-shadow-[0_0_6px_rgba(192,132,252,0.6)]" />
+          }
+        ]
+      }
+    ]
+  },
+  'About Us': {
+    width: 'w-[780px]',
+    gridCols: 'grid-cols-3',
+    footerNote: 'Engineering precision & direct European CET overlap window',
+    footerHref: '/about',
+    footerLabel: 'Read full studio story',
+    categories: [
+      {
+        title: 'Identity & Foundations',
+        icon: <Building2 className="w-3.5 h-3.5 text-sky-400" />,
+        items: [
+          {
+            label: 'Know OITS',
+            href: '/about#know-oits',
+            description: 'Dhaka command base, Nordic bridge & engineering DNA.',
+            icon: <Building2 className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />
+          },
+          {
+            label: 'Why Us & 4 Pillars',
+            href: '/about#why-us',
+            description: 'Zero-debt architecture & senior lead ownership.',
+            icon: <CheckCircle2 className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />
+          }
+        ]
+      },
+      {
+        title: 'Philosophy & Policy',
+        icon: <Compass className="w-3.5 h-3.5 text-amber-400" />,
+        items: [
+          {
+            label: 'Mission & Vision',
+            href: '/about#mission-vision',
+            description: 'Swiss-modern craftsmanship and software velocity.',
+            icon: <Compass className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />
+          },
+          {
+            label: 'Policies & Compliance',
+            href: '/about#policies',
+            description: 'ISO 27001, SOC2 Type II, OWASP ASVS & GDPR DPA.',
+            icon: <ShieldCheck className="w-4 h-4 text-purple-400 drop-shadow-[0_0_6px_rgba(192,132,252,0.6)]" />
+          }
+        ]
+      },
+      {
+        title: 'Team & Feedback',
+        icon: <Users className="w-3.5 h-3.5 text-indigo-400" />,
+        items: [
+          {
+            label: 'Our Team & Leadership',
+            href: '/team',
+            description: 'Named senior technical directors & architects.',
+            icon: <Users className="w-4 h-4 text-indigo-400 drop-shadow-[0_0_6px_rgba(129,140,248,0.6)]" />
+          },
+          {
+            label: 'Client Testimonials',
+            href: '/about#testimonials',
+            description: 'Audited feedback from CTOs and engineering directors.',
+            icon: <Quote className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />
+          }
+        ]
+      }
+    ]
+  }
+};
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
@@ -107,54 +348,6 @@ export const Header: React.FC = () => {
     }
   };
 
-  // Specific Glowing Icons for Mega-Menu Sub Items
-  const getSubItemIcon = (label: string) => {
-    switch (label) {
-      case 'Modernise & Decouple':
-        return <Layers className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
-      case 'Build Critical Applications':
-        return <Smartphone className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />;
-      case 'Operate & SRE Pods':
-        return <Cloud className="w-4 h-4 text-indigo-400 drop-shadow-[0_0_6px_rgba(129,140,248,0.6)]" />;
-      case 'On-Demand Dev Support':
-        return <Code2 className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />;
-      case '24/7 Monitoring & Maintenance':
-        return <Clock className="w-4 h-4 text-purple-400 drop-shadow-[0_0_6px_rgba(192,132,252,0.6)]" />;
-      case 'Digital Transformation Services':
-        return <Sparkles className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
-      
-      case 'Case Studies & Delivered Systems':
-        return <FolderKanban className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />;
-      case 'Enterprise Solutions & Architecture':
-        return <Cpu className="w-4 h-4 text-indigo-400 drop-shadow-[0_0_6px_rgba(129,140,248,0.6)]" />;
-
-      case 'Engagement Model & Progression':
-        return <ArrowRight className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
-      case 'Agile Workflow & Sprints':
-        return <Clock className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />;
-      case 'AI & Accountability':
-        return <Sparkles className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />;
-      case 'Security & Trust':
-        return <ShieldCheck className="w-4 h-4 text-purple-400 drop-shadow-[0_0_6px_rgba(192,132,252,0.6)]" />;
-
-      case 'Know OITS':
-        return <Building2 className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
-      case 'Why Us':
-        return <CheckCircle2 className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />;
-      case 'Mission & Vision':
-        return <Compass className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />;
-      case 'Our Policies & Compliance':
-        return <ShieldCheck className="w-4 h-4 text-purple-400 drop-shadow-[0_0_6px_rgba(192,132,252,0.6)]" />;
-      case 'Our Team & Leadership':
-        return <Users className="w-4 h-4 text-indigo-400 drop-shadow-[0_0_6px_rgba(129,140,248,0.6)]" />;
-      case 'Client Testimonials':
-        return <Quote className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
-
-      default:
-        return <Sparkles className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
-    }
-  };
-
   return (
     <>
       <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
@@ -192,14 +385,13 @@ export const Header: React.FC = () => {
               </span>
             </Link>
 
-            {/* Dynamic Nav Items with Click-to-Parent & Hover-to-MegaMenu */}
+            {/* Dynamic Nav Items with Multi-Column Categorized v2 Mega-Menu */}
             {NAV_ITEMS.map((item) => {
-              const isTwoColumn = item.label === 'Services' || item.label === 'About Us';
-              const hasChildren = !!item.children;
+              const megaConfig = MEGA_MENUS[item.label];
               const isHovered = hoveredMenu === item.label;
               const isCurrentActive = pathname === item.href || (item.children && item.children.some(c => pathname === c.href));
 
-              if (hasChildren) {
+              if (megaConfig) {
                 return (
                   <div 
                     key={item.label} 
@@ -220,33 +412,55 @@ export const Header: React.FC = () => {
                       <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isHovered ? 'rotate-180 text-sky-500' : 'text-slate-400'}`} />
                     </Link>
 
-                    {/* Mega Menu Dropdown on Hover with Glowing Icons */}
+                    {/* Categorized Multi-Column v2 Mega Menu */}
                     {isHovered && (
-                      <div className={`absolute top-full left-0 mt-1 p-3.5 rounded-3xl bg-white dark:bg-[#071126] border border-slate-200 dark:border-sky-500/30 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150 z-50 ${
-                        isTwoColumn ? 'w-[560px] grid grid-cols-2 gap-2.5' : 'w-84 space-y-1.5'
-                      }`}>
-                        {item.children?.map((sub) => (
-                          <Link
-                            key={sub.label}
-                            href={sub.href}
-                            className="flex items-start gap-3 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-[#0E2042] transition-all group border border-transparent hover:border-slate-200 dark:hover:border-sky-500/30 text-left"
-                          >
-                            <div className="p-2 rounded-xl bg-slate-100 dark:bg-[#0A1633] group-hover:scale-105 transition-transform shrink-0 mt-0.5">
-                              {getSubItemIcon(sub.label)}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between gap-1">
-                                <span className="text-xs font-bold text-slate-950 dark:text-white group-hover:text-sky-500 transition-colors">
-                                  {sub.label}
-                                </span>
-                                <ChevronRight className="w-3 h-3 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0" />
+                      <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-1.5 ${megaConfig.width} p-6 bg-white/98 dark:bg-[#081226]/98 backdrop-blur-2xl border border-slate-200 dark:border-sky-500/30 rounded-3xl shadow-2xl shadow-black/20 animate-in fade-in-0 zoom-in-95 duration-200 z-50`}>
+                        <div className={`grid ${megaConfig.gridCols} gap-6 text-left`}>
+                          {megaConfig.categories.map((cat, idx) => (
+                            <div key={idx} className="space-y-3">
+                              {/* Category Header */}
+                              <div className="flex items-center gap-2 pb-2 border-b border-slate-100 dark:border-slate-800 text-xs font-mono font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
+                                {cat.icon}
+                                <span>{cat.title}</span>
                               </div>
-                              <p className="text-[11px] text-slate-500 dark:text-slate-300 mt-0.5 leading-snug line-clamp-2">
-                                {sub.description}
-                              </p>
+
+                              {/* Category Items */}
+                              <div className="space-y-1.5">
+                                {cat.items.map((sub) => (
+                                  <Link
+                                    key={sub.label}
+                                    href={sub.href}
+                                    className="p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-[#0E2042] transition-colors group/item block border border-transparent hover:border-slate-200 dark:hover:border-sky-500/30"
+                                  >
+                                    <div className="flex items-center justify-between gap-1">
+                                      <p className="text-xs font-bold text-slate-900 dark:text-slate-100 group-hover/item:text-sky-500 transition-colors">
+                                        {sub.label}
+                                      </p>
+                                      <ChevronRight className="w-3 h-3 text-slate-400 group-hover/item:translate-x-0.5 transition-transform shrink-0" />
+                                    </div>
+                                    <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 mt-0.5 font-normal leading-snug">
+                                      {sub.description}
+                                    </p>
+                                  </Link>
+                                ))}
+                              </div>
                             </div>
+                          ))}
+                        </div>
+
+                        {/* Mega Menu Footer Bar */}
+                        <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+                          <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">
+                            {megaConfig.footerNote}
+                          </span>
+                          <Link
+                            href={megaConfig.footerHref}
+                            className="text-sky-600 dark:text-sky-400 hover:underline font-bold flex items-center gap-1 text-[11px] group"
+                          >
+                            <span>{megaConfig.footerLabel}</span>
+                            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                           </Link>
-                        ))}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -404,10 +618,10 @@ export const Header: React.FC = () => {
               </Link>
               
               {NAV_ITEMS.map((item) => {
-                const hasChildren = !!item.children;
+                const megaConfig = MEGA_MENUS[item.label];
                 const isExpanded = mobileExpandedSection === item.label;
 
-                if (hasChildren) {
+                if (megaConfig) {
                   return (
                     <div key={item.label} className="border-b border-slate-800/80 pb-2">
                       <button
@@ -423,19 +637,27 @@ export const Header: React.FC = () => {
                       </button>
 
                       {isExpanded && (
-                        <div className="pl-4 pr-2 py-2 space-y-2 animate-in slide-in-from-top-2 duration-150">
-                          {item.children?.map((sub) => (
-                            <Link
-                              key={sub.label}
-                              href={sub.href}
-                              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 min-h-[44px]"
-                            >
-                              <div className="flex items-center gap-2.5">
-                                {getSubItemIcon(sub.label)}
-                                <span>{sub.label}</span>
-                              </div>
-                              <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
-                            </Link>
+                        <div className="pl-4 pr-2 py-2 space-y-3 animate-in slide-in-from-top-2 duration-150">
+                          {megaConfig.categories.map((cat, idx) => (
+                            <div key={idx} className="space-y-1.5">
+                              <p className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold flex items-center gap-1.5 pt-1">
+                                {cat.icon}
+                                <span>{cat.title}</span>
+                              </p>
+                              {cat.items.map((sub) => (
+                                <Link
+                                  key={sub.label}
+                                  href={sub.href}
+                                  className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 min-h-[40px]"
+                                >
+                                  <div className="flex items-center gap-2">
+                                    {sub.icon}
+                                    <span>{sub.label}</span>
+                                  </div>
+                                  <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+                                </Link>
+                              ))}
+                            </div>
                           ))}
                         </div>
                       )}
