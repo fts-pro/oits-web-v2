@@ -97,16 +97,6 @@ export const Footer: React.FC = () => {
               <div className="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 hidden sm:block mx-0.5" />
 
               <a
-                href="https://oitsdhaka.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-sky-50 dark:bg-sky-950/40 border border-sky-200/80 dark:border-sky-800/80 text-sky-700 dark:text-sky-300 text-[10px] font-mono font-medium hover:border-sky-300 dark:hover:border-sky-700 hover:bg-sky-100/70 transition-colors shadow-xs shrink-0"
-              >
-                <Globe className="w-3 h-3 text-sky-500" />
-                <span>oitsdhaka.com</span>
-              </a>
-
-              <a
                 href={`https://wa.me/${CONTACT_PHONE.replace(/[^0-9]/g, '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -114,6 +104,14 @@ export const Footer: React.FC = () => {
               >
                 <MessageCircle className="w-3 h-3 text-emerald-500" />
                 <span>{CONTACT_PHONE}</span>
+              </a>
+
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-sky-50 dark:bg-sky-950/40 border border-sky-200/80 dark:border-sky-800/80 text-sky-700 dark:text-sky-300 text-[10px] font-mono font-medium hover:border-sky-300 dark:hover:border-sky-700 hover:bg-sky-100/70 transition-colors shadow-xs shrink-0"
+              >
+                <Mail className="w-3 h-3 text-sky-500" />
+                <span>{CONTACT_EMAIL}</span>
               </a>
             </div>
 
