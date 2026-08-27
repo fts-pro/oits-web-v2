@@ -1,656 +1,441 @@
+'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { 
   Menu, 
   X, 
-  Sun, 
-  Moon, 
-  Home, 
-  ChevronRight, 
   ChevronDown, 
-  Globe, 
-  Smartphone, 
-  Cloud, 
-  Cpu, 
-  ShieldCheck, 
-  Layers, 
-  FolderKanban, 
-  Mail, 
-  ExternalLink,
-  Laptop,
-  Check,
+  ArrowRight, 
+  Home,
+  Layers,
+  FolderKanban,
+  Cpu,
+  Sparkles,
+  ShieldCheck,
+  Compass,
+  Mail,
   UserCircle,
-  Info,
-  Briefcase,
+  Sun, 
+  Moon,
+  Smartphone,
+  Cloud,
+  ChevronRight,
+  Search,
+  Clock,
+  Code2,
+  Building2,
+  CheckCircle2,
+  Users,
+  Quote,
+  Activity,
   Calendar
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { COMPANY_NAME, NAV_ITEMS, SERVICES } from '../constants';
-import { Button } from './ui/Button';
-import { SectionId } from '../types';
-import { useLanguage } from './LanguageContext';
-import { ScheduleCallModal } from './ScheduleCallModal';
+import { NAV_ITEMS, PRIMARY_CTA } from '../data/governedData';
+import { BrandLogo } from './BrandLogo';
+import { useTheme } from './ThemeProvider';
+import { CommandPalette } from './CommandPalette';
 
-interface HeaderProps {
-  theme: 'light' | 'dark';
-  toggleTheme: () => void;
-}
-
-export const Header: React.FC<HeaderProps> = ({ theme, toggleTheme }) => {
+export const Header: React.FC = () => {
+  const pathname = usePathname();
+  const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isServicesOpen, setIsServicesOpen] = useState(false);
-  const [isPortfolioOpen, setIsPortfolioOpen] = useState(false);
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
-  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>('home');
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const [mobilePortfolioOpen, setMobilePortfolioOpen] = useState(false);
-  const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
-  const { language, t } = useLanguage();
-  const servicesDropdownRef = useRef<HTMLLIElement>(null);
-  const portfolioDropdownRef = useRef<HTMLLIElement>(null);
-  const aboutDropdownRef = useRef<HTMLLIElement>(null);
+  const [mobileExpandedSection, setMobileExpandedSection] = useState<string | null>(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Monitor scroll for sticky header and active section highlight
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 15);
-
-      // Detect active section on scroll
-      const sections = Object.values(SectionId);
-      const scrollPosition = window.scrollY + 200;
-
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close dropdown on outside click
+  // Global keyboard shortcut for search (Cmd+K / Ctrl+K)
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        servicesDropdownRef.current && 
-        !servicesDropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsServicesOpen(false);
-      }
-      if (
-        portfolioDropdownRef.current && 
-        !portfolioDropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsPortfolioOpen(false);
-      }
-      if (
-        aboutDropdownRef.current && 
-        !aboutDropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsAboutOpen(false);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(prev => !prev);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsMobileMenuOpen(false);
-      setIsServicesOpen(false);
-      setIsPortfolioOpen(false);
-      setIsAboutOpen(false);
+  // Close menus on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+    setHoveredMenu(null);
+    setIsSearchOpen(false);
+  }, [pathname]);
+
+  const handleMouseEnter = (label: string) => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    setHoveredMenu(label);
+  };
+
+  const handleMouseLeave = () => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      setHoveredMenu(null);
+    }, 180);
+  };
+
+  const toggleMobileSection = (label: string) => {
+    setMobileExpandedSection(prev => prev === label ? null : label);
+  };
+
+  // Glowing Luminous Icons for Parent Nav Items
+  const getNavIcon = (label: string) => {
+    switch (label) {
+      case 'Services': 
+        return <Layers className="w-3.5 h-3.5 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />;
+      case 'Our Works': 
+        return <FolderKanban className="w-3.5 h-3.5 text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.7)]" />;
+      case 'How We Work': 
+        return <Cpu className="w-3.5 h-3.5 text-indigo-400 drop-shadow-[0_0_8px_rgba(129,140,248,0.7)]" />;
+      case 'About Us': 
+        return <Compass className="w-3.5 h-3.5 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.7)]" />;
+      default: 
+        return null;
     }
   };
 
-  const handleServiceClick = (serviceId: string) => {
-    const element = document.getElementById(SectionId.SERVICES);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsServicesOpen(false);
-      setIsMobileMenuOpen(false);
+  // Specific Glowing Icons for Mega-Menu Sub Items
+  const getSubItemIcon = (label: string) => {
+    switch (label) {
+      case 'Modernise & Decouple':
+        return <Layers className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
+      case 'Build Critical Applications':
+        return <Smartphone className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />;
+      case 'Operate & SRE Pods':
+        return <Cloud className="w-4 h-4 text-indigo-400 drop-shadow-[0_0_6px_rgba(129,140,248,0.6)]" />;
+      case 'On-Demand Dev Support':
+        return <Code2 className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />;
+      case '24/7 Monitoring & Maintenance':
+        return <Clock className="w-4 h-4 text-purple-400 drop-shadow-[0_0_6px_rgba(192,132,252,0.6)]" />;
+      case 'Digital Transformation Services':
+        return <Sparkles className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
       
-      setTimeout(() => {
-        const card = document.getElementById(`service-card-${serviceId}`);
-        if (card) {
-          card.classList.add('ring-2', 'ring-[#38BDF8]');
-          setTimeout(() => card.classList.remove('ring-2', 'ring-[#38BDF8]'), 2000);
-        }
-      }, 500);
+      case 'Case Studies & Delivered Systems':
+        return <FolderKanban className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />;
+      case 'Enterprise Solutions & Architecture':
+        return <Cpu className="w-4 h-4 text-indigo-400 drop-shadow-[0_0_6px_rgba(129,140,248,0.6)]" />;
+
+      case 'Engagement Model & Progression':
+        return <ArrowRight className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
+      case 'Agile Workflow & Sprints':
+        return <Clock className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />;
+      case 'AI & Accountability':
+        return <Sparkles className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />;
+      case 'Security & Trust':
+        return <ShieldCheck className="w-4 h-4 text-purple-400 drop-shadow-[0_0_6px_rgba(192,132,252,0.6)]" />;
+
+      case 'Know OITS':
+        return <Building2 className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
+      case 'Why Us':
+        return <CheckCircle2 className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" />;
+      case 'Mission & Vision':
+        return <Compass className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />;
+      case 'Our Policies & Compliance':
+        return <ShieldCheck className="w-4 h-4 text-purple-400 drop-shadow-[0_0_6px_rgba(192,132,252,0.6)]" />;
+      case 'Our Team & Leadership':
+        return <Users className="w-4 h-4 text-indigo-400 drop-shadow-[0_0_6px_rgba(129,140,248,0.6)]" />;
+      case 'Client Testimonials':
+        return <Quote className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
+
+      default:
+        return <Sparkles className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.6)]" />;
     }
   };
-
-  const handlePortfolioClick = (domainId: string) => {
-    const element = document.getElementById(SectionId.PORTFOLIO);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsPortfolioOpen(false);
-      setIsMobileMenuOpen(false);
-    }
-  };
-
-  const handleAboutClick = (aboutId: string) => {
-    const element = document.getElementById(SectionId.ABOUT);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsAboutOpen(false);
-      setIsMobileMenuOpen(false);
-    }
-  };
-
-  const serviceCategories = [
-    {
-      title: 'Cloud & Web Solutions',
-      icon: <Globe className="w-4 h-4 text-[#38BDF8]" />,
-      items: [
-        { id: 'web-dev', name: 'Enterprise Web Apps', desc: 'React 19, Next.js & horizontal scalability' },
-        { id: 'cloud-infrastructure', name: 'Cloud & DevOps', desc: 'AWS/GCP Kubernetes & CI/CD automations' },
-      ]
-    },
-    {
-      title: 'Mobile & Frontier Tech',
-      icon: <Smartphone className="w-4 h-4 text-[#10B981]" />,
-      items: [
-        { id: 'mobile-dev', name: 'Native Mobile Apps', desc: 'Swift, Kotlin, Flutter 60FPS fluid UX' },
-        { id: 'ai-ml', name: 'AI & ML Solutions', desc: 'Gemini, custom LLMs & predictive engines' },
-      ]
-    },
-    {
-      title: 'Security & Enterprise',
-      icon: <ShieldCheck className="w-4 h-4 text-[#F59E0B]" />,
-      items: [
-        { id: 'dedicated-teams', name: 'Dedicated Teams', desc: 'Top 1% vetted engineering staff augmentation' },
-        { id: 'ui-ux', name: 'UI/UX Engineering', desc: 'Swiss-modern design systems & accessible interfaces' },
-      ]
-    }
-  ];
-
-  const portfolioCategories = [
-    {
-      title: 'Enterprise & Fintech',
-      icon: <Briefcase className="w-4 h-4 text-[#38BDF8]" />,
-      items: [
-        { id: 'enterprise', name: 'Enterprise Solutions', desc: 'ERP Cloud Suites & Global Supply Chains' },
-        { id: 'fintech', name: 'Fintech & Banking', desc: 'High-Frequency Trading & Settlement Gateways' },
-      ]
-    },
-    {
-      title: 'AI, AR/VR & Cloud',
-      icon: <Cpu className="w-4 h-4 text-[#10B981]" />,
-      items: [
-        { id: 'ai-ml', name: 'AI/ML Systems', desc: 'Diagnostic Medical Vision & Predictive LLMs' },
-        { id: 'ar-vr', name: 'AR/VR Immersive', desc: 'Real Estate Showrooms & Industrial Digital Twins' },
-        { id: 'cloud', name: 'Cloud Solutions', desc: 'Multi-Region Kubernetes & Zero-Trust Migration' },
-      ]
-    },
-    {
-      title: 'IoT & Mobile',
-      icon: <Smartphone className="w-4 h-4 text-[#F59E0B]" />,
-      items: [
-        { id: 'iot', name: 'IoT & Edge Computing', desc: 'Smart Grid Telemetry & Sensor Fleets' },
-        { id: 'mobile', name: 'Mobile App Ecosystems', desc: 'NeoBank SuperApps & HealthTech Mobile' },
-      ]
-    }
-  ];
-
-  const aboutCategories = [
-    {
-      title: 'Company & Culture',
-      icon: <Info className="w-4 h-4 text-[#38BDF8]" />,
-      items: [
-        { id: 'who-we-are', name: 'Who We Are', desc: 'Corporate overview, mission & engineering culture' },
-        { id: 'what-we-offer', name: 'What We Offer', desc: 'Full-stack software solutions & digital transformation' },
-      ]
-    },
-    {
-      title: 'Process & Capabilities',
-      icon: <Cpu className="w-4 h-4 text-[#10B981]" />,
-      items: [
-        { id: 'agile-workflow', name: 'Agile Workflow', desc: 'Rapid sprint delivery, CI/CD & transparent milestones' },
-        { id: 'technical-coverage', name: 'Technical Coverage', desc: 'Cloud-native architectures, AI & modern tech stack' },
-      ]
-    },
-    {
-      title: 'Expertise & Verticals',
-      icon: <Briefcase className="w-4 h-4 text-[#F59E0B]" />,
-      items: [
-        { id: 'industries', name: 'Industries & Verticals', desc: 'Fintech, HealthTech, E-commerce, SaaS & Enterprise' },
-        { id: 'team-experts', name: 'Team of Experts', desc: 'Top 1% vetted architects, engineers & PMs' },
-      ]
-    }
-  ];
 
   return (
-    <header 
-      id="global-header"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-16 sm:h-18 md:h-20 ${
+    <>
+      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-white/95 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-lg' 
-          : 'bg-transparent border-b border-transparent'
-      }`}
-      role="banner"
-    >
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 h-full flex items-center justify-between">
-        
-        {/* Brand Identity */}
-        <div className="flex items-center gap-3 h-full">
+          ? 'bg-white/95 dark:bg-[#070A13]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 py-3 shadow-md' 
+          : 'bg-transparent py-4 sm:py-5'
+      }`}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between">
+          
+          {/* Brand Logo */}
           <Link 
-            to="/"
-            className="group hover:opacity-95 transition-all flex items-center gap-3 focus-visible:ring-2 focus-visible:ring-[#38BDF8] rounded-xl outline-none" 
-            onClick={(e) => {
-              if (window.location.hash === '' || window.location.hash === `#${SectionId.HOME}`) {
-                handleNavClick(e as any, `#${SectionId.HOME}`);
-              }
-            }}
-            aria-label={`${COMPANY_NAME} homepage`}
+            href="/" 
+            className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 rounded-lg shrink-0"
+            aria-label="OITS Dhaka - Home"
           >
-            <div className="h-8 sm:h-10 md:h-11 flex items-center">
-              <img src="/Logo.png" alt="OITS Dhaka Light" className="dark:hidden h-full w-auto max-h-full object-contain transition-transform duration-300 group-hover:scale-105" />
-              <img src="/Logo-White.png" alt="OITS Dhaka Dark" className="hidden dark:block h-full w-auto max-h-full object-contain transition-transform duration-300 group-hover:scale-105" />
-            </div>
+            <BrandLogo height={36} />
           </Link>
 
-          {/* Live Operational Status Indicator */}
-          <div className="hidden xl:flex items-center gap-2 px-2.5 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-[#38BDF8] text-[11px] font-mono font-bold tracking-tight">
-            <span className="w-2 h-2 rounded-full bg-[#38BDF8] animate-pulse"></span>
-            <span>99.99% SLA</span>
-          </div>
-        </div>
-
-        {/* Desktop Nav */}
-        <nav className="hidden sm:flex items-center gap-1 xl:gap-2 ml-auto mr-4" aria-label="Main site navigation">
-          <ul className="flex items-center gap-1.5" role="list">
+          {/* Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-1.5" aria-label="Main Navigation">
             
-            {/* Home Link (Icon Only) */}
-            <li>
-              <a 
-                href={`#${SectionId.HOME}`}
-                onClick={(e) => handleNavClick(e, `#${SectionId.HOME}`)}
-                className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center justify-center focus-visible:ring-2 focus-visible:ring-[#38BDF8] border border-[#38BDF8]/60 ${
-                  activeSection === 'home'
-                    ? 'bg-[#38BDF8] text-slate-950 font-bold border-[#38BDF8] shadow-md'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-[#38BDF8] dark:hover:text-[#38BDF8] hover:bg-slate-100 dark:hover:bg-slate-800/60'
-                }`}
-                aria-label={t('nav_home')}
-                title={t('nav_home')}
-              >
-                <Home size={18} aria-hidden="true" />
-              </a>
-            </li>
-
-            {/* Services with Dropdown Trigger */}
-            <li 
-              className="relative" 
-              ref={servicesDropdownRef}
-              onMouseEnter={() => {
-                setIsServicesOpen(true);
-                setIsPortfolioOpen(false);
-                setIsAboutOpen(false);
-              }}
-              onMouseLeave={() => setIsServicesOpen(false)}
+            {/* Glowing Home Icon Only */}
+            <Link
+              href="/"
+              aria-label="Home"
+              className={`group relative p-2.5 rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
+                pathname === '/'
+                  ? 'text-sky-600 dark:text-sky-400 bg-sky-500/10 ring-1 ring-sky-500/30'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
+              }`}
             >
-              <button
-                type="button"
-                onClick={() => {
-                  const nextState = !isServicesOpen;
-                  setIsServicesOpen(nextState);
-                  setIsPortfolioOpen(false);
-                  setIsAboutOpen(false);
-                }}
-                aria-expanded={isServicesOpen}
-                aria-haspopup="true"
-                aria-controls="services-dropdown-panel"
-                className={`px-3.5 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-[#38BDF8] border border-[#38BDF8]/60 ${
-                  activeSection === 'services' || isServicesOpen
-                    ? 'bg-[#38BDF8] text-slate-950 font-bold border-[#38BDF8] shadow-md'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-[#38BDF8] dark:hover:text-[#38BDF8] hover:bg-slate-100 dark:hover:bg-slate-800/60'
-                }`}
-              >
-                <Layers size={18} aria-hidden="true" />
-                <span className="hidden sm:inline">{t('nav_services')}</span>
-                <ChevronDown size={14} className={`transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} />
-              </button>
+              <Home className="w-4 h-4 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg font-mono">
+                Home
+              </span>
+            </Link>
 
-              {/* Categorized Multi-Column Services Dropdown */}
-              {isServicesOpen && (
-                <div
-                  id="services-dropdown-panel"
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[680px] p-6 bg-white/95 dark:bg-[#0A0F1D]/95 backdrop-blur-2xl border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl shadow-black/20 animate-in fade-in-0 zoom-in-95 duration-200 z-50 grid grid-cols-3 gap-6"
-                  role="region"
-                  aria-label="Services Directory"
-                >
-                  {serviceCategories.map((cat, idx) => (
-                    <div key={idx} className="space-y-3">
-                      <div className="flex items-center gap-2 pb-2 border-b border-slate-100 dark:border-slate-800/80 text-xs font-mono font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
-                        {cat.icon}
-                        <span>{cat.title}</span>
-                      </div>
-                      <div className="space-y-2">
-                        {cat.items.map((item) => (
-                          <button
-                            key={item.id}
-                            onClick={() => handleServiceClick(item.id)}
-                            className="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors group/item block"
+            {/* Dynamic Nav Items with Click-to-Parent & Hover-to-MegaMenu */}
+            {NAV_ITEMS.map((item) => {
+              const isTwoColumn = item.label === 'Services' || item.label === 'About Us';
+              const hasChildren = !!item.children;
+              const isHovered = hoveredMenu === item.label;
+              const isCurrentActive = pathname === item.href || (item.children && item.children.some(c => pathname === c.href));
+
+              if (hasChildren) {
+                return (
+                  <div 
+                    key={item.label} 
+                    className="relative"
+                    onMouseEnter={() => handleMouseEnter(item.label)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <Link
+                      href={item.href}
+                      className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
+                        isHovered || isCurrentActive
+                          ? 'text-sky-600 dark:text-sky-400 bg-sky-500/10'
+                          : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
+                      }`}
+                    >
+                      {getNavIcon(item.label)}
+                      <span>{item.label}</span>
+                      <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isHovered ? 'rotate-180 text-sky-500' : 'text-slate-400'}`} />
+                    </Link>
+
+                    {/* Mega Menu Dropdown on Hover with Glowing Icons */}
+                    {isHovered && (
+                      <div className={`absolute top-full left-0 mt-1 p-3.5 rounded-3xl bg-white dark:bg-[#071126] border border-slate-200 dark:border-sky-500/30 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-150 z-50 ${
+                        isTwoColumn ? 'w-[560px] grid grid-cols-2 gap-2.5' : 'w-84 space-y-1.5'
+                      }`}>
+                        {item.children?.map((sub) => (
+                          <Link
+                            key={sub.label}
+                            href={sub.href}
+                            className="flex items-start gap-3 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-[#0E2042] transition-all group border border-transparent hover:border-slate-200 dark:hover:border-sky-500/30 text-left"
                           >
-                            <p className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover/item:text-[#38BDF8] transition-colors">
-                              {item.name}
-                            </p>
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 mt-0.5 font-normal">
-                              {item.desc}
-                            </p>
-                          </button>
+                            <div className="p-2 rounded-xl bg-slate-100 dark:bg-[#0A1633] group-hover:scale-105 transition-transform shrink-0 mt-0.5">
+                              {getSubItemIcon(sub.label)}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between gap-1">
+                                <span className="text-xs font-bold text-slate-950 dark:text-white group-hover:text-sky-500 transition-colors">
+                                  {sub.label}
+                                </span>
+                                <ChevronRight className="w-3 h-3 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0" />
+                              </div>
+                              <p className="text-[11px] text-slate-500 dark:text-slate-300 mt-0.5 leading-snug line-clamp-2">
+                                {sub.description}
+                              </p>
+                            </div>
+                          </Link>
                         ))}
                       </div>
-                    </div>
-                  ))}
-
-                  <div className="col-span-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
-                    <span className="text-slate-500 font-mono">Custom enterprise specs available</span>
-                    <a
-                      href={`#${SectionId.SERVICES}`}
-                      onClick={(e) => handleNavClick(e, `#${SectionId.SERVICES}`)}
-                      className="text-[#38BDF8] hover:underline font-bold flex items-center gap-1"
-                    >
-                      View all capabilities <ChevronRight size={14} />
-                    </a>
+                    )}
                   </div>
-                </div>
-              )}
-            </li>
+                );
+              }
 
-            {/* Portfolio with Dropdown Trigger */}
-            <li 
-              className="relative" 
-              ref={portfolioDropdownRef}
-              onMouseEnter={() => {
-                setIsPortfolioOpen(true);
-                setIsServicesOpen(false);
-                setIsAboutOpen(false);
-              }}
-              onMouseLeave={() => setIsPortfolioOpen(false)}
-            >
-              <button
-                type="button"
-                onClick={() => {
-                  const nextState = !isPortfolioOpen;
-                  setIsPortfolioOpen(nextState);
-                  setIsServicesOpen(false);
-                  setIsAboutOpen(false);
-                }}
-                aria-expanded={isPortfolioOpen}
-                aria-haspopup="true"
-                aria-controls="portfolio-dropdown-panel"
-                className={`px-3.5 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-[#38BDF8] border border-[#38BDF8]/60 ${
-                  activeSection === 'portfolio' || isPortfolioOpen
-                    ? 'bg-[#38BDF8] text-slate-950 font-bold border-[#38BDF8] shadow-md'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-[#38BDF8] dark:hover:text-[#38BDF8] hover:bg-slate-100 dark:hover:bg-slate-800/60'
-                }`}
-              >
-                <Briefcase size={18} aria-hidden="true" />
-                <span className="hidden sm:inline">{t('nav_portfolio')}</span>
-                <ChevronDown size={14} className={`transition-transform duration-200 ${isPortfolioOpen ? 'rotate-180' : ''}`} />
-              </button>
-
-              {/* Categorized Multi-Column Portfolio Dropdown */}
-              {isPortfolioOpen && (
-                <div
-                  id="portfolio-dropdown-panel"
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[680px] p-6 bg-white/95 dark:bg-[#0A0F1D]/95 backdrop-blur-2xl border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl shadow-black/20 animate-in fade-in-0 zoom-in-95 duration-200 z-50 grid grid-cols-3 gap-6"
-                  role="region"
-                  aria-label="Portfolio Domains Directory"
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
+                    isActive
+                      ? 'text-sky-600 dark:text-sky-400 bg-sky-500/10'
+                      : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
+                  }`}
                 >
-                  {portfolioCategories.map((cat, idx) => (
-                    <div key={idx} className="space-y-3">
-                      <div className="flex items-center gap-2 pb-2 border-b border-slate-100 dark:border-slate-800/80 text-xs font-mono font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
-                        {cat.icon}
-                        <span>{cat.title}</span>
-                      </div>
-                      <div className="space-y-2">
-                        {cat.items.map((item) => (
-                          <button
-                            key={item.id}
-                            onClick={() => handlePortfolioClick(item.id)}
-                            className="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors group/item block"
-                          >
-                            <p className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover/item:text-[#38BDF8] transition-colors">
-                              {item.name}
-                            </p>
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 mt-0.5 font-normal">
-                              {item.desc}
-                            </p>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+                  {getNavIcon(item.label)}
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
 
-                  <div className="col-span-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
-                    <span className="text-slate-500 font-mono">Enterprise case studies & metrics</span>
-                    <a
-                      href={`#${SectionId.PORTFOLIO}`}
-                      onClick={(e) => handleNavClick(e, `#${SectionId.PORTFOLIO}`)}
-                      className="text-[#38BDF8] hover:underline font-bold flex items-center gap-1"
-                    >
-                      View all case studies <ChevronRight size={14} />
-                    </a>
-                  </div>
-                </div>
-              )}
-            </li>
-
-            {/* About Us with Dropdown Trigger */}
-            <li 
-              className="relative" 
-              ref={aboutDropdownRef}
-              onMouseEnter={() => {
-                setIsAboutOpen(true);
-                setIsServicesOpen(false);
-                setIsPortfolioOpen(false);
-              }}
-              onMouseLeave={() => setIsAboutOpen(false)}
-            >
-              <button
-                type="button"
-                onClick={() => {
-                  const nextState = !isAboutOpen;
-                  setIsAboutOpen(nextState);
-                  setIsServicesOpen(false);
-                  setIsPortfolioOpen(false);
-                }}
-                aria-expanded={isAboutOpen}
-                aria-haspopup="true"
-                aria-controls="about-dropdown-panel"
-                className={`px-3.5 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-[#38BDF8] border border-[#38BDF8]/60 ${
-                  activeSection === 'about' || isAboutOpen
-                    ? 'bg-[#38BDF8] text-slate-950 font-bold border-[#38BDF8] shadow-md'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-[#38BDF8] dark:hover:text-[#38BDF8] hover:bg-slate-100 dark:hover:bg-slate-800/60'
-                }`}
-              >
-                <Info size={18} aria-hidden="true" />
-                <span className="hidden sm:inline">{t('nav_about')}</span>
-                <ChevronDown size={14} className={`transition-transform duration-200 ${isAboutOpen ? 'rotate-180' : ''}`} />
-              </button>
-
-              {/* Categorized Multi-Column About Us Dropdown */}
-              {isAboutOpen && (
-                <div
-                  id="about-dropdown-panel"
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[680px] p-6 bg-white/95 dark:bg-[#0A0F1D]/95 backdrop-blur-2xl border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl shadow-black/20 animate-in fade-in-0 zoom-in-95 duration-200 z-50 grid grid-cols-3 gap-6"
-                  role="region"
-                  aria-label="About Us Directory"
-                >
-                  {aboutCategories.map((cat, idx) => (
-                    <div key={idx} className="space-y-3">
-                      <div className="flex items-center gap-2 pb-2 border-b border-slate-100 dark:border-slate-800/80 text-xs font-mono font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
-                        {cat.icon}
-                        <span>{cat.title}</span>
-                      </div>
-                      <div className="space-y-2">
-                        {cat.items.map((item) => (
-                          <button
-                            key={item.id}
-                            onClick={() => handleAboutClick(item.id)}
-                            className="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors group/item block"
-                          >
-                            <p className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover/item:text-[#38BDF8] transition-colors">
-                              {item.name}
-                            </p>
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 mt-0.5 font-normal">
-                              {item.desc}
-                            </p>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="col-span-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
-                    <span className="text-slate-500 font-mono">Our engineering history & culture</span>
-                    <a
-                      href={`#${SectionId.ABOUT}`}
-                      onClick={(e) => handleNavClick(e, `#${SectionId.ABOUT}`)}
-                      className="text-[#38BDF8] hover:underline font-bold flex items-center gap-1"
-                    >
-                      Explore About Us <ChevronRight size={14} />
-                    </a>
-                  </div>
-                </div>
-              )}
-            </li>
-
-            {/* Contact (Icon Only) */}
-            <li>
-              <a 
-                href={`#${SectionId.CONTACT}`}
-                onClick={(e) => handleNavClick(e, `#${SectionId.CONTACT}`)}
-                className={`px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center justify-center focus-visible:ring-2 focus-visible:ring-[#38BDF8] border border-[#38BDF8]/60 ${
-                  activeSection === 'contact'
-                    ? 'bg-[#38BDF8] text-slate-950 font-bold border-[#38BDF8] shadow-md'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-[#38BDF8] dark:hover:text-[#38BDF8] hover:bg-slate-100 dark:hover:bg-slate-800/60'
-                }`}
-                aria-label={t('nav_contact')}
-                title={t('nav_contact')}
-              >
-                <Mail size={18} aria-hidden="true" />
-              </a>
-            </li>
-          </ul>
-          
-          {/* Header Controls Divider */}
-          <div className="ml-2 pl-3 border-l border-slate-200 dark:border-slate-800 flex items-center gap-2 xl:gap-3">
+          {/* Right Section: Divider + Search + Contact + Theme Toggle + User Account + CTA */}
+          <div className="hidden lg:flex items-center gap-1.5">
             
-            {/* Accessible Theme Switcher */}
+            {/* Vertical Divider */}
+            <div className="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1.5" />
+
+            {/* 0. Glowing Search Icon */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              type="button"
+              aria-label="Global Search (Ctrl+K)"
+              className="group relative p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+            >
+              <Search className="w-4 h-4 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg font-mono">
+                Search (Ctrl+K)
+              </span>
+            </button>
+
+            {/* 1. Glowing Contact Icon Only */}
+            <Link
+              href="/contact"
+              aria-label="Contact & Delivery Review"
+              className={`group relative p-2.5 rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
+                pathname === '/contact'
+                  ? 'text-sky-600 dark:text-sky-400 bg-sky-500/10 ring-1 ring-sky-500/30'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-sky-500 hover:bg-slate-100 dark:hover:bg-slate-800/60'
+              }`}
+            >
+              <Mail className="w-4 h-4 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg font-mono">
+                Contact & Inquiries
+              </span>
+            </Link>
+
+            {/* 2. Glowing Theme Toggler */}
             <button
               onClick={toggleTheme}
-              className="group relative p-2 rounded-full text-slate-700 dark:text-slate-200 hover:bg-[#B45309] hover:text-white dark:hover:text-slate-950 border border-[#B45309]/60 hover:border-[#B45309] transition-all active:rotate-12 active:scale-95 focus-visible:ring-2 focus-visible:ring-[#B45309]"
-              aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+              type="button"
+              aria-label="Toggle Theme"
+              className="p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
             >
               {theme === 'dark' ? (
-                <Sun size={18} className="text-[#F59E0B] group-hover:text-white dark:group-hover:text-slate-950 transition-colors" aria-hidden="true" />
+                <Sun className="w-4 h-4 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
               ) : (
-                <Moon size={18} className="text-[#B45309] group-hover:text-white dark:group-hover:text-slate-950 transition-colors" aria-hidden="true" />
+                <Moon className="w-4 h-4 text-sky-600 drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
               )}
-              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded transition-opacity whitespace-nowrap pointer-events-none">
-                {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-              </span>
             </button>
 
-            {/* Workspace Access */}
-            <button
-              className="group relative p-2 rounded-full text-slate-700 dark:text-slate-200 hover:bg-[#B45309] hover:text-white dark:hover:text-slate-950 border border-[#B45309]/60 hover:border-[#B45309] transition-all focus-visible:ring-2 focus-visible:ring-[#B45309]"
-              aria-label="Workspace Access"
+            {/* 3. Glowing User Account / Workspace Portal */}
+            <Link
+              href="/start"
+              aria-label="Client Workspace Portal"
+              className="group relative p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-emerald-500 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
             >
-              <UserCircle size={18} className="text-[#B45309] group-hover:text-white dark:group-hover:text-slate-950 transition-colors" />
-              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded transition-opacity whitespace-nowrap pointer-events-none">
+              <UserCircle className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.7)]" />
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded-md transition-opacity whitespace-nowrap pointer-events-none z-50 shadow-lg font-mono">
                 Workspace Portal
               </span>
+            </Link>
+
+            {/* Primary CTA (Single-line Button Text + Arrow) */}
+            <Link
+              href={PRIMARY_CTA.href}
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-sm active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ml-1"
+            >
+              <span className="leading-none">{PRIMARY_CTA.label}</span>
+              <ArrowRight className="w-3.5 h-3.5 shrink-0 text-sky-400 dark:text-sky-600" />
+            </Link>
+          </div>
+
+          {/* Mobile Header Bar Icons (Following v2 Responsive Layout) */}
+          <div className="flex items-center gap-1.5 lg:hidden">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              type="button"
+              aria-label="Search"
+              className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+            >
+              <Search className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.7)]" />
             </button>
 
-            {/* Schedule a Call / Free Consultation CTA */}
-            <button
-              onClick={() => setIsScheduleModalOpen(true)}
-              className="ml-1 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[#10B981] bg-transparent text-emerald-600 dark:text-emerald-400 hover:bg-[#10B981] hover:text-slate-950 dark:hover:text-slate-950 font-bold text-xs uppercase tracking-wider shadow-lg transition-all whitespace-nowrap focus-visible:ring-2 focus-visible:ring-emerald-500 group"
+            <Link
+              href="/contact"
+              aria-label="Contact Us"
+              className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60"
             >
-              <Calendar size={14} className="shrink-0 transition-transform group-hover:scale-110" aria-hidden="true" />
-              <span className="leading-none">Book Schedule</span>
+              <Mail className="w-4 h-4 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.7)]" />
+            </Link>
+
+            <button
+              onClick={toggleTheme}
+              type="button"
+              aria-label="Toggle Theme"
+              className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-4 h-4 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.8)]" />
+              ) : (
+                <Moon className="w-4 h-4 text-sky-600 drop-shadow-[0_0_6px_rgba(56,189,248,0.7)]" />
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? "Close Menu" : "Open Menu"}
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white transition-colors"
+            >
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
-        </nav>
 
-        {/* Mobile Toggle Bar */}
-        <div className="flex items-center gap-2.5 sm:hidden">
-          {/* Mobile Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800"
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? <Sun size={18} className="text-[#F59E0B]" /> : <Moon size={18} className="text-[#38BDF8]" />}
-          </button>
-
-          {/* Hamburger Drawer Trigger (Touch Target ≥44px) */}
-          <button 
-            className="w-11 h-11 flex items-center justify-center text-slate-800 dark:text-slate-100 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl transition-colors active:scale-95"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            aria-expanded={isMobileMenuOpen}
-            aria-controls="mobile-menu-drawer"
-          >
-            {isMobileMenuOpen ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
-          </button>
         </div>
-      </div>
 
-      {/* Accessible Slide-Out Mobile Navigation Drawer */}
-      {isMobileMenuOpen && (
-        <div 
-          id="mobile-menu-drawer"
-          className="fixed inset-0 top-[65px] z-50 bg-[#070A13]/60 backdrop-blur-xl lg:hidden flex flex-col justify-between p-6 animate-in fade-in-0 duration-200 overflow-y-auto"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Mobile site navigation"
-        >
-          <div className="space-y-4">
-            <nav className="flex flex-col gap-1">
+        {/* Mobile Navigation Drawer (Full-Height v2 Architectural Drawer) */}
+        {isMobileMenuOpen && (
+          <div 
+            className="lg:hidden fixed inset-x-0 top-[65px] bottom-0 z-50 bg-[#070A13]/95 backdrop-blur-2xl border-t border-slate-800 p-6 flex flex-col justify-between overflow-y-auto text-left animate-in slide-in-from-top-3 duration-200"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile site navigation"
+          >
+            <div className="space-y-3">
+              <Link 
+                href="/" 
+                className="flex items-center gap-3 px-4 py-3 rounded-2xl text-base font-bold text-white hover:bg-slate-800/60 min-h-[44px]"
+              >
+                <Home className="w-5 h-5 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.7)]" />
+                <span>Home</span>
+              </Link>
+              
               {NAV_ITEMS.map((item) => {
-                const labelKey = `nav_${item.label.toLowerCase()}`;
-                const isServices = item.label === 'Services';
+                const hasChildren = !!item.children;
+                const isExpanded = mobileExpandedSection === item.label;
 
-                if (isServices) {
+                if (hasChildren) {
                   return (
-                    <div key={item.label} className="border-b border-slate-200 dark:border-slate-800/80 pb-2">
+                    <div key={item.label} className="border-b border-slate-800/80 pb-2">
                       <button
-                        onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                        className="w-full flex items-center justify-between min-h-[44px] px-4 py-3 rounded-2xl text-lg font-bold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
-                        aria-expanded={mobileServicesOpen}
+                        type="button"
+                        onClick={() => toggleMobileSection(item.label)}
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-base font-bold text-white hover:bg-slate-800/60 transition-colors min-h-[44px]"
                       >
-                        <span>{t(labelKey)}</span>
-                        <ChevronDown size={18} className={`transition-transform ${mobileServicesOpen ? 'rotate-180 text-[#38BDF8]' : ''}`} />
+                        <div className="flex items-center gap-3">
+                          {getNavIcon(item.label)}
+                          <span>{item.label}</span>
+                        </div>
+                        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isExpanded ? 'rotate-180 text-sky-400' : ''}`} />
                       </button>
 
-                      {mobileServicesOpen && (
+                      {isExpanded && (
                         <div className="pl-4 pr-2 py-2 space-y-2 animate-in slide-in-from-top-2 duration-150">
-                          {SERVICES.map((srv) => (
-                            <button
-                              key={srv.id}
-                              onClick={() => handleServiceClick(srv.id)}
-                              className="w-full text-left min-h-[44px] px-3 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#38BDF8] hover:bg-slate-800/40 flex items-center justify-between"
+                          {item.children?.map((sub) => (
+                            <Link
+                              key={sub.label}
+                              href={sub.href}
+                              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 min-h-[44px]"
                             >
-                              <span>{srv.title}</span>
-                              <ChevronRight size={14} className="text-slate-500" />
-                            </button>
+                              <div className="flex items-center gap-2.5">
+                                {getSubItemIcon(sub.label)}
+                                <span>{sub.label}</span>
+                              </div>
+                              <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+                            </Link>
                           ))}
                         </div>
                       )}
@@ -659,45 +444,45 @@ export const Header: React.FC<HeaderProps> = ({ theme, toggleTheme }) => {
                 }
 
                 return (
-                  <a 
+                  <Link
                     key={item.label}
                     href={item.href}
-                    onClick={(e) => handleNavClick(e, item.href)}
-                    className="min-h-[44px] flex items-center px-4 py-3 rounded-2xl text-lg font-bold text-slate-900 dark:text-white hover:text-[#38BDF8] hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors active:scale-98"
+                    className="flex items-center gap-3 px-4 py-3 rounded-2xl text-base font-bold text-white hover:bg-slate-800/60 min-h-[44px]"
                   >
-                    {item.label === 'Home' ? t('nav_home') : t(labelKey)}
-                  </a>
+                    {getNavIcon(item.label)}
+                    <span>{item.label}</span>
+                  </Link>
                 );
               })}
-            </nav>
-          </div>
+            </div>
 
-          {/* Drawer Footer Actions */}
-          <div className="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-4">
-            <button
-              onClick={() => {
-                setIsScheduleModalOpen(true);
-                setIsMobileMenuOpen(false);
-              }}
-              className="w-full min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm uppercase tracking-wider shadow-lg active:scale-98"
-            >
-              <Calendar size={16} />
-              <span>Schedule a Call</span>
-            </button>
+            {/* Mobile Drawer Footer Actions (v2 Production Footer) */}
+            <div className="pt-6 border-t border-slate-800 space-y-4">
+              <Link
+                href={PRIMARY_CTA.href}
+                className="w-full min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-white text-slate-950 font-bold text-xs uppercase tracking-wider shadow-lg active:scale-98"
+              >
+                <span>{PRIMARY_CTA.label}</span>
+                <ArrowRight className="w-4 h-4 text-sky-600" />
+              </Link>
 
-            <div className="flex items-center justify-between text-xs font-mono text-slate-500 pt-2">
-              <span>status: 99.99% Uptime</span>
-              <span>v2.4 Production</span>
+              <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 pt-1">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>status: 99.99% Uptime</span>
+                </span>
+                <span>v2.4 Production</span>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </header>
 
-      {/* Schedule a Call Modal */}
-      <ScheduleCallModal 
-        isOpen={isScheduleModalOpen} 
-        onClose={() => setIsScheduleModalOpen(false)} 
+      {/* Global Command & Search Palette Modal */}
+      <CommandPalette 
+        isOpen={isSearchOpen} 
+        onClose={() => setIsSearchOpen(false)} 
       />
-    </header>
+    </>
   );
 };

@@ -15,72 +15,43 @@ import {
   ChevronRight,
   Database
 } from 'lucide-react';
-import { SERVICES } from '../constants';
-import { SectionId, Service } from '../types';
+import { SERVICES_OUTCOMES, ServiceOutcome } from '../data/governedData';
 import { ServiceModal } from './ServiceModal';
 
 export const Services: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [selectedService, setSelectedService] = useState<ServiceOutcome | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const categories = ['All', 'Cloud Architecture', 'AI & ML', 'Full-Stack', 'Cybersecurity'];
+  const categories = ['All', 'Full-Stack', 'Cloud & Architecture', 'AI & Data', 'Cybersecurity'];
 
-  // Categorize services dynamically
   const serviceOfferings = [
     {
-      id: 'web-dev',
+      id: 'modernise',
+      category: 'Cloud & Architecture',
+      title: 'Modernise & Decouple',
+      description: 'Incremental strangler-fig refactoring for monoliths with zero data loss and automated test coverage.',
+      icon: <Layers className="w-6 h-6 text-[#38BDF8]" />,
+      techStack: ['TypeScript', 'Next.js', 'Go', 'Kafka', 'PostgreSQL'],
+      capabilities: ['Monolith Decoupling', 'Database Partitioning', 'Event-Driven Outbox', 'Canary Rollouts']
+    },
+    {
+      id: 'build',
       category: 'Full-Stack',
-      title: 'Custom Web & SaaS Apps',
-      description: 'Modern single-page applications and high-availability enterprise web portals with server-side rendering.',
-      icon: <Globe className="w-6 h-6 text-[#38BDF8]" />,
-      techStack: ['React 19', 'Next.js', 'TypeScript', 'Tailwind', 'Node.js'],
-      capabilities: ['Server-Side Rendering & ISR', 'State Orchestration with Zustand', 'Core Web Vitals 99+ Index', 'REST & GraphQL API Gateways']
+      title: 'Build Critical Applications',
+      description: 'Industrial-grade web and native mobile applications with strict type safety and named engineer accountability.',
+      icon: <Globe className="w-6 h-6 text-[#10B981]" />,
+      techStack: ['Next.js', 'React Native', 'Tailwind', 'FastAPI', 'Node.js'],
+      capabilities: ['Multi-Tenant SaaS', 'High-FPS Mobile Apps', 'Accessible Design Systems', 'Automated CI/CD']
     },
     {
-      id: 'cloud-infrastructure',
-      category: 'Cloud Architecture',
-      title: 'Cloud & Kubernetes Infrastructure',
-      description: 'Elastic multi-region infrastructure with automated Terraform provisioning and zero-downtime blue/green deployments.',
-      icon: <Cloud className="w-6 h-6 text-[#10B981]" />,
-      techStack: ['AWS / GCP', 'Kubernetes', 'Docker', 'Terraform', 'CI/CD'],
-      capabilities: ['Auto-scaling Container Clusters', 'Infrastructure as Code (IaC)', 'Zero-Downtime Rollouts', 'Multi-Region Data Replicas']
-    },
-    {
-      id: 'ai-ml',
-      category: 'AI & ML',
-      title: 'AI & Machine Learning Systems',
-      description: 'Enterprise AI agents, retrieval-augmented generation (RAG) pipelines, and intelligent predictive algorithms.',
-      icon: <Cpu className="w-6 h-6 text-[#F59E0B]" />,
-      techStack: ['Gemini GenAI', 'Python', 'PyTorch', 'LangChain', 'Vector DBs'],
-      capabilities: ['Bespoke LLM Integrations', 'Domain-Specific RAG Pipelines', 'Automated Data Labeling & ETL', 'Edge AI Model Inference']
-    },
-    {
-      id: 'mobile-dev',
-      category: 'Full-Stack',
-      title: 'Native & Cross-Platform Mobile',
-      description: 'Ultra-responsive iOS and Android applications with 60FPS fluid gestures and offline-first data synchronization.',
-      icon: <Smartphone className="w-6 h-6 text-[#38BDF8]" />,
-      techStack: ['Swift', 'Kotlin', 'React Native', 'Flutter', 'SQLite'],
-      capabilities: ['Hardware & Biometric Auth', 'Offline-First SQLite Cache', 'Native Push & Background Sync', 'Cross-Device State Hydration']
-    },
-    {
-      id: 'security-audit',
-      category: 'Cybersecurity',
-      title: 'Enterprise DevOps & Security',
-      description: 'Hardened zero-trust defense perimeters, automated vulnerability scanners, and continuous compliance monitors.',
-      icon: <ShieldCheck className="w-6 h-6 text-[#10B981]" />,
-      techStack: ['SonarQube', 'HashiCorp Vault', 'OWASP ASVS', 'OAuth2/OIDC'],
-      capabilities: ['Automated SAST & DAST Testing', 'Secrets Management in Vault', 'Granular Role-Based Access Control', 'Penetration Testing Audits']
-    },
-    {
-      id: 'ui-ux',
-      category: 'Full-Stack',
-      title: 'UI/UX Engineering & Design Systems',
-      description: 'Swiss-modern design systems, responsive atomic component libraries, and certified accessible interfaces.',
-      icon: <Layout className="w-6 h-6 text-[#F59E0B]" />,
-      techStack: ['Figma', 'Storybook', 'Tailwind', 'Motion', 'Radix UI'],
-      capabilities: ['Multi-Brand Token Libraries', 'WCAG AAA Color & Screen Readers', 'Fluid Layout Transitions', 'Design-to-Code Automation']
+      id: 'operate',
+      category: 'Cloud & Architecture',
+      title: 'Operate & SRE Pods',
+      description: 'Embedded reliability engineering pods with 4–5h daily CET overlap, automated rollbacks, and SLA guarantees.',
+      icon: <ShieldCheck className="w-6 h-6 text-[#F59E0B]" />,
+      techStack: ['Kubernetes', 'Terraform', 'Prometheus', 'Grafana', 'AWS/GCP'],
+      capabilities: ['24/7 SLA Monitoring', 'Infrastructure-as-Code', 'Automated Health Probes', 'Disaster Recovery']
     }
   ];
 
@@ -89,22 +60,14 @@ export const Services: React.FC = () => {
     : serviceOfferings.filter(s => s.category === activeCategory);
 
   const handleOpenModal = (serviceItem: typeof serviceOfferings[0]) => {
-    const matchedConstant = SERVICES.find(s => s.id === serviceItem.id) || {
-      id: serviceItem.id,
-      title: serviceItem.title,
-      description: serviceItem.description,
-      icon: 'Globe',
-      features: serviceItem.capabilities,
-      longDescription: serviceItem.description,
-      technicalSpecs: serviceItem.techStack.map(t => ({ label: 'Technology', value: t }))
-    };
-    setSelectedService(matchedConstant);
+    const outcome = SERVICES_OUTCOMES[serviceItem.id as keyof typeof SERVICES_OUTCOMES] || SERVICES_OUTCOMES['modernise'];
+    setSelectedService(outcome);
     setIsModalOpen(true);
   };
 
   return (
     <section 
-      id={SectionId.SERVICES} 
+      id="services" 
       className="py-28 bg-slate-50 dark:bg-[#070A13] text-slate-900 dark:text-white transition-colors duration-300 relative overflow-hidden"
     >
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
