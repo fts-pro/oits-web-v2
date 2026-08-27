@@ -87,21 +87,29 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10 pb-12 border-b border-slate-200 dark:border-slate-800/80 text-left">
           
           {/* Col 1 & 2: Entity Information */}
-          <div className="md:col-span-2 space-y-4">
+          <div className="md:col-span-2 space-y-6">
             <div className="flex flex-wrap items-center gap-3">
               <Link href="/" className="inline-block" aria-label="OITS Dhaka - Home">
                 <BrandLogo height={36} />
               </Link>
 
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 dark:bg-sky-950/40 border border-sky-200/80 dark:border-sky-800/80 text-sky-700 dark:text-sky-300 text-[10px] font-mono font-medium shadow-xs shrink-0">
-                <MapPin className="w-3 h-3 text-sky-500" />
-                <span>Dhaka, BD</span>
-              </div>
+              <a
+                href="https://oitsdhaka.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-sky-50 dark:bg-sky-950/40 border border-sky-200/80 dark:border-sky-800/80 text-sky-700 dark:text-sky-300 text-[10px] font-mono font-medium hover:border-sky-300 dark:hover:border-sky-700 hover:bg-sky-100/70 transition-colors shadow-xs shrink-0"
+              >
+                <Globe className="w-3 h-3 text-sky-500" />
+                <span>oitsdhaka.com</span>
+              </a>
 
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 text-emerald-700 dark:text-emerald-400 text-[10px] font-mono font-bold shadow-xs shrink-0">
-                <ShieldCheck className="w-3 h-3 text-emerald-500" />
-                <span>ISO 27001 ALIGNED</span>
-              </div>
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-sky-50 dark:bg-sky-950/40 border border-sky-200/80 dark:border-sky-800/80 text-sky-700 dark:text-sky-300 text-[10px] font-mono font-medium hover:border-sky-300 dark:hover:border-sky-700 hover:bg-sky-100/70 transition-colors shadow-xs shrink-0"
+              >
+                <Mail className="w-3 h-3 text-sky-500" />
+                <span>{CONTACT_EMAIL}</span>
+              </a>
             </div>
 
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm">
