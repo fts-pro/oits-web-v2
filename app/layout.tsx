@@ -110,12 +110,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                var stored = localStorage.getItem('oits_theme');
+                var stored = localStorage.getItem('oits_theme') || localStorage.getItem('theme');
                 if (stored === 'light') {
-                  document.documentElement.classList.remove('dark');
-                } else if (stored === 'dark') {
-                  document.documentElement.classList.add('dark');
-                } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
                   document.documentElement.classList.remove('dark');
                 } else {
                   document.documentElement.classList.add('dark');

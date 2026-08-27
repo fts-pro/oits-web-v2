@@ -6,13 +6,13 @@ export const ThemeToggle: React.FC = () => {
   const [isDark, setIsDark] = useState<boolean>(true);
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else if (storedTheme === 'light') {
+    const storedTheme = localStorage.getItem('oits_theme') || localStorage.getItem('theme');
+    if (storedTheme === 'light') {
       setIsDark(false);
       document.documentElement.classList.remove('dark');
+    } else {
+      setIsDark(true);
+      document.documentElement.classList.add('dark');
     }
   }, []);
 
@@ -22,9 +22,11 @@ export const ThemeToggle: React.FC = () => {
     const themeMode = newDark ? 'dark' : 'light';
     if (newDark) {
       document.documentElement.classList.add('dark');
+      localStorage.setItem('oits_theme', 'dark');
       localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      localStorage.setItem('oits_theme', 'light');
       localStorage.setItem('theme', 'light');
     }
     analytics.track('toggle_theme', { mode: themeMode });

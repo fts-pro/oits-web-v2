@@ -18,21 +18,20 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     setMounted(true);
-    const stored = localStorage.getItem('oits_theme') as Theme | null;
-    if (stored === 'dark' || stored === 'light') {
-      setThemeState(stored);
-      document.documentElement.classList.toggle('dark', stored === 'dark');
+    const stored = (localStorage.getItem('oits_theme') || localStorage.getItem('theme')) as Theme | null;
+    if (stored === 'light') {
+      setThemeState('light');
+      document.documentElement.classList.remove('dark');
     } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const initial = prefersDark ? 'dark' : 'light';
-      setThemeState(initial);
-      document.documentElement.classList.toggle('dark', initial === 'dark');
+      setThemeState('dark');
+      document.documentElement.classList.add('dark');
     }
   }, []);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
     localStorage.setItem('oits_theme', newTheme);
+    localStorage.setItem('theme', newTheme);
     document.documentElement.classList.toggle('dark', newTheme === 'dark');
   };
 

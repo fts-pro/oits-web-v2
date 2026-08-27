@@ -174,22 +174,22 @@ export const GlobalReach: React.FC = () => {
     );
     chartRef.current = chart;
 
-    // Globe Background
+    // Globe Background (Ocean)
     const backgroundSeries = chart.series.push(
       am5map.MapPolygonSeries.new(root, {})
     );
     backgroundSeries.mapPolygons.template.setAll({
-      fill: am5.color(isDark ? 0x0F172A : 0xE2E8F0),
-      fillOpacity: isDark ? 0.6 : 0.8,
+      fill: am5.color(isDark ? 0x040817 : 0xE2E8F0),
+      fillOpacity: isDark ? 0.98 : 0.8,
       stroke: am5.color(isDark ? 0x38BDF8 : 0x94A3B8),
-      strokeWidth: 1,
-      strokeOpacity: isDark ? 0.25 : 0.4
+      strokeWidth: isDark ? 2 : 1,
+      strokeOpacity: isDark ? 0.75 : 0.4
     });
     backgroundSeries.data.push({
       geometry: am5map.getGeoRectangle(90, 180, -90, -180)
     });
 
-    // Country Polygons
+    // Country Polygons with Glowing Cyan Borders and Enhanced Landmass Contrast
     const polygonSeries = chart.series.push(
       am5map.MapPolygonSeries.new(root, {
         geoJSON: am5geodata_worldLow,
@@ -197,16 +197,20 @@ export const GlobalReach: React.FC = () => {
     );
 
     polygonSeries.mapPolygons.template.setAll({
-      fill: am5.color(isDark ? 0x1E293B : 0xCBD5E1),
-      fillOpacity: 0.9,
-      stroke: am5.color(isDark ? 0x070A13 : 0xF8FAFC),
-      strokeWidth: 0.8,
+      fill: am5.color(isDark ? 0x162A4A : 0xCBD5E1),
+      fillOpacity: isDark ? 0.95 : 0.9,
+      stroke: am5.color(isDark ? 0x38BDF8 : 0xF8FAFC),
+      strokeWidth: isDark ? 1.4 : 0.8,
+      strokeOpacity: isDark ? 0.9 : 0.6,
       interactive: true
     });
 
     polygonSeries.mapPolygons.template.states.create('hover', {
-      fill: am5.color(isDark ? 0x38BDF8 : 0x1D2A68),
-      fillOpacity: 0.8
+      fill: am5.color(isDark ? 0x0EA5E9 : 0x1D2A68),
+      stroke: am5.color(isDark ? 0xBAE6FD : 0x38BDF8),
+      strokeWidth: isDark ? 2.2 : 1.5,
+      strokeOpacity: 1,
+      fillOpacity: 1
     });
 
     // Point Series for Hub Pins
