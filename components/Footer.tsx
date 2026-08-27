@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { COMPANY_NAME, LEGAL_ENTITY_NAME, REGISTERED_ADDRESS, CONTACT_EMAIL, PRIMARY_CTA } from '../data/governedData';
-import { ArrowRight, ShieldCheck, Mail, MapPin, Globe, Send, CheckCircle2 } from 'lucide-react';
+import { COMPANY_NAME, LEGAL_ENTITY_NAME, REGISTERED_ADDRESS, CONTACT_EMAIL, CONTACT_PHONE, PRIMARY_CTA } from '../data/governedData';
+import { ArrowRight, ShieldCheck, Mail, MapPin, Globe, Send, CheckCircle2, MessageCircle } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 
 export const Footer: React.FC = () => {
@@ -107,11 +107,13 @@ export const Footer: React.FC = () => {
               </a>
 
               <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-sky-50 dark:bg-sky-950/40 border border-sky-200/80 dark:border-sky-800/80 text-sky-700 dark:text-sky-300 text-[10px] font-mono font-medium hover:border-sky-300 dark:hover:border-sky-700 hover:bg-sky-100/70 transition-colors shadow-xs shrink-0"
+                href={`https://wa.me/${CONTACT_PHONE.replace(/[^0-9]/g, '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-700 dark:text-emerald-400 text-[10px] font-mono font-medium hover:border-emerald-300 dark:hover:border-emerald-700 hover:bg-emerald-100/70 transition-colors shadow-xs shrink-0"
               >
-                <Mail className="w-3 h-3 text-sky-500" />
-                <span>{CONTACT_EMAIL}</span>
+                <MessageCircle className="w-3 h-3 text-emerald-500" />
+                <span>{CONTACT_PHONE}</span>
               </a>
             </div>
 
