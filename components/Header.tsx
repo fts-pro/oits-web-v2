@@ -61,8 +61,8 @@ interface MegaMenuConfig {
 
 const MEGA_MENUS: Record<string, MegaMenuConfig> = {
   'Services': {
-    width: 'w-[780px]',
-    gridCols: 'grid-cols-3',
+    width: 'w-[min(740px,calc(100vw-2.5rem))]',
+    gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
     footerNote: 'Continuous reliability engineering & zero-downtime migrations',
     footerHref: '/services/modernise',
     footerLabel: 'Explore all service outcomes',
@@ -124,8 +124,8 @@ const MEGA_MENUS: Record<string, MegaMenuConfig> = {
     ]
   },
   'Our Works': {
-    width: 'w-[620px]',
-    gridCols: 'grid-cols-2',
+    width: 'w-[min(580px,calc(100vw-2.5rem))]',
+    gridCols: 'grid-cols-1 sm:grid-cols-2',
     footerNote: 'Audited benchmark metrics & production case studies',
     footerHref: '/work',
     footerLabel: 'View all case studies',
@@ -169,8 +169,8 @@ const MEGA_MENUS: Record<string, MegaMenuConfig> = {
     ]
   },
   'How We Work': {
-    width: 'w-[620px]',
-    gridCols: 'grid-cols-2',
+    width: 'w-[min(580px,calc(100vw-2.5rem))]',
+    gridCols: 'grid-cols-1 sm:grid-cols-2',
     footerNote: 'Senior human sign-off on every production pull request',
     footerHref: '/how-we-work',
     footerLabel: 'Review delivery governance',
@@ -214,8 +214,8 @@ const MEGA_MENUS: Record<string, MegaMenuConfig> = {
     ]
   },
   'About Us': {
-    width: 'w-[780px]',
-    gridCols: 'grid-cols-3',
+    width: 'w-[min(740px,calc(100vw-2.5rem))]',
+    gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
     footerNote: 'Engineering precision & direct European CET overlap window',
     footerHref: '/about',
     footerLabel: 'Read full studio story',
@@ -348,6 +348,17 @@ export const Header: React.FC = () => {
     }
   };
 
+  const getDropdownAlignment = (label: string) => {
+    switch (label) {
+      case 'Services':
+        return 'left-0 origin-top-left';
+      case 'About Us':
+        return 'right-0 origin-top-right';
+      default:
+        return 'left-1/2 -translate-x-1/2 origin-top';
+    }
+  };
+
   return (
     <>
       <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
@@ -414,7 +425,7 @@ export const Header: React.FC = () => {
 
                     {/* Categorized Multi-Column v2 Mega Menu */}
                     {isHovered && (
-                      <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-1.5 ${megaConfig.width} p-6 bg-white/98 dark:bg-[#081226]/98 backdrop-blur-2xl border border-slate-200 dark:border-sky-500/30 rounded-3xl shadow-2xl shadow-black/20 animate-in fade-in-0 zoom-in-95 duration-200 z-50`}>
+                      <div className={`absolute top-full mt-1.5 ${getDropdownAlignment(item.label)} ${megaConfig.width} max-w-[calc(100vw-2rem)] p-5 sm:p-6 bg-white/98 dark:bg-[#081226]/98 backdrop-blur-2xl border border-slate-200 dark:border-sky-500/30 rounded-3xl shadow-2xl shadow-black/20 animate-in fade-in-0 zoom-in-95 duration-200 z-50`}>
                         <div className={`grid ${megaConfig.gridCols} gap-6 text-left`}>
                           {megaConfig.categories.map((cat, idx) => (
                             <div key={idx} className="space-y-3">
