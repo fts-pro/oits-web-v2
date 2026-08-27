@@ -332,6 +332,18 @@ export const Header: React.FC = () => {
     setMobileExpandedSection(prev => prev === label ? null : label);
   };
 
+  // Lock body scroll when mobile drawer is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
   // Glowing Luminous Icons for Parent Nav Items
   const getNavIcon = (label: string) => {
     switch (label) {
@@ -361,9 +373,9 @@ export const Header: React.FC = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white/95 dark:bg-[#070A13]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 py-3 shadow-md' 
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled || isMobileMenuOpen
+          ? 'bg-white/98 dark:bg-[#070A13]/98 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 py-3 shadow-md' 
           : 'bg-transparent py-4 sm:py-5'
       }`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between">
@@ -614,7 +626,7 @@ export const Header: React.FC = () => {
         {/* Mobile Navigation Drawer (Full-Height v2 Architectural Drawer) */}
         {isMobileMenuOpen && (
           <div 
-            className="lg:hidden fixed inset-x-0 top-[65px] bottom-0 z-50 bg-[#070A13]/95 backdrop-blur-2xl border-t border-slate-800 p-6 flex flex-col justify-between overflow-y-auto text-left animate-in slide-in-from-top-3 duration-200"
+            className="lg:hidden fixed inset-x-0 top-[60px] sm:top-[68px] bottom-0 z-[100] bg-white/98 dark:bg-[#070A13]/98 backdrop-blur-2xl border-t border-slate-200 dark:border-slate-800 p-6 flex flex-col justify-between overflow-y-auto text-left animate-in slide-in-from-top-2 duration-200 shadow-2xl"
             role="dialog"
             aria-modal="true"
             aria-label="Mobile site navigation"
@@ -622,7 +634,7 @@ export const Header: React.FC = () => {
             <div className="space-y-3">
               <Link 
                 href="/" 
-                className="flex items-center gap-3 px-4 py-3 rounded-2xl text-base font-bold text-white hover:bg-slate-800/60 min-h-[44px]"
+                className="flex items-center gap-3 px-4 py-3 rounded-2xl text-base font-bold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 min-h-[44px]"
               >
                 <Home className="w-5 h-5 text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.7)]" />
                 <span>Home</span>
@@ -634,11 +646,11 @@ export const Header: React.FC = () => {
 
                 if (megaConfig) {
                   return (
-                    <div key={item.label} className="border-b border-slate-800/80 pb-2">
+                    <div key={item.label} className="border-b border-slate-200 dark:border-slate-800/80 pb-2">
                       <button
                         type="button"
                         onClick={() => toggleMobileSection(item.label)}
-                        className="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-base font-bold text-white hover:bg-slate-800/60 transition-colors min-h-[44px]"
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-base font-bold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors min-h-[44px]"
                       >
                         <div className="flex items-center gap-3">
                           {getNavIcon(item.label)}
@@ -651,7 +663,7 @@ export const Header: React.FC = () => {
                         <div className="pl-4 pr-2 py-2 space-y-3 animate-in slide-in-from-top-2 duration-150">
                           {megaConfig.categories.map((cat, idx) => (
                             <div key={idx} className="space-y-1.5">
-                              <p className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold flex items-center gap-1.5 pt-1">
+                              <p className="text-[10px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold flex items-center gap-1.5 pt-1">
                                 {cat.icon}
                                 <span>{cat.title}</span>
                               </p>
@@ -659,13 +671,13 @@ export const Header: React.FC = () => {
                                 <Link
                                   key={sub.label}
                                   href={sub.href}
-                                  className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 min-h-[40px]"
+                                  className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50 min-h-[40px]"
                                 >
                                   <div className="flex items-center gap-2">
                                     {sub.icon}
                                     <span>{sub.label}</span>
                                   </div>
-                                  <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+                                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
                                 </Link>
                               ))}
                             </div>
@@ -680,7 +692,7 @@ export const Header: React.FC = () => {
                   <Link
                     key={item.label}
                     href={item.href}
-                    className="flex items-center gap-3 px-4 py-3 rounded-2xl text-base font-bold text-white hover:bg-slate-800/60 min-h-[44px]"
+                    className="flex items-center gap-3 px-4 py-3 rounded-2xl text-base font-bold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 min-h-[44px]"
                   >
                     {getNavIcon(item.label)}
                     <span>{item.label}</span>
@@ -690,16 +702,16 @@ export const Header: React.FC = () => {
             </div>
 
             {/* Mobile Drawer Footer Actions (v2 Production Footer) */}
-            <div className="pt-6 border-t border-slate-800 space-y-4">
+            <div className="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-4">
               <Link
                 href={PRIMARY_CTA.href}
-                className="w-full min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-white text-slate-950 font-bold text-xs uppercase tracking-wider shadow-lg active:scale-98"
+                className="w-full min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 font-bold text-xs uppercase tracking-wider shadow-lg active:scale-98"
               >
                 <span>{PRIMARY_CTA.label}</span>
-                <ArrowRight className="w-4 h-4 text-sky-600" />
+                <ArrowRight className="w-4 h-4 text-sky-400 dark:text-sky-600" />
               </Link>
 
-              <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 pt-1">
+              <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400 pt-1">
                 <span className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span>status: 99.99% Uptime</span>
