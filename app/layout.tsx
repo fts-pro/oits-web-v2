@@ -129,11 +129,16 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-slate-50 dark:bg-[#070A13] text-slate-900 dark:text-slate-100 antialiased flex flex-col selection:bg-sky-500/20 selection:text-sky-500 relative transition-colors duration-300">
+      <body className="min-h-screen bg-slate-50 dark:bg-[#070A13] text-slate-900 dark:text-slate-100 antialiased flex flex-col selection:bg-sky-500/20 selection:text-sky-500 relative transition-colors duration-500">
+        {/* Global Root Architectural Blueprint Grid Layer */}
+        <div 
+          aria-hidden="true" 
+          className="fixed inset-0 pointer-events-none z-0 bg-[radial-gradient(#1e293b_1.2px,transparent_1.2px)] bg-[size:24px_24px] opacity-25 dark:opacity-20 transition-opacity duration-500" 
+        />
         <ThemeProvider>
           <CursorSpotlight />
           <Header />
-          <main className="flex-1 pt-14 sm:pt-16">
+          <main className="flex-1 pt-14 sm:pt-16 relative z-10">
             {children}
           </main>
           <Footer />

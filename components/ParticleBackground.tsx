@@ -69,14 +69,13 @@ export const ParticleBackground: React.FC = () => {
         />
       ))}
 
-      {/* Subtle background grid pattern */}
+      {/* Blueprint dot-matrix pattern matching v2 specification */}
       <div 
-        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
-          backgroundSize: '32px 32px',
-        }}
+        className="absolute inset-0 bg-[radial-gradient(#1e293b_1.2px,transparent_1.2px)] bg-[size:24px_24px] opacity-25 dark:opacity-20 pointer-events-none"
       />
+
+      {/* Subtle top hairline divider gradient */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent pointer-events-none" />
     </div>
   );
 };
