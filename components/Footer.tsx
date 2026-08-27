@@ -88,22 +88,19 @@ export const Footer: React.FC = () => {
           
           {/* Col 1 & 2: Entity Information */}
           <div className="md:col-span-2 space-y-4">
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3">
               <Link href="/" className="inline-block" aria-label="OITS Dhaka - Home">
                 <BrandLogo height={36} />
               </Link>
 
-              {/* Stacked Location & Compliance Badges */}
-              <div className="flex flex-col gap-1.5">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 dark:bg-sky-950/40 border border-sky-200/80 dark:border-sky-800/80 text-sky-700 dark:text-sky-300 text-[10px] font-mono font-medium shadow-xs w-fit">
-                  <MapPin className="w-3 h-3 text-sky-500" />
-                  <span>Dhaka, BD</span>
-                </div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 dark:bg-sky-950/40 border border-sky-200/80 dark:border-sky-800/80 text-sky-700 dark:text-sky-300 text-[10px] font-mono font-medium shadow-xs shrink-0">
+                <MapPin className="w-3 h-3 text-sky-500" />
+                <span>Dhaka, BD</span>
+              </div>
 
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 text-emerald-700 dark:text-emerald-400 text-[10px] font-mono font-bold shadow-xs w-fit">
-                  <ShieldCheck className="w-3 h-3 text-emerald-500" />
-                  <span>ISO 27001 ALIGNED</span>
-                </div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 text-emerald-700 dark:text-emerald-400 text-[10px] font-mono font-bold shadow-xs shrink-0">
+                <ShieldCheck className="w-3 h-3 text-emerald-500" />
+                <span>ISO 27001 ALIGNED</span>
               </div>
             </div>
 
