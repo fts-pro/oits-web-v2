@@ -511,7 +511,7 @@ export default function HomePage() {
       </SectionWrapper>
 
       {/* 9.5 FAQ SECTION */}
-      <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-4xl space-y-8">
+      <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl space-y-8">
         <div className="max-w-2xl text-left space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-500">
             Frequently Asked Questions
@@ -525,17 +525,17 @@ export default function HomePage() {
       </SectionWrapper>
 
       {/* 10. FINAL CONVERSION: BOOK A DELIVERY REVIEW */}
-      <SectionWrapper id="start" className="container mx-auto px-4 sm:px-6 max-w-4xl">
+      <SectionWrapper id="start" className="container mx-auto px-4 sm:px-6 max-w-7xl">
         <GlowingBorderCard glowOnHoverOnly={false} className="shadow-2xl">
-          <div className="p-8 sm:p-12 space-y-8 text-left relative overflow-hidden bg-slate-950 text-white rounded-[calc(1.5rem-1.5px)]">
-            <div className="max-w-xl space-y-3 relative z-10">
+          <div className="p-8 sm:p-12 md:p-16 space-y-8 text-left relative overflow-hidden bg-slate-950 text-white rounded-[calc(1.5rem-1.5px)]">
+            <div className="max-w-3xl space-y-3 relative z-10">
               <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-400">
                 Primary Conversion
               </span>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
                 Tell us what’s blocking your roadmap.
               </h2>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base text-slate-300 leading-relaxed">
                 Book a complimentary 90-minute Delivery Review with one of our lead architects. We will examine your codebase, system bottlenecks, or technical specifications and provide an actionable recommendations memo.
               </p>
             </div>
