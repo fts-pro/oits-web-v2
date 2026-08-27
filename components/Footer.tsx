@@ -93,6 +93,9 @@ export const Footer: React.FC = () => {
                 <BrandLogo height={36} />
               </Link>
 
+              {/* Vertical Divider */}
+              <div className="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 hidden sm:block mx-0.5" />
+
               <a
                 href="https://oitsdhaka.com"
                 target="_blank"
