@@ -41,6 +41,7 @@ import { GlowingBorderCard } from '../components/GlowingBorderCard';
 import { ParticleBackground } from '../components/ParticleBackground';
 import { MagneticButton } from '../components/MagneticButton';
 import { ServiceModal } from '../components/ServiceModal';
+import { TechRadar } from '../components/TechRadar';
 import { ServiceOutcome } from '../data/governedData';
 
 export default function HomePage() {
@@ -255,7 +256,10 @@ export default function HomePage() {
         </div>
       </SectionWrapper>
 
-      {/* 5. AI GOVERNANCE & ACCOUNTABILITY */}
+      {/* 5. OPERATIONAL TECH RADAR (TECHNOLOGY ECOSYSTEM ADOPTION RADAR) */}
+      <TechRadar />
+
+      {/* 6. AI GOVERNANCE & ACCOUNTABILITY */}
       <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl">
         <div className="p-8 sm:p-12 rounded-3xl bg-slate-900 text-white border border-slate-800 space-y-8 text-left shadow-2xl">
           <div className="max-w-2xl space-y-3">
