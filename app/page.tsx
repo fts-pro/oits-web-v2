@@ -64,7 +64,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 sm:px-6 max-w-5xl text-center relative z-10 space-y-8">
           
           {/* Top Position Tag */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300/80 dark:border-slate-700/80 text-[11px] font-mono font-semibold tracking-wide text-slate-800 dark:text-slate-200 shadow-sm animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-[11px] font-mono font-semibold tracking-wide text-slate-800 dark:text-slate-200 shadow-sm animate-fade-in">
             <span className="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
             <span>Accountable Engineering Partner</span>
           </div>
@@ -94,7 +94,7 @@ export default function HomePage() {
             <MagneticButton strength={0.2}>
               <Link
                 href="/work"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-slate-100 dark:bg-slate-800/80 text-slate-900 dark:text-white font-semibold text-sm border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white font-semibold text-sm border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm"
               >
                 <span>Explore Governed Work</span>
               </Link>
@@ -114,7 +114,7 @@ export default function HomePage() {
 
       {/* 2. PROOF BAND */}
       <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl">
-        <div className="p-6 sm:p-8 rounded-3xl bg-slate-100/90 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 space-y-4">
+        <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 space-y-4 shadow-sm">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
             <div>
               <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-950 dark:text-white">
@@ -131,17 +131,17 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-            <AnimatedCard delay={0.1} className="space-y-1 text-left">
+            <AnimatedCard delay={0.1} className="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-950/40 border border-slate-200/80 dark:border-slate-800/60 space-y-1 text-left shadow-xs">
               <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white">72%</span>
               <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">Batch Processing Latency Reduction</p>
               <p className="text-[11px] text-slate-500 font-mono">Validated during financial ledger partitioning pilot</p>
             </AnimatedCard>
-            <AnimatedCard delay={0.2} className="space-y-1 text-left">
+            <AnimatedCard delay={0.2} className="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-950/40 border border-slate-200/80 dark:border-slate-800/60 space-y-1 text-left shadow-xs">
               <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white">99.4%</span>
               <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">Video Call Reliability in Low-Bandwidth</p>
               <p className="text-[11px] text-slate-500 font-mono">Simulated under 3% packet loss in mobile network lab</p>
             </AnimatedCard>
-            <AnimatedCard delay={0.3} className="space-y-1 text-left">
+            <AnimatedCard delay={0.3} className="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-950/40 border border-slate-200/80 dark:border-slate-800/60 space-y-1 text-left shadow-xs">
               <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white">100%</span>
               <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">Senior Human Code Sign-Off</p>
               <p className="text-[11px] text-slate-500 font-mono">Zero un-reviewed or raw AI boilerplate in production</p>
@@ -377,7 +377,7 @@ export default function HomePage() {
 
       {/* 7. SECURITY & PROCUREMENT TRUST */}
       <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl">
-        <div className="p-8 sm:p-12 rounded-3xl bg-slate-100 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 space-y-8 text-left">
+        <div className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 space-y-8 text-left shadow-sm">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 dark:border-slate-800 pb-6">
             <div className="max-w-2xl space-y-3">
               <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-500">
@@ -398,7 +398,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {SECURITY_PRACTICES.map((sec, idx) => (
-              <AnimatedCard key={sec.id} delay={idx * 0.08} className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-3 shadow-sm hover-glow">
+              <AnimatedCard key={sec.id} delay={idx * 0.08} className="p-6 rounded-2xl bg-slate-50/70 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-3 shadow-xs hover-glow">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-mono text-slate-400 uppercase font-bold">{sec.category}</span>
                   <span className="text-[10px] font-mono text-emerald-500 font-bold uppercase">● {sec.verificationStatus}</span>

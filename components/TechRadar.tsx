@@ -454,8 +454,8 @@ export const TechRadar: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-6 lg:gap-12">
-            <div className="space-y-1 text-left">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+            <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 shadow-sm space-y-1 text-left min-w-[150px]">
               <span className="font-mono text-[9px] tracking-wider text-slate-400 dark:text-slate-500 uppercase block font-semibold">
                 RADAR RADIAL DOMAINS
               </span>
@@ -464,9 +464,7 @@ export const TechRadar: React.FC = () => {
               </span>
             </div>
             
-            <div className="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 hidden sm:block" />
-            
-            <div className="space-y-1 text-left">
+            <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 shadow-sm space-y-1 text-left min-w-[170px]">
               <span className="font-mono text-[9px] tracking-wider text-slate-400 dark:text-slate-500 uppercase block font-semibold">
                 TOTAL CAPABILITIES CATALOG
               </span>
@@ -693,7 +691,7 @@ export const TechRadar: React.FC = () => {
                 </div>
 
                 {/* Fluency Gauge */}
-                <div className="space-y-2.5 p-4 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/60 dark:border-slate-800/60">
+                <div className="space-y-2.5 p-4 rounded-xl bg-white dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/60 shadow-sm">
                   <div className="flex items-center justify-between text-[9px] font-mono font-bold">
                     <span className="text-slate-400 dark:text-slate-500 uppercase tracking-widest">
                       ENGINEERING FLUENCY RATE
@@ -717,7 +715,7 @@ export const TechRadar: React.FC = () => {
                   </span>
                   <div className="flex flex-col gap-2">
                     {activeItem.useCases.map((uc, i) => (
-                      <div key={i} className="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-950/20 text-xs font-mono">
+                      <div key={i} className="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800/60 bg-white dark:bg-slate-950/20 text-xs font-mono shadow-xs">
                         <div className="h-4 w-4 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/20">
                           <CheckCircle2 className="w-2.5 h-2.5 stroke-[2.5]" />
                         </div>
@@ -732,7 +730,7 @@ export const TechRadar: React.FC = () => {
                   <span className="font-mono text-[9px] uppercase tracking-widest text-slate-400 dark:text-slate-500 block font-bold">
                     BENCHMARK RELEASE TELEMETRY
                   </span>
-                  <span className="text-xs font-mono font-bold text-sky-600 dark:text-sky-400 block bg-sky-50 dark:bg-sky-950/40 p-2.5 rounded-xl border border-sky-100 dark:border-sky-900/30">
+                  <span className="text-xs font-mono font-bold text-sky-700 dark:text-sky-400 block bg-sky-50 dark:bg-sky-950/40 p-2.5 rounded-xl border border-sky-200 dark:border-sky-900/30 shadow-xs">
                     {activeItem.telemetry}
                   </span>
                 </div>
