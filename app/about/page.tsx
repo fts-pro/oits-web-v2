@@ -352,14 +352,14 @@ export default function AboutPage() {
       {/* 8. FINAL CONVERSION ACTION */}
       <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-4xl">
         <GlowingBorderCard glowOnHoverOnly={false} className="shadow-2xl">
-          <div className="p-8 sm:p-12 space-y-6 bg-slate-950 text-white rounded-[calc(1.5rem-1.5px)] text-left">
-            <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-400">
+          <div className="p-8 sm:p-12 space-y-6 bg-white dark:bg-slate-950 text-slate-950 dark:text-white rounded-[calc(1.5rem-1.5px)] border border-slate-200 dark:border-slate-800 text-left shadow-sm">
+            <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-600 dark:text-sky-400">
               Accountable Next Step
             </span>
-            <h2 className="text-3xl font-bold tracking-tight text-white">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-950 dark:text-white">
               Ready to review your technical roadmap?
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               Book a complimentary 90-minute Delivery Review. We will analyze your current architecture, code modularity, and database bottlenecks and supply an actionable recommendations memo.
             </p>
 
@@ -367,14 +367,14 @@ export default function AboutPage() {
               <MagneticButton strength={0.35}>
                 <Link
                   href={PRIMARY_CTA.href}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white text-slate-950 font-bold text-sm hover:bg-slate-100 transition-all shadow-xl active:scale-95 group"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 font-bold text-sm hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-xl active:scale-95 group"
                 >
                   <span>{PRIMARY_CTA.label}</span>
-                  <ArrowRight className="w-4 h-4 text-sky-600 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 text-sky-400 dark:text-sky-600 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </MagneticButton>
 
-              <span className="text-xs font-mono text-slate-400">
+              <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
                 Lead: Tanvir Hossain (Tech Director)
               </span>
             </div>

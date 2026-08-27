@@ -73,12 +73,12 @@ export default function AiPage() {
       </div>
 
       {/* Enterprise Data Isolation */}
-      <div className="p-8 rounded-3xl bg-slate-900 text-white border border-slate-800 space-y-4">
-        <h2 className="text-lg font-bold text-white flex items-center gap-2">
-          <Lock className="w-4 h-4 text-sky-400" />
+      <div className="p-8 rounded-3xl bg-white dark:bg-slate-900 text-slate-950 dark:text-white border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
+        <h2 className="text-lg font-bold text-slate-950 dark:text-white flex items-center gap-2">
+          <Lock className="w-4 h-4 text-sky-500" />
           <span>Enterprise Zero-Data Retention SLA</span>
         </h2>
-        <p className="text-xs text-slate-300 leading-relaxed">
+        <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
           Where AI assistance is configured for private development (e.g. self-hosted models or enterprise API contracts), zero-data retention (ZDR) clauses are strictly enforced to guarantee client IP and code are never used to train public foundational models.
         </p>
       </div>

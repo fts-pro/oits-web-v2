@@ -55,40 +55,40 @@ export default function SecurityPage() {
       </div>
 
       {/* Procurement Security Pack Download */}
-      <div className="p-8 sm:p-10 rounded-3xl bg-slate-900 text-white border border-slate-800 space-y-6 shadow-xl">
+      <div className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 text-slate-950 dark:text-white border border-slate-200 dark:border-slate-800 space-y-6 shadow-sm">
         <div className="space-y-2">
-          <span className="text-xs font-mono uppercase text-sky-400 font-bold">Enterprise Vendor Review</span>
-          <h2 className="text-2xl font-bold text-white">
+          <span className="text-xs font-mono uppercase text-sky-600 dark:text-sky-400 font-bold">Enterprise Vendor Review</span>
+          <h2 className="text-2xl font-bold text-slate-950 dark:text-white">
             Pre-Filled Security & Procurement Pack
           </h2>
-          <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
+          <p className="text-xs text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
             Fast-track your internal compliance review. Our standard pack includes our completed CAIQ/SIG lite questionnaire, Data Processing Addendum (DPA), Standard Contractual Clauses (SCCs), and Sub-processor register.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-          <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-1 text-xs">
-            <strong className="text-white block">Vendor Questionnaire (SIG)</strong>
-            <span className="text-slate-400 text-[11px]">Completed vendor evaluation sheet.</span>
+          <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-950/70 border border-slate-200/80 dark:border-slate-800 space-y-1 text-xs shadow-xs">
+            <strong className="text-slate-950 dark:text-white block">Vendor Questionnaire (SIG)</strong>
+            <span className="text-slate-600 dark:text-slate-400 text-[11px]">Completed vendor evaluation sheet.</span>
           </div>
-          <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-1 text-xs">
-            <strong className="text-white block">Data Processing Addendum</strong>
-            <span className="text-slate-400 text-[11px]">EU GDPR-compliant DPA template.</span>
+          <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-950/70 border border-slate-200/80 dark:border-slate-800 space-y-1 text-xs shadow-xs">
+            <strong className="text-slate-950 dark:text-white block">Data Processing Addendum</strong>
+            <span className="text-slate-600 dark:text-slate-400 text-[11px]">EU GDPR-compliant DPA template.</span>
           </div>
-          <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-1 text-xs">
-            <strong className="text-white block">Sub-processor Registry</strong>
-            <span className="text-slate-400 text-[11px]">Transparent cloud hosting registry.</span>
+          <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-950/70 border border-slate-200/80 dark:border-slate-800 space-y-1 text-xs shadow-xs">
+            <strong className="text-slate-950 dark:text-white block">Sub-processor Registry</strong>
+            <span className="text-slate-600 dark:text-slate-400 text-[11px]">Transparent cloud hosting registry.</span>
           </div>
         </div>
 
-        <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
-          <span className="text-slate-400">Request formal encrypted procurement zip package:</span>
+        <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
+          <span className="text-slate-600 dark:text-slate-400">Request formal encrypted procurement zip package:</span>
           <a
             href={`mailto:${CONTACT_EMAIL}?subject=Request%20OITS%20Security%20and%20Procurement%20Pack`}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-slate-950 font-bold hover:bg-slate-100 transition-all self-start sm:self-auto"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 font-bold hover:bg-slate-800 dark:hover:bg-slate-100 transition-all self-start sm:self-auto shadow-sm"
           >
             <span>Request Security Pack via Email</span>
-            <ExternalLink className="w-3.5 h-3.5 text-sky-600" />
+            <ExternalLink className="w-3.5 h-3.5 text-sky-400 dark:text-sky-600" />
           </a>
         </div>
       </div>

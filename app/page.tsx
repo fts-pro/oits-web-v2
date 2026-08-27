@@ -261,36 +261,36 @@ export default function HomePage() {
 
       {/* 6. AI GOVERNANCE & ACCOUNTABILITY */}
       <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl">
-        <div className="p-8 sm:p-12 rounded-3xl bg-slate-900 text-white border border-slate-800 space-y-8 text-left shadow-2xl">
+        <div className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-slate-900 text-slate-950 dark:text-white border border-slate-200/80 dark:border-slate-800 space-y-8 text-left shadow-sm">
           <div className="max-w-2xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-mono font-semibold">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 dark:bg-sky-500/10 border border-sky-200 dark:border-sky-500/20 text-sky-700 dark:text-sky-400 text-xs font-mono font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Applied AI & Governance</span>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-white">
+            <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-slate-950 dark:text-white">
               AI does more of the work. A named engineer still signs it off.
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               We leverage modern AI tools to accelerate development velocity while enforcing non-negotiable human accountability across every production pull request.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
             {ACCOUNTABILITY_MATRIX.map((item, i) => (
-              <AnimatedCard key={i} delay={i * 0.08} className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3 hover-glow">
-                <h3 className="text-xs font-mono font-bold uppercase text-sky-400">
+              <AnimatedCard key={i} delay={i * 0.08} className="p-6 rounded-2xl bg-slate-50/70 dark:bg-slate-950/80 border border-slate-200/80 dark:border-slate-800 space-y-3 hover-glow shadow-xs">
+                <h3 className="text-xs font-mono font-bold uppercase text-sky-700 dark:text-sky-400">
                   {item.area}
                 </h3>
                 <div className="space-y-2 text-xs">
-                  <p className="text-slate-400">
-                    <strong className="text-slate-300">AI Acceleration:</strong> {item.aiRole}
+                  <p className="text-slate-600 dark:text-slate-400">
+                    <strong className="text-slate-800 dark:text-slate-300 font-semibold">AI Acceleration:</strong> {item.aiRole}
                   </p>
-                  <p className="text-slate-200">
-                    <strong className="text-emerald-400">Human Sign-off:</strong> {item.humanEngineerRole}
+                  <p className="text-slate-800 dark:text-slate-200">
+                    <strong className="text-emerald-600 dark:text-emerald-400 font-semibold">Human Sign-off:</strong> {item.humanEngineerRole}
                   </p>
                 </div>
-                <div className="pt-2 border-t border-slate-800/80">
-                  <span className="text-[10px] font-mono text-emerald-400 font-semibold">
+                <div className="pt-2 border-t border-slate-200/70 dark:border-slate-800/80">
+                  <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
                     ✓ {item.guarantee}
                   </span>
                 </div>
@@ -298,9 +298,9 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="pt-4 flex items-center justify-between border-t border-slate-800 text-xs text-slate-400">
+          <div className="pt-4 flex items-center justify-between border-t border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400">
             <span>Read our formal AI safety and client data isolation policies.</span>
-            <Link href="/ai" className="text-sky-400 hover:underline font-bold inline-flex items-center gap-1">
+            <Link href="/ai" className="text-sky-600 dark:text-sky-400 hover:underline font-bold inline-flex items-center gap-1">
               <span>View AI Safety Policy</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
@@ -527,15 +527,15 @@ export default function HomePage() {
       {/* 10. FINAL CONVERSION: BOOK A DELIVERY REVIEW */}
       <SectionWrapper id="start" className="container mx-auto px-4 sm:px-6 max-w-7xl">
         <GlowingBorderCard glowOnHoverOnly={false} className="shadow-2xl">
-          <div className="p-8 sm:p-12 md:p-16 space-y-8 text-left relative overflow-hidden bg-slate-950 text-white rounded-[calc(1.5rem-1.5px)] w-full">
+          <div className="p-8 sm:p-12 md:p-16 space-y-8 text-left relative overflow-hidden bg-white dark:bg-slate-950 text-slate-950 dark:text-white rounded-[calc(1.5rem-1.5px)] border border-slate-200 dark:border-slate-800 shadow-sm w-full">
             <div className="w-full space-y-4 relative z-10">
-              <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-400">
+              <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-600 dark:text-sky-400">
                 Primary Conversion
               </span>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.15] w-full">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-950 dark:text-white leading-[1.15] w-full">
                 Tell us what’s blocking your roadmap.
               </h2>
-              <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed w-full">
+              <p className="text-sm sm:text-base md:text-lg text-slate-600 dark:text-slate-300 leading-relaxed w-full">
                 Book a complimentary 90-minute Delivery Review with one of our lead architects. We will examine your codebase, system bottlenecks, or technical specifications and provide an actionable recommendations memo.
               </p>
             </div>
@@ -544,20 +544,20 @@ export default function HomePage() {
               <MagneticButton strength={0.35}>
                 <Link
                   href={PRIMARY_CTA.href}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white text-slate-950 font-bold text-sm hover:bg-slate-100 transition-all shadow-xl active:scale-95 group"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 font-bold text-sm hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-xl active:scale-95 group"
                 >
                   <span>{PRIMARY_CTA.label}</span>
-                  <ArrowRight className="w-4 h-4 text-sky-600 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 text-sky-400 dark:text-sky-600 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </MagneticButton>
 
-              <span className="text-xs font-mono text-slate-400">
+              <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
                 Named Lead Responder: Tanvir Hossain (Tech Director)
               </span>
             </div>
 
-            <div className="pt-6 border-t border-slate-800 text-[11px] text-slate-400 font-mono flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+            <div className="pt-6 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 font-mono flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
               <span>Strict NDA by default. No unsolicited sales calls. Zero data sharing.</span>
             </div>
           </div>

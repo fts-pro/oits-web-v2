@@ -21,25 +21,25 @@ export const Footer: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
         
         {/* Top Section: CTA Box */}
-        <div className="p-8 sm:p-10 rounded-3xl bg-slate-900 text-white mb-16 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border border-slate-800 shadow-2xl">
+        <div className="p-8 sm:p-10 rounded-3xl bg-slate-50 dark:bg-slate-900/80 text-slate-950 dark:text-white mb-16 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border border-slate-200 dark:border-slate-800 shadow-sm">
           <div className="max-w-xl space-y-2 relative z-10 text-left">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-sky-400">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-sky-600 dark:text-sky-400">
               Low-Risk Starting Point
             </span>
-            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 dark:text-white">
               Ready to modernise or unblock your delivery?
             </h3>
-            <p className="text-sm text-slate-300">
+            <p className="text-sm text-slate-600 dark:text-slate-300">
               Book a 90-minute architecture and roadmap review with a named senior engineer. No sales pitch, no obligation.
             </p>
           </div>
 
           <Link
             href={PRIMARY_CTA.href}
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white text-slate-950 font-bold text-xs uppercase tracking-wider hover:bg-slate-100 transition-all shadow-lg active:scale-95 shrink-0"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 font-bold text-xs uppercase tracking-wider hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-md active:scale-95 shrink-0"
           >
             <span>{PRIMARY_CTA.label}</span>
-            <ArrowRight className="w-4 h-4 text-sky-600" />
+            <ArrowRight className="w-4 h-4 text-sky-400 dark:text-sky-600" />
           </Link>
         </div>
 

@@ -164,39 +164,39 @@ export default function HowWeWorkPage() {
 
       {/* 4. FIRST 4 WEEKS TIMELINE */}
       <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-7xl">
-        <div className="p-8 sm:p-12 rounded-3xl bg-slate-900 text-white border border-slate-800 space-y-6">
+        <div className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-slate-900 text-slate-950 dark:text-white border border-slate-200 dark:border-slate-800 space-y-6 shadow-sm">
           <div className="space-y-2">
-            <span className="text-xs font-mono uppercase text-sky-400 font-bold">
+            <span className="text-xs font-mono uppercase text-sky-600 dark:text-sky-400 font-bold">
               Month One Onboarding Cadence
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-950 dark:text-white">
               What working together looks like in practice
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs pt-4">
-            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
-              <span className="font-mono text-sky-400 font-bold block text-sm">Days 1–3</span>
-              <strong className="text-white block">Architecture & Spec Alignment</strong>
-              <p className="text-slate-400 leading-relaxed">Review repo access, environment variables, CI/CD pipelines, and security constraints.</p>
+            <div className="p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-950/80 border border-slate-200/80 dark:border-slate-800 space-y-2 shadow-xs">
+              <span className="font-mono text-sky-600 dark:text-sky-400 font-bold block text-sm">Days 1–3</span>
+              <strong className="text-slate-950 dark:text-white block">Architecture & Spec Alignment</strong>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">Review repo access, environment variables, CI/CD pipelines, and security constraints.</p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
-              <span className="font-mono text-sky-400 font-bold block text-sm">Days 4–10</span>
-              <strong className="text-white block">Tracer-Bullet Slice</strong>
-              <p className="text-slate-400 leading-relaxed">Implement one end-to-end slice (query refactor, auth flow, or API decoupling) to prove sprint cadence.</p>
+            <div className="p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-950/80 border border-slate-200/80 dark:border-slate-800 space-y-2 shadow-xs">
+              <span className="font-mono text-sky-600 dark:text-sky-400 font-bold block text-sm">Days 4–10</span>
+              <strong className="text-slate-950 dark:text-white block">Tracer-Bullet Slice</strong>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">Implement one end-to-end slice (query refactor, auth flow, or API decoupling) to prove sprint cadence.</p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
-              <span className="font-mono text-sky-400 font-bold block text-sm">Days 11–14</span>
-              <strong className="text-white block">First Staging Demo</strong>
-              <p className="text-slate-400 leading-relaxed">Live demo in isolated staging environment with complete benchmark metrics and regression test reports.</p>
+            <div className="p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-950/80 border border-slate-200/80 dark:border-slate-800 space-y-2 shadow-xs">
+              <span className="font-mono text-sky-600 dark:text-sky-400 font-bold block text-sm">Days 11–14</span>
+              <strong className="text-slate-950 dark:text-white block">First Staging Demo</strong>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">Live demo in isolated staging environment with complete benchmark metrics and regression test reports.</p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
-              <span className="font-mono text-sky-400 font-bold block text-sm">Weeks 3–4</span>
-              <strong className="text-white block">Full Velocity Cadence</strong>
-              <p className="text-slate-400 leading-relaxed">Synchronized standups, 2-week sprint planning, automated zero-downtime releases, and continuous SRE monitoring.</p>
+            <div className="p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-950/80 border border-slate-200/80 dark:border-slate-800 space-y-2 shadow-xs">
+              <span className="font-mono text-sky-600 dark:text-sky-400 font-bold block text-sm">Weeks 3–4</span>
+              <strong className="text-slate-950 dark:text-white block">Full Velocity Cadence</strong>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">Synchronized standups, 2-week sprint planning, automated zero-downtime releases, and continuous SRE monitoring.</p>
             </div>
           </div>
         </div>
@@ -205,14 +205,14 @@ export default function HowWeWorkPage() {
       {/* 5. PRIMARY ACTION */}
       <SectionWrapper className="container mx-auto px-4 sm:px-6 max-w-4xl">
         <GlowingBorderCard glowOnHoverOnly={false} className="shadow-2xl">
-          <div className="p-8 sm:p-12 space-y-6 bg-slate-950 text-white rounded-[calc(1.5rem-1.5px)] text-left">
-            <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-400">
+          <div className="p-8 sm:p-12 space-y-6 bg-white dark:bg-slate-950 text-slate-950 dark:text-white rounded-[calc(1.5rem-1.5px)] border border-slate-200 dark:border-slate-800 text-left shadow-sm">
+            <span className="text-xs font-mono font-bold uppercase tracking-widest text-sky-600 dark:text-sky-400">
               Low-Risk Starting Point
             </span>
-            <h2 className="text-3xl font-bold tracking-tight text-white">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-950 dark:text-white">
               Start with a 90-minute Delivery Review.
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               Examine your codebase, review architecture bottlenecks, and receive an actionable recommendations memo from a named senior engineer.
             </p>
 
@@ -220,10 +220,10 @@ export default function HowWeWorkPage() {
               <MagneticButton strength={0.35}>
                 <Link
                   href={PRIMARY_CTA.href}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white text-slate-950 font-bold text-sm hover:bg-slate-100 transition-all shadow-xl active:scale-95 group"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 font-bold text-sm hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-xl active:scale-95 group"
                 >
                   <span>{PRIMARY_CTA.label}</span>
-                  <ArrowRight className="w-4 h-4 text-sky-600 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 text-sky-400 dark:text-sky-600 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </MagneticButton>
             </div>

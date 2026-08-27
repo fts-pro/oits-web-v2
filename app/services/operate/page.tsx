@@ -98,14 +98,14 @@ export default function OperatePage() {
         </div>
       </div>
 
-      <div className="p-8 sm:p-10 rounded-3xl bg-slate-900 text-white border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 text-slate-950 dark:text-white border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
         <div className="space-y-1">
-          <h3 className="text-lg font-bold text-white">Need dependable engineering capacity?</h3>
-          <p className="text-xs text-slate-300">Book a 90-minute Delivery Review to assess your operational requirements.</p>
+          <h3 className="text-lg font-bold text-slate-950 dark:text-white">Need dependable engineering capacity?</h3>
+          <p className="text-xs text-slate-600 dark:text-slate-300">Book a 90-minute Delivery Review to assess your operational requirements.</p>
         </div>
         <Link
           href={PRIMARY_CTA.href}
-          className="px-6 py-3.5 rounded-xl bg-white text-slate-950 font-bold text-xs uppercase tracking-wider hover:bg-slate-100 transition-all shrink-0"
+          className="px-6 py-3.5 rounded-xl bg-slate-950 dark:bg-white text-white dark:text-slate-950 font-bold text-xs uppercase tracking-wider hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shrink-0 shadow-sm"
         >
           {PRIMARY_CTA.label}
         </Link>
