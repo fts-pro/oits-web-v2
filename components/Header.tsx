@@ -360,17 +360,6 @@ export const Header: React.FC = () => {
     }
   };
 
-  const getDropdownAlignment = (label: string) => {
-    switch (label) {
-      case 'Services':
-        return 'left-0 origin-top-left';
-      case 'About Us':
-        return 'right-0 origin-top-right';
-      default:
-        return 'left-1/2 -translate-x-1/2 origin-top';
-    }
-  };
-
   return (
     <>
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -378,7 +367,7 @@ export const Header: React.FC = () => {
           ? 'bg-white/98 dark:bg-[#070A13]/98 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 py-3 shadow-md' 
           : 'bg-transparent py-4 sm:py-5'
       }`}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative flex items-center justify-between">
           
           {/* Brand Logo */}
           <Link 
@@ -418,7 +407,6 @@ export const Header: React.FC = () => {
                 return (
                   <div 
                     key={item.label} 
-                    className="relative"
                     onMouseEnter={() => handleMouseEnter(item.label)}
                     onMouseLeave={handleMouseLeave}
                   >
@@ -435,9 +423,13 @@ export const Header: React.FC = () => {
                       <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isHovered ? 'rotate-180 text-sky-500' : 'text-slate-400'}`} />
                     </Link>
 
-                    {/* Categorized Multi-Column v2 Mega Menu */}
+                    {/* Categorized Multi-Column v2 Mega Menu (Centered to Header Container) */}
                     {isHovered && (
-                      <div className={`absolute top-full mt-1.5 ${getDropdownAlignment(item.label)} ${megaConfig.width} max-w-[calc(100vw-2rem)] p-5 sm:p-6 bg-white/98 dark:bg-[#081226]/98 backdrop-blur-2xl border border-slate-200 dark:border-sky-500/30 rounded-3xl shadow-2xl shadow-black/20 animate-in fade-in-0 zoom-in-95 duration-200 z-50`}>
+                      <div 
+                        onMouseEnter={() => handleMouseEnter(item.label)}
+                        onMouseLeave={handleMouseLeave}
+                        className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 ${megaConfig.width} max-w-[calc(100vw-2.5rem)] p-5 sm:p-6 bg-white/98 dark:bg-[#081226]/98 backdrop-blur-2xl border border-slate-200 dark:border-sky-500/30 rounded-3xl shadow-2xl shadow-black/20 animate-in fade-in-0 zoom-in-95 duration-200 z-50`}
+                      >
                         <div className={`grid ${megaConfig.gridCols} gap-6 text-left`}>
                           {megaConfig.categories.map((cat, idx) => (
                             <div key={idx} className="space-y-3">
