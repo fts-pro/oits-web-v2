@@ -17,7 +17,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-white dark:bg-[#05070D] border-t border-slate-200 dark:border-slate-800/80 text-slate-600 dark:text-slate-400 py-16 transition-colors">
+    <footer className="relative z-10 bg-white dark:bg-[#05070D] border-t border-slate-200 dark:border-slate-800/80 text-slate-600 dark:text-slate-400 py-16 transition-colors">
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
         
         {/* Top Section: CTA Box */}

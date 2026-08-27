@@ -430,13 +430,10 @@ export const TechRadar: React.FC = () => {
   const activeColor = getDomainColor(activeItem.domain);
 
   return (
-    <section id="tech-stack" className="py-20 sm:py-24 bg-slate-50 dark:bg-[#070A13] relative overflow-hidden transition-colors duration-500">
+    <section id="tech-stack" className="py-20 sm:py-24 relative overflow-hidden transition-colors duration-500">
       
       {/* Top Hairline Divider Gradient */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent pointer-events-none" />
-      
-      {/* Blueprint Dot Matrix Grid */}
-      <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1.2px,transparent_1.2px)] bg-[size:24px_24px] opacity-25 dark:opacity-20 pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-7xl">
         
